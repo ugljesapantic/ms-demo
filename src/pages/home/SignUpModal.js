@@ -1,55 +1,64 @@
-import React, { useState, useContext } from 'react'
-import { Modal, Button, Form } from 'semantic-ui-react';
+import React, { useState } from 'react'
+import { Modal, Button, Form, Message } from 'semantic-ui-react';
 import { LimitedWidthModal } from '../../styles/utils';
 import useForm from '../../hooks/forms';
 import Validator from 'validator';
 import { signUp } from '../../services/auth';
 
 const SignUpModal = () => {
-    const {values, onChange, onBlur, markError} = useForm({
+    const {values, onChange, onBlur, markError, errors} = useForm({
         firstname: '',
         lastname: '',
         password: '',
         email: ''
     }, [
         {name: 'email', test: x => Validator.isEmail(x.email), error: 'Not valid email'},
-        {name: 'password', test: x => Validator.isEmail(x.password), error: 'Password cant be empty'},
+        {name: 'password', test: x => !Validator.isEmpty(x.password), error: 'Password cant be empty'},
     ])
 
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const iProps={values,onChange,onBlur}
 
     const signUpHandler = () => {
         setLoading(true);
-        signUp(values);
+        signUp(values).catch(res => {
+            let error;
+            switch(res.code) {
+                case 'auth/email-already-in-use':
+                    error = 'Email already exists';
+                    break;
+                case 'auth/weak-password':
+                    error = 'Password should be at least 6 characters';
+                    break;
+                default:
+                    error = 'An error occured, please try later';
+                    break;         
+            }
+            setError(error);
+            setLoading(false);
+        });
     }
 
     
     return (
         <LimitedWidthModal trigger={<Button primary>Sign up</Button>}>
             <Modal.Header>Sign up</Modal.Header>
-            <Modal.Content>
-            <Form loading={loading}>
-                <Form.Field error={markError.email}>
-                    <label>Email</label>
-                    <input name="email" type="email" placeholder='example@email.com' {...iProps}/>
-                </Form.Field>
-                <Form.Field >
-                    <label>First Name</label>
-                    <input name="firstname" placeholder='First Name' {...iProps}/>
-                </Form.Field>
-                <Form.Field>
-                    <label>Last Name</label>
-                    <input name="lastname" placeholder='Last Name' {...iProps}/>
-                </Form.Field>
-                <Form.Field >
-                    <label>Password</label>
-                    <input name="password" type="password" {...iProps}/>
-                </Form.Field>
-                <Button type='submit' onClick={signUpHandler}>Sign up</Button>
-            </Form>
-            </Modal.Content>
+                <Modal.Content>
+                    <Form error={!!error} loading={loading}>
+                        <Message
+                            error
+                            header='Error occured'
+                            content={error}
+                            />
+                        <Form.Input error={markError.email && errors.email} label="Email" name="email" type="email" placeholder='example@email.com' {...iProps}/>
+                        <Form.Input label="First Name" name="firstname" type="text" {...iProps}/>
+                        <Form.Input label="Last Name" name="lastname" type="text" {...iProps}/>
+                        <Form.Input error={markError.password && errors.password} label="Password" name="password" type="password" {...iProps}/>
+                        <Form.Button onClick={signUpHandler}>Sign up</Form.Button>
+                    </Form>
+                </Modal.Content>
         </LimitedWidthModal>
         
     )
