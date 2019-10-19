@@ -6,14 +6,26 @@ import Feed from './pages/feed/Feed';
 import Home from './pages/home/Home';
 import GuestRoute from './navigation/GuestRoute';
 import UserRoute from './navigation/UserRoute';
+import { getFirebase } from './utils/firebase';
 
 export const AuthContext = React.createContext();
 
+
+
 class App extends React.Component {
+
+  constructor() {
+    super();
+    getFirebase().auth().onAuthStateChanged((x) => {
+      this.setAuth(!!x)
+      this.setState({initLoading: false})
+    })
+  }
+
   setAuth = (auth) => {
     this.setState({
       authContext: {
-        auth
+        auth,
       }
     })
   }
@@ -21,16 +33,18 @@ class App extends React.Component {
   state = {
     authContext: {
       auth: false,
-      setAuth: this.setAuth
-    }
+      setAuth: this.setAuth,
+    },
+    initLoading: true,
   }
+  
 
   render() {
-    const { authContext } = this.state;
+    const { authContext, initLoading } = this.state;
 
     return (
       <div className="App">
-        <AuthContext.Provider value={authContext}>
+        {initLoading ? <div>loading....</div> : <AuthContext.Provider value={authContext}>
           <Router>
             <Switch>
               <GuestRoute path="/" exact>
@@ -41,7 +55,7 @@ class App extends React.Component {
               </UserRoute>
             </Switch>
           </Router>
-        </AuthContext.Provider>
+        </AuthContext.Provider>}
       </div>
     );
   }
