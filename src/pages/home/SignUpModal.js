@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import { Modal, Button, Form, Message } from 'semantic-ui-react';
+import { Modal, Form, Message } from 'semantic-ui-react';
 import { LimitedWidthModal } from '../../styles/utils';
 import useForm from '../../hooks/forms';
 import Validator from 'validator';
 import { signUp } from '../../services/auth';
+import Button from '../../components/Button';
 
 const SignUpModal = () => {
-    const {values, onChange, onBlur, markError, errors} = useForm({
+    const {values, onChange, onBlur, markError, errors, valid} = useForm({
         firstname: '',
         lastname: '',
         password: '',
@@ -43,7 +44,7 @@ const SignUpModal = () => {
 
     
     return (
-        <LimitedWidthModal trigger={<Button primary>Sign up</Button>}>
+        <LimitedWidthModal trigger={<Button text='Sign up' width={120} bordered />}>
             <Modal.Header>Sign up</Modal.Header>
                 <Modal.Content>
                     <Form error={!!error} loading={loading}>
@@ -56,7 +57,7 @@ const SignUpModal = () => {
                         <Form.Input label="First Name" name="firstname" type="text" {...iProps}/>
                         <Form.Input label="Last Name" name="lastname" type="text" {...iProps}/>
                         <Form.Input error={markError.password && errors.password} label="Password" name="password" type="password" {...iProps}/>
-                        <Form.Button onClick={signUpHandler}>Sign up</Form.Button>
+                        <Form.Button disabled={!valid} onClick={signUpHandler}>Sign up</Form.Button>
                     </Form>
                 </Modal.Content>
         </LimitedWidthModal>

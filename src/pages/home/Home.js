@@ -27,7 +27,7 @@ export default class Home extends Component {
         return (
             <React.Fragment>
                 <Header>
-                    <Logo src={'https://via.placeholder.com/240x60.png?text=Magna+Serbia'} />
+                    <Logo src={'https://via.placeholder.com/240x48.png?text=Magna+Serbia'} />
                     <SignInModal />
                     <SignUpModal />
                 </Header>

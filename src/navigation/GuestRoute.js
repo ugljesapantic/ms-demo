@@ -5,7 +5,6 @@ import { AuthContext } from '../App';
 
 const GuestRoute = ({ children, ...rest }) => {
     const context = useContext(AuthContext);
-    console.log(context)
 
     return (
         <Route
