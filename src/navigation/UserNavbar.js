@@ -1,5 +1,5 @@
 import React from 'react'
-import { LimitedWidthContainer } from '../styles/utils';
+import { LimitedWidthContainer, ButtonLink } from '../styles/utils';
 import styled from 'styled-components';
 import { signOut } from '../services/auth';
 import Button from '../components/Button';
@@ -27,10 +27,10 @@ const Logo = styled.img`
 const MenuItems = () => {
     return (
         <React.Fragment>
-            <Button white text='Feed' />
-            <Button white text='Messages' />
-            <Button white text='Profile' />
-            <Button white text='Sign out' onClick={() => signOut()} />
+            <ButtonLink activeClassName="selected" to='feed'>Feed</ButtonLink>
+            <ButtonLink activeClassName="selected" to='messages'>Messages</ButtonLink>
+            <ButtonLink activeClassName="selected" to='profile'>Profile</ButtonLink>
+            <Button onClick={() => signOut()} text='Sign out' />
         </React.Fragment>
     )
 }

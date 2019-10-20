@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import './App.scss';
 
-import { BrowserRouter as Router, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import Feed from './pages/feed/Feed';
 import Home from './pages/home/Home';
 import GuestRoute from './navigation/GuestRoute';
@@ -15,7 +15,7 @@ export const AuthContext = React.createContext();
 
 const AppWrapper = styled.div`
   min-height: 100vh;
-  background: ${({auth}) => auth ? '#F5F5F5' : '#A0A0A0'};
+  background: #F5F5F5;
   ${({auth}) => auth && `padding-top: 48px`}
 `;
 
@@ -51,20 +51,25 @@ class App extends React.Component {
 
     return (
       <AppWrapper auth={authContext.auth}>
-        <Loader size='massive' active={initLoading} />
-        {authContext.auth && <UserNavbar />}
-        {!initLoading && <AuthContext.Provider value={authContext}>
-          <Router>
-            <Switch>
-              <GuestRoute path="/" exact>
-                <Home />
-              </GuestRoute>
-              <UserRoute path="/feed">
-                <Feed />
-              </UserRoute>
-            </Switch>
-          </Router>
-        </AuthContext.Provider>}
+        <Router>
+          <Loader size='massive' active={initLoading} />
+          {authContext.auth && <UserNavbar />}
+          {!initLoading && <AuthContext.Provider value={authContext}>
+            
+              <Switch>
+                <GuestRoute path="/" exact>
+                  <Home />
+                </GuestRoute>
+                <UserRoute path="/feed">
+                  <Feed />
+                </UserRoute>
+                <Route path="*">
+                  <Redirect to='/' />
+                </Route>
+              </Switch>
+            
+          </AuthContext.Provider>}
+        </Router>
       </AppWrapper>
     );
   }

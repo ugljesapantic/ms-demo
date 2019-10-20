@@ -11,6 +11,10 @@ const Header = styled(LimitedWidthContainer)`
   padding: 16px;
 `;
 
+const HeaderContainer = styled.div`
+  background-color: #A0A0A0;
+`;
+
 const Logo = styled.img`
     margin-right: auto;
 `;
@@ -26,11 +30,13 @@ export default class Home extends Component {
     render() {
         return (
             <React.Fragment>
-                <Header>
-                    <Logo src={'https://via.placeholder.com/240x48.png?text=Magna+Serbia'} />
-                    <SignInModal />
-                    <SignUpModal />
-                </Header>
+                <HeaderContainer>
+                    <Header>
+                        <Logo src={'https://via.placeholder.com/240x48.png?text=Magna+Serbia'} />
+                        <SignInModal />
+                        <SignUpModal />
+                    </Header>
+                </HeaderContainer>
                 <Main>
                     Glavna strana
                 </Main>

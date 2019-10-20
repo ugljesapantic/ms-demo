@@ -1,25 +1,9 @@
 import React from 'react'
 import styled from 'styled-components';
+import { buttonStyles } from '../styles/utils';
 
 const Styled = styled.button`
-  background-color: inherit;
-  padding: 0.5rem 1rem;
-  outline: none;
-  border: none;
-  font-size: 1.2rem;
-  color: white;
-  cursor: pointer;
-  border-radius: 0.2rem;
-  font-family: unset;
-  font-weight: 300;
-
-  ${({bordered}) => bordered && `border: 2px solid white`};
-  width: ${({width}) => width ? `${width}px` : 'auto'};
-  
-  &:hover {
-    background-color: rgba(0,0,0,0.1);
-    border-radius: 0.2rem;
-  }
+  ${buttonStyles}
 `;
 
 const Button = ({text, ...rest}) => {
