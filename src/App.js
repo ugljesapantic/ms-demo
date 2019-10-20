@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import './App.scss';
-import 'typeface-roboto';
 
 import { BrowserRouter as Router, Switch } from 'react-router-dom'
 import Feed from './pages/feed/Feed';

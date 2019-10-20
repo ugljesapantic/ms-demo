@@ -10,6 +10,8 @@ const Styled = styled.button`
   color: white;
   cursor: pointer;
   border-radius: 0.2rem;
+  font-family: unset;
+  font-weight: 300;
 
   ${({bordered}) => bordered && `border: 2px solid white`};
   width: ${({width}) => width ? `${width}px` : 'auto'};
