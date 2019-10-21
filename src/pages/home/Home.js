@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import SignInModal from './SignInModal';
 import { LimitedWidthContainer } from '../../styles/utils';
 import SignUpModal from './SignUpModal';
+import { Logo } from '../../styles/shared';
 
 const Header = styled(LimitedWidthContainer)`
   display: flex;
@@ -15,14 +16,14 @@ const HeaderContainer = styled.div`
   background-color: #A0A0A0;
 `;
 
-const Logo = styled.img`
-    margin-right: auto;
-`;
-
 const Main = styled.main`
   display: flex;
   align-items: center;
 `;
+
+const StyledLogo = styled(Logo)`
+    margin-right: auto;
+`
 
 
 export default class Home extends Component {
@@ -32,7 +33,7 @@ export default class Home extends Component {
             <React.Fragment>
                 <HeaderContainer>
                     <Header>
-                        <Logo src={'https://via.placeholder.com/240x48.png?text=Magna+Serbia'} />
+                        <StyledLogo />
                         <SignInModal />
                         <SignUpModal />
                     </Header>
