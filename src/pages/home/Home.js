@@ -25,12 +25,16 @@ const StyledLogo = styled(Logo)`
     margin-right: auto;
 `
 
+const Wrapper = styled.div`
+    flex: 1;
+`
+
 
 export default class Home extends Component {
     
     render() {
         return (
-            <React.Fragment>
+            <Wrapper>
                 <HeaderContainer>
                     <Header>
                         <StyledLogo />
@@ -39,9 +43,9 @@ export default class Home extends Component {
                     </Header>
                 </HeaderContainer>
                 <Main>
-                    Glavna strana
+                    
                 </Main>
-            </React.Fragment>
+            </Wrapper>
         )
     }
 }

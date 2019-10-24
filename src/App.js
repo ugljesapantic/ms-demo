@@ -17,15 +17,17 @@ const AppWrapper = styled.div`
   min-height: 100vh;
   background: #F5F5F5;
   ${({auth}) => auth && `padding-top: 48px`}
+  display: flex;
+  justify-content: center;
 `;
 
 class App extends React.Component {
 
   constructor() {
     super();
-    getFirebase().auth().onAuthStateChanged((x) => {
-      this.setAuth(!!x)
+    getFirebase().auth().onAuthStateChanged(user => {
       this.setState({initLoading: false})
+      this.setAuth(!!user);
     })
   }
 

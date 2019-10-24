@@ -15,6 +15,8 @@ const SignUpModal = () => {
     }, [
         {name: 'email', test: x => Validator.isEmail(x.email), error: 'Not valid email'},
         {name: 'password', test: x => !Validator.isEmpty(x.password), error: 'Password cant be empty'},
+        {name: 'firstname', test: x => !Validator.isEmpty(x.firstname), error: 'First name cant be empty'},
+        {name: 'lastname', test: x => !Validator.isEmpty(x.lastname), error: 'Last name cant be empty'},
     ])
 
     const [loading, setLoading] = useState(false);
@@ -54,8 +56,8 @@ const SignUpModal = () => {
                             content={error}
                             />
                         <Form.Input error={markError.email && errors.email} label="Email" name="email" type="email" placeholder='example@email.com' {...iProps}/>
-                        <Form.Input label="First Name" name="firstname" type="text" {...iProps}/>
-                        <Form.Input label="Last Name" name="lastname" type="text" {...iProps}/>
+                        <Form.Input error={markError.firstname && errors.firstname} label="First Name" name="firstname" type="text" {...iProps}/>
+                        <Form.Input error={markError.lastname && errors.lastname} label="Last Name" name="lastname" type="text" {...iProps}/>
                         <Form.Input error={markError.password && errors.password} label="Password" name="password" type="password" {...iProps}/>
                         <Form.Button disabled={!valid} onClick={signUpHandler}>Sign up</Form.Button>
                     </Form>

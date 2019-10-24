@@ -6,6 +6,8 @@ import { NavLink } from 'react-router-dom'
 export const LimitedWidthContainer = styled.div`
   max-width: 1240px;
   padding: 0 16px;
+  flex: 1;
+  width: 100%;
 `
 
 export const LimitedWidthModal = styled(Modal)`
