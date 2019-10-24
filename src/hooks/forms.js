@@ -53,6 +53,10 @@ export const useForm = (init, vs) => {
         setTouched(_touched);
     }
 
+    const reset = () => {
+        setValues(init);
+    }
+
     return {
         values,
         errors,
@@ -60,7 +64,8 @@ export const useForm = (init, vs) => {
         touched,
         onChange,
         onBlur,
-        markError
+        markError,
+        reset
     };
 }
 

@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  background: #283E4A;
+  background: #313163;
   height: 48px;
 `;
 
@@ -38,7 +38,7 @@ const Sidebar = styled.div`
     ${mobSidebarStyles}
     width: 240px;
     left: ${({visible}) => visible ? 'calc(100% - 240px)' : '100%'};
-    background: #283E4A;
+    background: #313163;
     z-index: 1010;
     transition: left 0.25s ease-in-out;
     align-items: left;

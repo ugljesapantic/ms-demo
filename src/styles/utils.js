@@ -15,7 +15,7 @@ export const LimitedWidthModal = styled(Modal)`
 `
 
 export const buttonStyles = css`
-  background-color: inherit;
+  background-color: ${({dark}) => dark ? `#313163` : 'inherit'};;
   padding: 0.5rem 1.25rem;
   outline: none;
   border: none;
@@ -27,10 +27,11 @@ export const buttonStyles = css`
   font-weight: 300;
 
   ${({bordered}) => bordered && `border: 2px solid white`};
-  width: ${({width}) => width ? `${width}px` : 'auto'};
+  width: ${({width}) => width ? `${width}` : 'auto'};
+  
   
   &:hover {
-    background-color: rgba(0,0,0,0.1);
+    background-color: ${({dark}) => dark ? `#0f0f41` : 'rgba(0,0,0,0.1)'};
     border-radius: 0.2rem;
   }
 `

@@ -46,7 +46,7 @@ const SignUpModal = () => {
 
     
     return (
-        <LimitedWidthModal trigger={<Button text='Sign up' width={120} bordered />}>
+        <LimitedWidthModal trigger={<Button text='Sign up' width='120px' bordered />}>
             <Modal.Header>Sign up</Modal.Header>
                 <Modal.Content>
                     <Form error={!!error} loading={loading}>

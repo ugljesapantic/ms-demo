@@ -4,8 +4,22 @@ import CreateNewPost from './CreateNewPost';
 import Posts from './Posts';
 import { getFirestore, querySnapshotToArray } from '../../utils/firebase';
 import LoadMore from '../../components/LoadMore';
+import styled from 'styled-components';
 
 const PAGE_SIZE = 25;
+
+
+const FeedContainer = styled(LimitedWidthContainer)`
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    > * {
+        margin: 1rem 0;
+        flex: 1;
+        width: 100%;
+    }
+`
 
 const Feed = () => {
     const [posts, setPosts] = useState([]);
@@ -23,11 +37,11 @@ const Feed = () => {
     }, [postsCount]);
 
     return (
-        <LimitedWidthContainer>
+        <FeedContainer>
             <CreateNewPost />
             <Posts posts={posts} />
             <LoadMore onClick={() => setPostsCount(postsCount + PAGE_SIZE)} />
-        </LimitedWidthContainer>
+        </FeedContainer>
     )
 }
 

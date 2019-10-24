@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { buttonStyles } from '../styles/utils';
 
 const Styled = styled.button`
-  ${buttonStyles}
+  ${buttonStyles};
 `;
 
 const Button = ({text, ...rest}) => {
