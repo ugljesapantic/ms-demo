@@ -2,13 +2,13 @@ import React from 'react'
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  height: 20px;
-  width: 20px;
+  height: 24px;
+  width: 24px;
   border-radius: 8px;
-  background-color: #313163;
+  background-color: ${({theme}) => theme.primary};
   color: white;
   font-weight: 600;
-  line-height: 20px;
+  line-height: 24px;
   text-align: center;
   font-size: 12px;
 `;

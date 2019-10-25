@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, {ThemeProvider, withTheme} from 'styled-components';
 import './App.scss';
 
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
@@ -15,7 +15,7 @@ export const AuthContext = React.createContext();
 
 const AppWrapper = styled.div`
   min-height: 100vh;
-  background: #F5F5F5;
+  background: ${({theme}) => theme.background};
   ${({auth}) => auth && `padding-top: 48px`}
   display: flex;
   justify-content: center;
@@ -45,13 +45,22 @@ class App extends React.Component {
       setAuth: this.setAuth,
     },
     initLoading: true,
+    theme: {
+      primary: '#094074',
+      primaryDark: '#07335C',
+      secondary: '#FFAB00',
+      secondaryDark: '#CC8800',
+      background: '#f5f5f5',
+      backgroundDark: '#A0A0A0'
+    }
   }
   
 
   render() {
-    const { authContext, initLoading } = this.state;
+    const { authContext, initLoading, theme } = this.state;
 
     return (
+    <ThemeProvider theme={theme}>
       <AppWrapper auth={authContext.auth}>
         <Router>
           <Loader size='massive' active={initLoading} />
@@ -73,8 +82,9 @@ class App extends React.Component {
           </AuthContext.Provider>}
         </Router>
       </AppWrapper>
+    </ThemeProvider>
     );
   }
 }
 
-export default App;
+export default withTheme(App);

@@ -15,6 +15,6 @@ export const Logo = styled.div`
 export const boxStyles = css`
     background-color: white;
     border-radius: 4px;
-    border: 1px solid #dddfe2;
+    border: 1px solid ${({theme}) => theme.backgroundDark};
     padding: 16px;
 `

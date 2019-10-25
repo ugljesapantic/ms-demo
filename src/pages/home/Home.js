@@ -13,7 +13,7 @@ const Header = styled(LimitedWidthContainer)`
 `;
 
 const HeaderContainer = styled.div`
-  background-color: #A0A0A0;
+  background-color: ${({theme}) => theme.backgroundDark};
 `;
 
 const Main = styled.main`
@@ -29,8 +29,7 @@ const Wrapper = styled.div`
     flex: 1;
 `
 
-
-export default class Home extends Component {
+class Home extends Component {
     
     render() {
         return (
@@ -49,3 +48,6 @@ export default class Home extends Component {
         )
     }
 }
+
+
+export default Home;

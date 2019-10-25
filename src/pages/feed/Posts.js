@@ -33,9 +33,13 @@ const Time = styled.div`
 const Content = styled.pre`
     margin-top: 10px;
     font-family: 'Roboto';
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
 `
 
-const Post = ({post}) => <PostContainer>
+const Post = React.memo(({post}) => <PostContainer>
     <PostHeader>
         <UserAvatar name={post.user} />
         <NameAndTime>
@@ -47,7 +51,7 @@ const Post = ({post}) => <PostContainer>
     <Content>
         {post.content}
     </Content>
-</PostContainer>
+</PostContainer>)
 
 const Posts = ({posts}) => {
     return (

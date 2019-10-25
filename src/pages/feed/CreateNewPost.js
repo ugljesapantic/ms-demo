@@ -23,7 +23,7 @@ const StyledArea = styled(Textarea)`
     }
 
     &:focus {
-        border-color: #5a5a97;
+        border-color: ${({theme}) => theme.secondary};
         outline: none;
     }
 `;
@@ -39,17 +39,25 @@ const CreateNewPost = () => {
         content: ''
     }, []);
 
+    const resetAndUnfocus = () => {
+        reset();
+        document.activeElement.blur();
+    }
+
     const createPostHandler = () => {
         setLoading(true);
+        document.activeElement.blur();
         
         getFirestore()
             .collection('posts')
             .add(enhanceWith(values, USER_UID, USER_NAME, CREATED_AT))
             .then(() => {
                 setLoading(false);
-                reset();
+                resetAndUnfocus();
             })
     }
+
+
 
     const iProps={values,onChange};
 
@@ -61,10 +69,11 @@ const CreateNewPost = () => {
                     value={values.content}
                     minRows={2}
                     name="content"
+                    onKeyDown={e => e.key === "Escape" && resetAndUnfocus()}
                     placeholder={'What are you thinking about? :D'}
                 />
 
-                <Button onClick={createPostHandler} dark text="Post" width="100%" />
+                <Button onClick={createPostHandler} secondary text="Post" width="100%" />
             </Wrapper>
         </Dimmer>
     )

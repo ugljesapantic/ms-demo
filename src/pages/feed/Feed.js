@@ -39,7 +39,7 @@ const Feed = () => {
         <FeedContainer>
             <CreateNewPost />
             <Posts posts={posts} />
-            <LoadMore onClick={() => setPostsCount(postsCount + PAGE_SIZE)} />
+            {postsCount === posts.length && <LoadMore onClick={() => setPostsCount(postsCount + PAGE_SIZE)} />}
         </FeedContainer>
     )
 }
