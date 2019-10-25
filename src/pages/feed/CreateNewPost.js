@@ -6,6 +6,7 @@ import Textarea from 'react-textarea-autosize';
 import styled from 'styled-components';
 import Dimmer from '../../components/Dimmer';
 import Button from '../../components/Button';
+import { boxStyles } from '../../styles/shared';
 
 
 const StyledArea = styled(Textarea)`
@@ -13,13 +14,13 @@ const StyledArea = styled(Textarea)`
     border: none;
     resize: none;
     border: 1px solid transparent;
-    ::-webkit-scrollbar { 
-        display: none; 
-    }
     border-radius: 4px;
     line-height: 1.4rem;
     padding: 8px;
     margin-bottom: 8px;
+    ::-webkit-scrollbar { 
+        display: none; 
+    }
 
     &:focus {
         border-color: #5a5a97;
@@ -28,10 +29,7 @@ const StyledArea = styled(Textarea)`
 `;
 
 const Wrapper = styled.div`
-    background-color: white;
-    border-radius: 4px;
-    border: 1px solid #dddfe2;
-    padding: 16px;
+   ${boxStyles}
 `;
 
 const CreateNewPost = () => {

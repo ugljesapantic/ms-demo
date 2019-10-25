@@ -16,7 +16,6 @@ const FeedContainer = styled(LimitedWidthContainer)`
 
     > * {
         margin: 1rem 0;
-        flex: 1;
         width: 100%;
     }
 `

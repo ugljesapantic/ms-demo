@@ -7,7 +7,7 @@ const Wrapper = styled.div`
     }
     /* TODO maybe a param */
     border-radius: 4px;
-
+    z-index: 1010;
 
     ${({loading}) => loading && `
         opacity: 0.5;

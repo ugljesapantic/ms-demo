@@ -11,3 +11,10 @@ export const Logo = styled.div`
         width: 240px;
     `)}
 `;
+
+export const boxStyles = css`
+    background-color: white;
+    border-radius: 4px;
+    border: 1px solid #dddfe2;
+    padding: 16px;
+`
