@@ -41,7 +41,7 @@ const Content = styled.pre`
 
 const Post = React.memo(({post}) => <PostContainer>
     <PostHeader>
-        <UserAvatar name={post.user} />
+        <UserAvatar name={post.user} uid={post.userUid} />
         <NameAndTime>
             <Name>{post.user}</Name>
             {/* TODO add tooltip with time */}

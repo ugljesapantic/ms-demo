@@ -18,3 +18,21 @@ export const boxStyles = css`
     border: 1px solid ${({theme}) => theme.backgroundDark};
     padding: 16px;
 `
+
+
+export const tagInputStyles = (theme) => ({
+    styles : {
+        control: (provided, state) => {
+            const border = `1px solid ${state.isFocused ? theme.secondary : 'transparent'}`
+            const boxShadow = 'none';
+        
+            return { ...provided, border, boxShadow };
+        }
+    },
+    components:{
+        ClearIndicator: () => null,
+        DropdownIndicator: () => null,
+        IndicatorSeparator: () => null,
+        NoOptionsMessage: () => null
+    }
+})

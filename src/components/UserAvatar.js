@@ -5,7 +5,7 @@ const Wrapper = styled.div`
   height: 24px;
   width: 24px;
   border-radius: 8px;
-  background-color: ${({theme}) => theme.primary};
+  background-color: ${({background}) => background};
   color: white;
   font-weight: 600;
   line-height: 24px;
@@ -13,12 +13,25 @@ const Wrapper = styled.div`
   font-size: 12px;
 `;
 
+const uidToColor = (str) => {
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    var colour = '#';
+    for (var i = 0; i < 3; i++) {
+      var value = (hash >> (i * 8)) & 0xFF;
+      colour += ('00' + value.toString(16)).substr(-2);
+    }
+    return colour;
+  }
+
 // TODO profile pic in future
-const UserAvatar = ({name}) => {
+const UserAvatar = ({name, uid}) => {
     const nameParts = name.split(' ');
     const initials = `${nameParts[0].charAt(0)}${nameParts[1].charAt(0)}`
     return (
-        <Wrapper >
+        <Wrapper background={uidToColor(uid)}>
             {initials}
         </Wrapper>
     )

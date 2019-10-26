@@ -3,10 +3,11 @@ import useForm from '../../hooks/forms';
 import { getFirestore, enhanceWith, CREATED_AT, USER_UID, USER_NAME } from '../../utils/firebase';
 import Textarea from 'react-textarea-autosize';
 
-import styled from 'styled-components';
+import styled, {withTheme} from 'styled-components';
 import Dimmer from '../../components/Dimmer';
 import Button from '../../components/Button';
-import { boxStyles } from '../../styles/shared';
+import { boxStyles, tagInputStyles } from '../../styles/shared';
+import AsyncCreatableSelect from 'react-select/async-creatable';
 
 
 const StyledArea = styled(Textarea)`
@@ -17,7 +18,6 @@ const StyledArea = styled(Textarea)`
     border-radius: 4px;
     line-height: 1.4rem;
     padding: 8px;
-    margin-bottom: 8px;
     ::-webkit-scrollbar { 
         display: none; 
     }
@@ -28,12 +28,17 @@ const StyledArea = styled(Textarea)`
     }
 `;
 
+const StyledButton = styled(Button)`
+  margin-top: 8px;
+`;
+
 const Wrapper = styled.div`
    ${boxStyles}
 `;
 
-const CreateNewPost = () => {
+const CreateNewPost = ({theme}) => {
     const [loading, setLoading] = useState(false);
+    const [tags, setTags] = useState([]);
 
     const {values, onChange, reset} = useForm({
         content: ''
@@ -41,6 +46,7 @@ const CreateNewPost = () => {
 
     const resetAndUnfocus = () => {
         reset();
+        setTags([]);
         document.activeElement.blur();
     }
 
@@ -50,7 +56,10 @@ const CreateNewPost = () => {
         
         getFirestore()
             .collection('posts')
-            .add(enhanceWith(values, USER_UID, USER_NAME, CREATED_AT))
+            .add(enhanceWith({
+                ...values,
+                tags: tags.map(t => t.label)
+            }, USER_UID, USER_NAME, CREATED_AT))
             .then(() => {
                 setLoading(false);
                 resetAndUnfocus();
@@ -67,16 +76,27 @@ const CreateNewPost = () => {
                 <StyledArea
                     {...iProps}
                     value={values.content}
-                    minRows={2}
+                    minRows={1}
                     name="content"
                     onKeyDown={e => e.key === "Escape" && resetAndUnfocus()}
                     placeholder={'What are you thinking about? :D'}
                 />
-
-                <Button onClick={createPostHandler} secondary text="Post" width="100%" />
+                { values.content && <AsyncCreatableSelect
+                    isMulti
+                    blurInputOnSelect={false}
+                    cacheOptions
+                    defaultOptions
+                    value={tags}
+                    loadOptions={null}
+                    formatCreateLabel={val => val}
+                    onChange={e => setTags(e)}
+                    placeholder="Add your tags"
+                    {...tagInputStyles(theme)}
+                />}
+                {!!tags.length && <StyledButton onClick={createPostHandler} secondary text="Post" width="100%" />}
             </Wrapper>
         </Dimmer>
     )
 }
 
-export default CreateNewPost
+export default withTheme(CreateNewPost)
