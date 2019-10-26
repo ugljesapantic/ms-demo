@@ -27,6 +27,10 @@ export const tagInputStyles = (theme) => ({
             const boxShadow = 'none';
         
             return { ...provided, border, boxShadow };
+        },
+        menu: (provided, state) => {
+            const display = state.options.length ? 'block' : 'none';
+            return {...provided, display}
         }
     },
     components:{

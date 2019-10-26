@@ -7,7 +7,7 @@ import styled, {withTheme} from 'styled-components';
 import Dimmer from '../../components/Dimmer';
 import Button from '../../components/Button';
 import { boxStyles, tagInputStyles } from '../../styles/shared';
-import AsyncCreatableSelect from 'react-select/async-creatable';
+import TagInput from '../../components/TagInput';
 
 
 const StyledArea = styled(Textarea)`
@@ -81,17 +81,10 @@ const CreateNewPost = ({theme}) => {
                     onKeyDown={e => e.key === "Escape" && resetAndUnfocus()}
                     placeholder={'What are you thinking about? :D'}
                 />
-                { values.content && <AsyncCreatableSelect
-                    isMulti
-                    blurInputOnSelect={false}
-                    cacheOptions
-                    defaultOptions
-                    value={tags}
-                    loadOptions={null}
-                    formatCreateLabel={val => val}
+                {values.content && <TagInput 
                     onChange={e => setTags(e)}
                     placeholder="Add your tags"
-                    {...tagInputStyles(theme)}
+                    value={tags}
                 />}
                 {!!tags.length && <StyledButton onClick={createPostHandler} secondary text="Post" width="100%" />}
             </Wrapper>
