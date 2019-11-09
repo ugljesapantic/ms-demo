@@ -1,8 +1,7 @@
-import { getFirebase } from "../utils/firebase";
+import { fbAuth } from "../App";
 
 export const signUp = user => {
-    return getFirebase()
-        .auth()
+    return fbAuth
         .createUserWithEmailAndPassword(user.email, user.password)
         .then(resp => resp.user.updateProfile({
             displayName: `${user.firstname} ${user.lastname}`,
@@ -10,13 +9,11 @@ export const signUp = user => {
 }
 
 export const signIn = ({email, password}) => {
-    return getFirebase()
-        .auth()
+    return fbAuth
         .signInWithEmailAndPassword(email, password)
 }
 
 export const signOut = () => {
-    return getFirebase()
-        .auth()
+    return fbAuth
         .signOut()
 }

@@ -1,1 +1,2 @@
 export * from './tag/functions';
+export * from './post/functions';

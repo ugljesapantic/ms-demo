@@ -1,13 +1,13 @@
 import React from 'react';
 import styled, {ThemeProvider, withTheme} from 'styled-components';
 import './App.scss';
+import firebase from './config/firebaseConfig';
 
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import Feed from './pages/feed/Feed';
 import Home from './pages/home/Home';
 import GuestRoute from './navigation/GuestRoute';
 import UserRoute from './navigation/UserRoute';
-import { getFirebase } from './utils/firebase';
 import { Loader } from 'semantic-ui-react';
 import UserNavbar from './navigation/UserNavbar';
 
@@ -21,11 +21,17 @@ const AppWrapper = styled.div`
   justify-content: center;
 `;
 
+export const fb = firebase;
+
+export const fbAuth = firebase.auth();
+export const fbFirestore = firebase.firestore();
+
+
 class App extends React.Component {
 
   constructor() {
     super();
-    getFirebase().auth().onAuthStateChanged(user => {
+    fbAuth.onAuthStateChanged(user => {
       this.setState({initLoading: false})
       this.setAuth(!!user);
     })

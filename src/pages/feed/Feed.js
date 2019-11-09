@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { LimitedWidthContainer } from '../../styles/utils';
 import CreateNewPost from './CreateNewPost';
 import Posts from './Posts';
-import { getFirestore, querySnapshotToArray } from '../../utils/firebase';
+import { querySnapshotToArray } from '../../utils/firebase';
 import LoadMore from '../../components/LoadMore';
 import styled from 'styled-components';
 import SearchPosts from './SearchPosts';
+import { fbFirestore } from '../../App';
 
 const PAGE_SIZE = 25;
 
@@ -28,7 +29,7 @@ const Feed = () => {
     const [filters, setFilters] = useState([]);
     const [filteredPosts, setFilteredPosts] = useState([]);
 
-    const query = getFirestore()
+    const query = fbFirestore
     .collection('posts')
     .limit(postsCount)
     .orderBy('createdAt', 'desc')

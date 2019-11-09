@@ -8,6 +8,7 @@ import Dimmer from '../../components/Dimmer';
 import Button from '../../components/Button';
 import { boxStyles, tagInputStyles } from '../../styles/shared';
 import TagInput from '../../components/TagInput';
+import { fbFirestore } from '../../App';
 
 
 const StyledArea = styled(Textarea)`
@@ -54,7 +55,7 @@ const CreateNewPost = ({theme}) => {
         setLoading(true);
         document.activeElement.blur();
         
-        getFirestore()
+        fbFirestore
             .collection('posts')
             .add(enhanceWith({
                 ...values,
