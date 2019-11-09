@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import useForm from '../../hooks/forms';
-import { getFirestore, enhanceWith, CREATED_AT, USER_UID, USER_NAME } from '../../utils/firebase';
 import Textarea from 'react-textarea-autosize';
 
 import styled, {withTheme} from 'styled-components';
 import Dimmer from '../../components/Dimmer';
 import Button from '../../components/Button';
-import { boxStyles, tagInputStyles } from '../../styles/shared';
+import { boxStyles } from '../../styles/shared';
 import TagInput from '../../components/TagInput';
-import { fbFirestore } from '../../App';
+import http from '../../utils/http';
 
 
 const StyledArea = styled(Textarea)`
@@ -51,21 +50,14 @@ const CreateNewPost = ({theme}) => {
         document.activeElement.blur();
     }
 
-    const createPostHandler = () => {
+    const createPostHandler = async () => {
         setLoading(true);
-        document.activeElement.blur();
-        
-        fbFirestore
-            .collection('posts')
-            .add(enhanceWith({
-                ...values,
-                tags: tags.map(t => t.label)
-            }, USER_UID, USER_NAME, CREATED_AT))
-            .then(() => {
-                setLoading(false);
-                resetAndUnfocus();
-            })
-    }
+        await http('createPost', 'POST', null, {
+            ...values,
+            tags: tags.map(t => t.value)
+        });
+        setLoading(false);
+    };
 
 
 

@@ -7,6 +7,6 @@ const post = new mongoose.Schema({
     partner: Boolean,
     type: ['SUPPLY', 'DEMAND'],
     sub_type: ['INVESTOR', 'JOB']
-});
+}, {timestamps: true});
 
 export default mongoose.model('Post', post);

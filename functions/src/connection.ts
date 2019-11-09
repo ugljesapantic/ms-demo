@@ -8,6 +8,7 @@ export default class Connection {
 
         if (isConnected) return Promise.resolve()
 
+        // TODO Dont do this at home
         const url = 'mongodb://dbAdmin:dqDIhjGzdQUDT7NG@cluster0-shard-00-00-8fbcu.gcp.mongodb.net:27017,cluster0-shard-00-01-8fbcu.gcp.mongodb.net:27017,cluster0-shard-00-02-8fbcu.gcp.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority';
     
         return mongoose
