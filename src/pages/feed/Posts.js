@@ -56,7 +56,7 @@ const Post = React.memo(({post}) => <PostContainer>
 const Posts = ({posts}) => {
     return (
         <React.Fragment>
-            {posts.map(post => <Post key={post.id} post={post} />)}
+            {posts.map(post => <Post key={post._id} post={post} />)}
         </React.Fragment>
     )
 }

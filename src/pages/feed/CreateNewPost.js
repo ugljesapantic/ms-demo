@@ -8,6 +8,7 @@ import Button from '../../components/Button';
 import { boxStyles } from '../../styles/shared';
 import TagInput from '../../components/TagInput';
 import http from '../../utils/http';
+import { withUserUid } from '../../utils/firebase';
 
 
 const StyledArea = styled(Textarea)`
@@ -52,10 +53,11 @@ const CreateNewPost = ({theme}) => {
 
     const createPostHandler = async () => {
         setLoading(true);
-        await http('createPost', 'POST', null, {
+        await http('createPost', 'POST', null, withUserUid({
             ...values,
             tags: tags.map(t => t.value)
-        });
+        }));
+        resetAndUnfocus();
         setLoading(false);
     };
 

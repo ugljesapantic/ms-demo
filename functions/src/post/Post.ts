@@ -4,9 +4,15 @@ import * as mongoose from 'mongoose';
 const post = new mongoose.Schema({
     content: String,
     tags: [mongoose.Schema.Types.ObjectId],
-    partner: Boolean,
-    type: ['SUPPLY', 'DEMAND'],
-    sub_type: ['INVESTOR', 'JOB']
+    userUid: String,
+    type: {
+        type: String,
+        enum: ['SUPPLY', 'DEMAND', 'PARTNER'],
+    },
+    sub_type: {
+        type: String,
+        enum: ['JOB', 'INVESTOR'],
+    },
 }, {timestamps: true});
 
 export default mongoose.model('Post', post);

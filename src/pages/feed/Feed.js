@@ -7,9 +7,7 @@ import LoadMore from '../../components/LoadMore';
 import styled from 'styled-components';
 import SearchPosts from './SearchPosts';
 import { fbFirestore } from '../../App';
-
-const PAGE_SIZE = 25;
-
+import http from '../../utils/http';
 
 const FeedContainer = styled(LimitedWidthContainer)`
     display: grid;
@@ -25,62 +23,27 @@ const FeedContainer = styled(LimitedWidthContainer)`
 
 const Feed = () => {
     const [posts, setPosts] = useState([]);
-    const [postsCount, setPostsCount] = useState(PAGE_SIZE);
-    const [filters, setFilters] = useState([]);
-    const [filteredPosts, setFilteredPosts] = useState([]);
-
-    const query = fbFirestore
-    .collection('posts')
-    .limit(postsCount)
-    .orderBy('createdAt', 'desc')
+    const [from, setFrom] = useState(new Date().toISOString());
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
 
     useEffect(() => {
-        let listener;
-        let listeners = []
-        if (filters.length) {
-            filters.forEach(filter => {
-                const filterListener = query
-                    .where('tags', 'array-contains', filter)
-                    .onSnapshot(doc => {
-                        setFilteredPosts({...filteredPosts, [filter]: querySnapshotToArray(doc)});
-                    });
-                listeners.push(filterListener);
-            })
-        } else {
-        listener = query.onSnapshot(doc => {
-                setPosts(querySnapshotToArray(doc));
-            });
+        setLoading(true);
+        const fetchData = async () => {
+            const newPosts = await http('searchPost', 'GET', {from});
+            if (newPosts.length < 10) setHasMore(false)
+            setPosts([...posts, ...newPosts])
+            setLoading(false);
         }
-        return () => {
-            if (listener) listener()
-            listeners.forEach(listener => listener());
-        };
-    }, [postsCount, filters]);
-
-    useEffect(() => {
-        const filtPosts = [];
-        Object.keys(filteredPosts).forEach(key => {
-            filteredPosts[key].forEach(post => {
-                const index = filtPosts.map(p => p.id).indexOf(post.id);
-                if(index > 0) {
-                    filtPosts[index] = {...filtPosts[index], count: filtPosts[index].count+1}
-                } else {
-                    filtPosts.push({
-                        ...post,
-                        count: 1
-                    })
-                }
-            })
-        })
-        setPosts(filtPosts.sort((a,b) => b.count-a.count))
-    }, [filteredPosts])
-
+        fetchData();
+    }, [from]);
+    
     return (
         <FeedContainer>
             <CreateNewPost />
-            <SearchPosts setFilters={setFilters} />
+            <SearchPosts setFilters={() => {}} />
             <Posts posts={posts} />
-            {postsCount === posts.length && <LoadMore onClick={() => setPostsCount(postsCount + PAGE_SIZE)} />}
+            {hasMore && <LoadMore loading={loading} onClick={() => setFrom(posts[posts.length - 1].createdAt)} />}
         </FeedContainer>
     )
 }

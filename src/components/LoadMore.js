@@ -4,12 +4,14 @@ import Button from './Button';
 
 const Wrapper = styled.div`
     text-align: center;
+    height: 40px;
+    line-height: 40px;
 `;
 
-const LoadMore = (props) => {
+const LoadMore = ({loading, ...rest}) => {
     return (
-        <Wrapper {...props}>
-            <Button secondary text='Load more' />
+        <Wrapper {...rest}>
+            {loading ? <div>Loading...</div> : <Button secondary text='Load more' /> }
         </Wrapper>
     )
 }
