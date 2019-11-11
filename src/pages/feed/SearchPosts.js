@@ -8,8 +8,8 @@ const SearchPosts = ({setFilters}) => {
     useEffect(() => {
         const filters = {};
         if (tags) filters.tags = tags.map(tag => tag.value) 
-        setFilters(filters)
-    }, [tags])
+        setFilters(filters);
+    }, [tags, setFilters])
 
     return (
         <div>

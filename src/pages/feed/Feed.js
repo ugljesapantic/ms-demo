@@ -26,20 +26,20 @@ const Feed = () => {
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
 
-    const bla = {from, ...query};
+    const params = {from, ...query};
 
     useEffect(() => {
         if (!from) return;
 
         setLoading(true);
         const fetchData = async () => {
-            const newPosts = await http('searchPost', 'GET', bla);
+            const newPosts = await http('searchPost', 'GET', params);
             if (newPosts.length < 10) setHasMore(false);
             setPosts(posts => [...posts, ...newPosts]);
             setLoading(false);
         }
         fetchData();
-    }, [from, bla]);
+    }, [from, params]);
 
     // Loading new
     useEffect(() => {
@@ -58,11 +58,12 @@ const Feed = () => {
         fetchData();
     }, [query]);
 
+    let setFilters = useCallback(query => setQuery(query), [])
     
     return (
         <FeedContainer>
             <CreateNewPost />
-            <SearchPosts setFilters={query => setQuery(query)} />
+            <SearchPosts setFilters={setFilters} />
             <Posts posts={posts} />
             {hasMore && <LoadMore loading={loading} onClick={() => setFrom(posts[posts.length - 1].createdAt)} />}
         </FeedContainer>
