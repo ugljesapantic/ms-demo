@@ -9,7 +9,7 @@ const post = new mongoose.Schema({
         type: String,
         enum: ['SUPPLY', 'DEMAND', 'PARTNER'],
     },
-    sub_type: {
+    subType: {
         type: String,
         enum: ['JOB', 'INVESTOR'],
     },

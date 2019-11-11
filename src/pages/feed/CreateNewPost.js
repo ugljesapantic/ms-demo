@@ -9,6 +9,7 @@ import { boxStyles } from '../../styles/shared';
 import TagInput from '../../components/TagInput';
 import http from '../../utils/http';
 import { withUserUid } from '../../utils/firebase';
+import { Radio } from 'semantic-ui-react';
 
 
 const StyledArea = styled(Textarea)`
@@ -37,9 +38,36 @@ const Wrapper = styled.div`
    ${boxStyles}
 `;
 
+const PostTypeRadio = styled.div`
+    display: flex;
+    justify-content: space-evenly;
+    max-width: 600px;
+    margin: 1rem auto;
+`
+const PARTNER_TYPE = {name: 'Partner', value:'PARTNER'};
+const SUPPLY_TYPE = {name: 'Supply', value:'SUPPLY'};
+const DEMAND_TYPE = {name: 'Demand', value:'DEMAND'};
+
+const POST_TYPES = [
+    PARTNER_TYPE,
+    SUPPLY_TYPE,
+    DEMAND_TYPE
+]
+
+const JOB_SUB_TYPE = {name: 'Job', value:'JOB'};
+const INVESTOR_SUB_TYPE = {name: 'Investor', value:'INVESTOR'};
+
+const POST_SUB_TYPES = [
+    JOB_SUB_TYPE,
+    INVESTOR_SUB_TYPE,
+]
+
+
 const CreateNewPost = ({theme}) => {
     const [loading, setLoading] = useState(false);
     const [tags, setTags] = useState([]);
+    const [postType, setPostType] = useState(PARTNER_TYPE.value);
+    const [postSubType, setPostSubType] = useState(JOB_SUB_TYPE.value);
 
     const {values, onChange, reset} = useForm({
         content: ''
@@ -55,13 +83,13 @@ const CreateNewPost = ({theme}) => {
         setLoading(true);
         await http('createPost', 'POST', null, withUserUid({
             ...values,
+            type: postType,
+            subType: postSubType,
             tags: tags.map(t => t.value)
         }));
         resetAndUnfocus();
         setLoading(false);
     };
-
-
 
     const iProps={values,onChange};
 
@@ -81,6 +109,26 @@ const CreateNewPost = ({theme}) => {
                     placeholder="Add your tags"
                     value={tags}
                 />}
+                {!!tags.length && <PostTypeRadio>
+                    {POST_TYPES.map(type => <Radio 
+                        key={type.value}
+                        name="type"  
+                        value={type.value} 
+                        label={type.name} 
+                        checked={type.value === postType}
+                        onChange={() => setPostType(type.value)} 
+                    />)}
+                </PostTypeRadio>}
+                {PARTNER_TYPE.value !== postType && <PostTypeRadio>
+                    {POST_SUB_TYPES.map(type => <Radio 
+                        key={type.value}
+                        name="subType"  
+                        value={type.value} 
+                        label={type.name} 
+                        checked={type.value === postSubType}
+                        onChange={() => setPostSubType(type.value)} 
+                    />)}
+                </PostTypeRadio>}
                 {!!tags.length && <StyledButton onClick={createPostHandler} secondary text="Post" width="100%" />}
             </Wrapper>
         </Dimmer>
