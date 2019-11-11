@@ -14,10 +14,15 @@ export const createPost = onRequest((request: functions.Request, response: funct
 });
 
 export const searchPost  =  onRequest(async (request: functions.Request, response: functions.Response)  => {
-    const from = request.query.from;
+    const query: any = {
+        createdAt: { $lt: new Date(request.query.from) }
+    };
+    // TODO send percent encoding frontend side array=a&array=b&array=c
+    if (request.query.tags) query.tags = { $in: request.query.tags.split(',') }
+
+    console.log(query);
     await Connection.connect();
-    console.log(from, new Date(from))
-    const result = await Post.find({ createdAt: { $lt: new Date(from) }}).limit( 10 ).sort('-createdAt');
+    const result = await Post.find(query).limit( 10 ).sort('-createdAt');
     // Fix this any thingy
     const users = await Promise.all(result.map((post: any) => auth.getUser(post.userUid)));
     const resultWithUserInfo = result.map((post: any) => {

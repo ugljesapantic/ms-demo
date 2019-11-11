@@ -1,20 +1,22 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import TagInput from '../../components/TagInput';
 
 const SearchPosts = ({setFilters}) => {
-    const [value, setValue] = useState([])
+    const [tags, setTags] = useState([])
 
-    const onChange = e => {
-        setValue(e);
-        setFilters(e.map(option => option.label));
-    }
+    // TODO ???
+    useEffect(() => {
+        const filters = {};
+        if (tags) filters.tags = tags.map(tag => tag.value) 
+        setFilters(filters)
+    }, [tags])
 
     return (
         <div>
             <TagInput
-                onChange={onChange}
+                onChange={e => setTags(e)}
                 placeholder="Search posts"
-                value={value}
+                value={tags}
             />
         </div>
     )

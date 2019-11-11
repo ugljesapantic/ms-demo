@@ -15,12 +15,14 @@ export const useForm = (init, vs) => {
         validators.forEach(validator => {
             if (!validator.test(values)) _errors[validator.name] = validator.error;
         })
+        // TODO Check if changed
         setErrors(_errors);
         setValid(!Object.keys(_errors).length) 
     }, [values, validators]);
 
     useEffect(() => {
         const _markError = Object.keys(errors).filter(key => touched[key]).reduce((ac, key) => ({...ac, [key]: true}), {})
+        // TODO Check if changed
         setMarkError(_markError);
     }, [errors, touched]);
 
