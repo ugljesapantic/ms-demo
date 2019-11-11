@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { LimitedWidthContainer } from '../../styles/utils';
 import CreateNewPost from './CreateNewPost';
 import Posts from './Posts';
-import { querySnapshotToArray } from '../../utils/firebase';
 import LoadMore from '../../components/LoadMore';
 import styled from 'styled-components';
 import SearchPosts from './SearchPosts';
-import { fbFirestore } from '../../App';
 import http from '../../utils/http';
 
 const FeedContainer = styled(LimitedWidthContainer)`
@@ -31,8 +29,8 @@ const Feed = () => {
         setLoading(true);
         const fetchData = async () => {
             const newPosts = await http('searchPost', 'GET', {from});
-            if (newPosts.length < 10) setHasMore(false)
-            setPosts([...posts, ...newPosts])
+            if (newPosts.length < 10) setHasMore(false);
+            setPosts(posts => [...posts, ...newPosts]);
             setLoading(false);
         }
         fetchData();
