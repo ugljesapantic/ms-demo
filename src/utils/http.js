@@ -1,4 +1,7 @@
-const parseParams  = (obj) => Object.keys(obj).map(key => `${key}=${obj[key]}`).join('&')
+const parseParams  = (obj) => Object
+  .keys(obj)
+  .filter(key => obj[key] !== null && obj[key] !== undefined)
+  .map(key => `${key}=${obj[key]}`).join('&')
 
 export default async (base, method, params, body)  => {
     const url = params ? `${base}?${parseParams(params)}` : base;

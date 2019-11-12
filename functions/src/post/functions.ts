@@ -6,7 +6,10 @@ import { auth } from '../config';
 import { UserRecord } from 'firebase-functions/lib/providers/auth';
 
 export const createPost = onRequest((request: functions.Request, response: functions.Response) => {
-    const entity = new Post(request.body);
+    // TODO find more elegant way
+    const filteredObject = request.body;
+    Object.keys(filteredObject).forEach((key) => (filteredObject[key] == null) && delete filteredObject[key]);
+    const entity = new Post(filteredObject);
 
     return Connection.connect()
         .then(() => entity.save())
@@ -14,11 +17,17 @@ export const createPost = onRequest((request: functions.Request, response: funct
 });
 
 export const searchPost  =  onRequest(async (request: functions.Request, response: functions.Response)  => {
+    const {from, tags, type, subType} = request.query;
     const query: any = {
-        createdAt: { $lt: new Date(request.query.from) }
+        $and: [{
+            createdAt: { $lt: new Date(from) }
+        }]
     };
     // TODO send percent encoding frontend side array=a&array=b&array=c
-    if (request.query.tags) query.tags = { $in: request.query.tags.split(',') }
+    if (tags) query.$and.push({tags: { $in: tags.split(',') }})
+    if (type) query.$and.push({type: {$eq: type}})
+    if (subType) query.$and.push({subType: {$eq: subType}})
+    
 
     console.log(query);
     await Connection.connect();

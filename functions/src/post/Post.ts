@@ -8,10 +8,12 @@ const post = new mongoose.Schema({
     type: {
         type: String,
         enum: ['SUPPLY', 'DEMAND', 'PARTNER'],
+        required: true
     },
     subType: {
         type: String,
         enum: ['JOB', 'INVESTOR'],
+        required: false,
     },
 }, {timestamps: true});
 

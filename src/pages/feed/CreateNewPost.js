@@ -10,7 +10,7 @@ import TagInput from '../../components/TagInput';
 import http from '../../utils/http';
 import { withUserUid } from '../../utils/firebase';
 import { PostTypeSelect } from '../../components/PostTypeSelect';
-import { POST_TYPES, PARTNER_TYPE } from '../../utils/consts';
+import { PARTNER_TYPE } from '../../utils/consts';
 
 
 const StyledArea = styled(Textarea)`
@@ -41,8 +41,8 @@ const Wrapper = styled.div`
 
 
 const defaultPostState = {
-    postType: PARTNER_TYPE.value,
-    postSubType: null,
+    type: PARTNER_TYPE.value,
+    subType: null,
 };
 
 const CreateNewPost = ({theme}) => {

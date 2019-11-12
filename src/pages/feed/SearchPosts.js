@@ -15,11 +15,14 @@ const SearchPosts = ({setFilters}) => {
 
     // TODO ???
     useEffect(() => {
-        const filters = {};
-        console.log(typeFilters)
-        if (tags) filters.tags = tags.map(tag => tag.value) 
+        const filters = {
+            ...typeFilters
+        };
+
+        if (tags) filters.tags = tags.map(tag => tag.value)
+
         setFilters(filters);
-    }, [tags, setFilters, typeFilters])
+    }, [tags, typeFilters, setFilters])
 
     return (
         <Wrapper>

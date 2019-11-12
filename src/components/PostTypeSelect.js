@@ -13,18 +13,18 @@ const PostTypeRadio = styled.div`
 
 export const PostTypeSelect = ({show, filters, setFilters}) => {
 
-    const onTypeChange = postType => {
-        const postSubType = postType !== PARTNER_TYPE.value ? filters.postSubType : null
+    const onTypeChange = type => {
+        const subType = type !== PARTNER_TYPE.value ? filters.subType : null
         setFilters({
-            postType,
-            postSubType
+            type,
+            subType
         })
     }
 
-    const onSubTypeChange = postSubType => {
+    const onSubTypeChange = subType => {
         setFilters({
             ...filters,
-            postSubType
+            subType
         })
     }
 
@@ -36,17 +36,17 @@ export const PostTypeSelect = ({show, filters, setFilters}) => {
                     name="type"  
                     value={type.value} 
                     label={type.name} 
-                    checked={type.value === filters.postType}
+                    checked={type.value === filters.type}
                     onChange={() => onTypeChange(type.value)} 
                 />)}
             </PostTypeRadio>}
-            {PARTNER_TYPE.value !== filters.postType && <PostTypeRadio>
+            {PARTNER_TYPE.value !== filters.type && <PostTypeRadio>
                 {POST_SUB_TYPES.map(type => <Radio 
                     key={type.value}
                     name="subType"  
                     value={type.value} 
                     label={type.name} 
-                    checked={type.value === filters.postSubType}
+                    checked={type.value === filters.subType}
                     onChange={() => onSubTypeChange(type.value)} 
                 />)}
             </PostTypeRadio>}
