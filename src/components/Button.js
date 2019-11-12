@@ -4,11 +4,12 @@ import { buttonStyles } from '../styles/utils';
 
 const Styled = styled.button`
   ${buttonStyles};
+  ${({center}) => center && `margin: 0 auto`}
 `;
 
-const Button = ({text, ...rest}) => {
+const Button = ({text, center, ...rest}) => {
     return (
-        <Styled {...rest}>{text}</Styled>
+        <Styled center={center} {...rest}>{text}</Styled>
     )
 }
 

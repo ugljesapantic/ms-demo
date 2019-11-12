@@ -10,6 +10,7 @@ import TagInput from '../../components/TagInput';
 import http from '../../utils/http';
 import { withUserUid } from '../../utils/firebase';
 import { PostTypeSelect } from '../../components/PostTypeSelect';
+import { POST_TYPES, PARTNER_TYPE } from '../../utils/consts';
 
 
 const StyledArea = styled(Textarea)`
@@ -39,20 +40,24 @@ const Wrapper = styled.div`
 `;
 
 
+const defaultPostState = {
+    postType: PARTNER_TYPE.value,
+    postSubType: null,
+};
+
 const CreateNewPost = ({theme}) => {
     const [loading, setLoading] = useState(false);
     const [tags, setTags] = useState([]);
-    const [filters, setFilters] = useState(null);
-
+    const [typeFilters, setTypeFilters] = useState(defaultPostState);
 
     const {values, onChange, reset} = useForm({
         content: ''
     }, []);
 
     const resetAndUnfocus = () => {
-        reset();
+        reset(defaultPostState);
         setTags([]);
-        setFilters(null)
+        setTypeFilters(defaultPostState)
         document.activeElement.blur();
     }
 
@@ -60,7 +65,7 @@ const CreateNewPost = ({theme}) => {
         setLoading(true);
         await http('createPost', 'POST', null, withUserUid({
             ...values,
-            ...filters,
+            ...typeFilters,
             tags: tags.map(t => t.value)
         }));
         resetAndUnfocus();
@@ -87,7 +92,8 @@ const CreateNewPost = ({theme}) => {
                 />}
                 <PostTypeSelect 
                     show={!!tags.length}
-                    setFilters={setFilters}
+                    filters={typeFilters}
+                    setFilters={setTypeFilters}
                 />
                 {!!tags.length && <StyledButton onClick={createPostHandler} secondary text="Post" width="100%" />}
             </Wrapper>

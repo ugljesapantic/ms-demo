@@ -1,43 +1,32 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import styled from 'styled-components';
 
 import { Radio } from 'semantic-ui-react';
+import { PARTNER_TYPE, POST_TYPES, POST_SUB_TYPES } from '../utils/consts';
 
 const PostTypeRadio = styled.div`
     display: flex;
     justify-content: space-evenly;
-    max-width: 600px;
-    margin: 1rem auto;
+    min-width: 300px;
+    margin: 0.75rem auto;
 `
-const PARTNER_TYPE = {name: 'Partner', value:'PARTNER'};
-const SUPPLY_TYPE = {name: 'Supply', value:'SUPPLY'};
-const DEMAND_TYPE = {name: 'Demand', value:'DEMAND'};
 
-const POST_TYPES = [
-    PARTNER_TYPE,
-    SUPPLY_TYPE,
-    DEMAND_TYPE
-]
+export const PostTypeSelect = ({show, filters, setFilters}) => {
 
-const JOB_SUB_TYPE = {name: 'Job', value:'JOB'};
-const INVESTOR_SUB_TYPE = {name: 'Investor', value:'INVESTOR'};
-
-const POST_SUB_TYPES = [
-    JOB_SUB_TYPE,
-    INVESTOR_SUB_TYPE,
-]
-
-export const PostTypeSelect = ({show, setFilters}) => {
-    const [postType, setPostType] = useState(PARTNER_TYPE.value);
-    const [postSubType, setPostSubType] = useState(JOB_SUB_TYPE.value);
-
-    useEffect(() => {
+    const onTypeChange = postType => {
+        const postSubType = postType !== PARTNER_TYPE.value ? filters.postSubType : null
         setFilters({
-            type: postType,
-            postSubType: postType !== PARTNER_TYPE.value ? postSubType : null
+            postType,
+            postSubType
         })
-    }, [postType, postSubType, setFilters]);
+    }
 
+    const onSubTypeChange = postSubType => {
+        setFilters({
+            ...filters,
+            postSubType
+        })
+    }
 
     return (
         <React.Fragment>
@@ -47,18 +36,18 @@ export const PostTypeSelect = ({show, setFilters}) => {
                     name="type"  
                     value={type.value} 
                     label={type.name} 
-                    checked={type.value === postType}
-                    onChange={() => setPostType(type.value)} 
+                    checked={type.value === filters.postType}
+                    onChange={() => onTypeChange(type.value)} 
                 />)}
             </PostTypeRadio>}
-            {PARTNER_TYPE.value !== postType && <PostTypeRadio>
+            {PARTNER_TYPE.value !== filters.postType && <PostTypeRadio>
                 {POST_SUB_TYPES.map(type => <Radio 
                     key={type.value}
                     name="subType"  
                     value={type.value} 
                     label={type.name} 
-                    checked={type.value === postSubType}
-                    onChange={() => setPostSubType(type.value)} 
+                    checked={type.value === filters.postSubType}
+                    onChange={() => onSubTypeChange(type.value)} 
                 />)}
             </PostTypeRadio>}
         </React.Fragment>
