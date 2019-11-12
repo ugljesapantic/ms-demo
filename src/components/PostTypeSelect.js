@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 
 import { Radio } from 'semantic-ui-react';
-import { PARTNER_TYPE, POST_TYPES, POST_SUB_TYPES } from '../utils/consts';
+import { PARTNER_TYPE, POST_TYPES, POST_SUB_TYPES, JOB_SUB_TYPE } from '../utils/consts';
 
 const PostTypeRadio = styled.div`
     display: flex;
@@ -14,7 +14,13 @@ const PostTypeRadio = styled.div`
 export const PostTypeSelect = ({show, filters, setFilters}) => {
 
     const onTypeChange = type => {
-        const subType = type !== PARTNER_TYPE.value ? filters.subType : null
+        let subType = type !== PARTNER_TYPE.value ? filters.subType : null;
+        if (type === PARTNER_TYPE.value) {
+            subType = null;
+        } else if (!subType) {
+            subType = JOB_SUB_TYPE.value
+            ;
+        }
         setFilters({
             type,
             subType
