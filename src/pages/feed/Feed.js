@@ -25,21 +25,21 @@ const Feed = () => {
     const [query, setQuery] = useState(null);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
-
-    const params = {from, ...query};
+    const setFilters = useCallback(query => setQuery(query), [])
+    const loadMoreData = useCallback(() => http('searchPost', 'GET', {from, ...query}), [from, query])
 
     useEffect(() => {
         if (!from) return;
 
         setLoading(true);
         const fetchData = async () => {
-            const newPosts = await http('searchPost', 'GET', params);
+            const newPosts = await loadMoreData();
             if (newPosts.length < 10) setHasMore(false);
             setPosts(posts => [...posts, ...newPosts]);
             setLoading(false);
         }
         fetchData();
-    }, [from, params]);
+    }, [from, loadMoreData]);
 
     // Loading new
     useEffect(() => {
@@ -57,8 +57,6 @@ const Feed = () => {
         }
         fetchData();
     }, [query]);
-
-    let setFilters = useCallback(query => setQuery(query), [])
     
     return (
         <FeedContainer>
