@@ -10,6 +10,7 @@ import GuestRoute from './navigation/GuestRoute';
 import UserRoute from './navigation/UserRoute';
 import { Loader } from 'semantic-ui-react';
 import UserNavbar from './navigation/UserNavbar';
+import { PostDetails } from './pages/post-details/PostDetails';
 
 export const AuthContext = React.createContext();
 
@@ -77,6 +78,9 @@ class App extends React.Component {
                 <GuestRoute path="/" exact>
                   <Home />
                 </GuestRoute>
+                <UserRoute path="/feed/:id">
+                  <PostDetails />
+                </UserRoute>
                 <UserRoute path="/feed">
                   <Feed />
                 </UserRoute>

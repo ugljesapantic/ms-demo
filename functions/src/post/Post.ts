@@ -2,7 +2,8 @@ import * as mongoose from 'mongoose';
 
 // Shared npm module would be nice
 const post = new mongoose.Schema({
-    content: String,
+    description: String,
+    title: String,
     tags: [mongoose.Schema.Types.ObjectId],
     userUid: String,
     type: {

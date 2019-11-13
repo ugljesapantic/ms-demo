@@ -52,7 +52,8 @@ const CreateNewPost = ({theme}) => {
     const [open, setOpen] = useState(false);
 
     const {values, onChange, reset} = useForm({
-        content: ''
+        title: '',
+        description: ''
     }, []);
 
     const resetEverything = () => {
@@ -82,14 +83,22 @@ const CreateNewPost = ({theme}) => {
             <Wrapper>
                 <StyledArea
                     {...iProps}
-                    value={values.content}
+                    value={values.title}
                     minRows={1}
-                    name="content"
+                    name="title"
+                    onKeyDown={e => e.key === "Escape" && resetEverything()}
+                    placeholder={'Title...'}
+                />
+                <StyledArea
+                    {...iProps}
+                    value={values.description}
+                    minRows={1}
+                    name="description"
                     onKeyDown={e => e.key === "Escape" && resetEverything()}
                     placeholder={'Description...'}
                 />
                 {/* TODO Add title & desciption */}
-                {values.content && <TagInput 
+                {values.title && <TagInput 
                     onChange={e => setTags(e)}
                     placeholder="Add your tags"
                     value={tags}
