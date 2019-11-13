@@ -63,9 +63,9 @@ const Dimmer = styled.div`
 const MenuItems = () => {
     return (
         <React.Fragment>
-            <ButtonLink activeClassName="selected" to='feed'>Feed</ButtonLink>
-            <ButtonLink activeClassName="selected" to='messages'>Messages</ButtonLink>
-            <ButtonLink activeClassName="selected" to='profile'>Profile</ButtonLink>
+            <ButtonLink activeClassName="selected" to='/feed'>Feed</ButtonLink>
+            <ButtonLink activeClassName="selected" to='/messages'>Messages</ButtonLink>
+            <ButtonLink activeClassName="selected" to='/profile'>Profile</ButtonLink>
             <StyledButton onClick={() => signOut()} text='Sign out' />
         </React.Fragment>
     )

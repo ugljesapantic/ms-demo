@@ -1,17 +1,20 @@
 import React from 'react'
 
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import UserAvatar from './UserAvatar';
 import { boxStyles } from '../styles/shared';
 import { passedTime } from '../utils/misc';
 
 
-const PostContainer = styled(Link)`
+const PostContainer = styled.div`
   ${boxStyles}
   display: flex;
   flex-direction: column;
+    ${({details}) => !details && css`
+        cursor: pointer;
+    `}
 `;  
 
 const PostHeader = styled.div`
@@ -40,21 +43,24 @@ const Title = styled.pre`
 `
 
 
-export const Post = React.memo(({post, details}) => <PostContainer to={`/feed/${post._id}`} >
-    <PostHeader>
-        <UserAvatar name={post.user} uid={post.userUid} />
-        <NameAndTime>
-            <Name>{post.user}</Name>
-            {/* TODO add tooltip with time */}
-            <Time>{passedTime(post.createdAt)}</Time>
-        </NameAndTime>
-    </PostHeader>
-    <Title>
-        {post.title}
-    </Title>
-    {details && <React.Fragment>
+export const Post = React.memo(({post, details}) => {
+    let history = useHistory();
+    return <PostContainer details={details} onClick={() => !details && history.push(`/post/${post._id}`)} >
+        <PostHeader>
+            <UserAvatar name={post.user} uid={post.userUid} />
+            <NameAndTime>
+                <Name>{post.user}</Name>
+                {/* TODO add tooltip with time */}
+                <Time>{passedTime(post.createdAt)}</Time>
+            </NameAndTime>
+        </PostHeader>
         <Title>
-            {post.description}
+            {post.title}
         </Title>
-    </React.Fragment>}
-</PostContainer>)
+        {details && <React.Fragment>
+            <Title>
+                {post.description}
+            </Title>
+        </React.Fragment>}
+    </PostContainer>
+})

@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';;
 import Connection from '../connection';
-import Post from './Post';
+import Post, { PostModel } from './Post';
 import onRequest from '../functions/onRequest';
 import { auth } from '../config';
 import { UserRecord } from 'firebase-functions/lib/providers/auth';
@@ -49,11 +49,10 @@ export const getPost = onRequest(async (request: functions.Request, response: fu
 
     console.log(query);
     await Connection.connect();
-    const result = await Post.findOne(query);
-    console.log(result);
-    // Fix this any thingy
-    // const user = await auth.getUser(result.userUid) as UserRecord;
-    // const resultWithUserInfo = {...post.toObject(), user: displayName, userUid: uid}
+    const result = await Post.findOne(query) as PostModel;
 
-    return response.send(result);
+    const user = await auth.getUser(result.userUid);
+    const resultWithUserInfo = {...result.toObject(), user: user.displayName, userUid: user.uid}
+
+    return response.send(resultWithUserInfo);
 });

@@ -1,5 +1,14 @@
 import * as mongoose from 'mongoose';
 
+export interface PostModel extends mongoose.Document {
+    description: string,
+    title: string,
+    tags: [mongoose.Schema.Types.ObjectId],
+    userUid: string,
+    type: string,
+    subType: string,
+  };
+
 // Shared npm module would be nice
 const post = new mongoose.Schema({
     description: String,
@@ -18,4 +27,4 @@ const post = new mongoose.Schema({
     },
 }, {timestamps: true});
 
-export default mongoose.model('Post', post);
+export default mongoose.model<PostModel>('Post', post);

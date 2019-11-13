@@ -33,8 +33,12 @@ class App extends React.Component {
   constructor() {
     super();
     fbAuth.onAuthStateChanged(user => {
-      this.setState({initLoading: false})
-      this.setAuth(!!user);
+      this.setState({
+        initLoading: false,
+        authContext: {
+          auth: !!user
+        }
+      })
     })
   }
 
@@ -72,13 +76,14 @@ class App extends React.Component {
         <Router>
           <Loader size='massive' active={initLoading} />
           {authContext.auth && <UserNavbar />}
+          {console.log('init loading', initLoading, authContext.auth)}
           {!initLoading && <AuthContext.Provider value={authContext}>
             
               <Switch>
                 <GuestRoute path="/" exact>
                   <Home />
                 </GuestRoute>
-                <UserRoute path="/feed/:id">
+                <UserRoute path="/post/:id">
                   <PostDetails />
                 </UserRoute>
                 <UserRoute path="/feed">
