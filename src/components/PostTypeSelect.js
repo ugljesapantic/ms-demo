@@ -18,8 +18,7 @@ export const PostTypeSelect = ({show, filters, setFilters}) => {
         if (type === PARTNER_TYPE.value) {
             subType = null;
         } else if (!subType) {
-            subType = JOB_SUB_TYPE.value
-            ;
+            subType = JOB_SUB_TYPE.value;
         }
         setFilters({
             type,

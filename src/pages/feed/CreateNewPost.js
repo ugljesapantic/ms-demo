@@ -3,7 +3,6 @@ import useForm from '../../hooks/forms';
 import Textarea from 'react-textarea-autosize';
 
 import styled, {withTheme} from 'styled-components';
-import Dimmer from '../../components/Dimmer';
 import Button from '../../components/Button';
 import { boxStyles } from '../../styles/shared';
 import TagInput from '../../components/TagInput';
@@ -11,6 +10,8 @@ import http from '../../utils/http';
 import { withUserUid } from '../../utils/firebase';
 import { PostTypeSelect } from '../../components/PostTypeSelect';
 import { PARTNER_TYPE } from '../../utils/consts';
+import { LimitedWidthModal } from '../../styles/utils';
+import CornerIconButton from '../../components/CornerIconButton';
 
 
 const StyledArea = styled(Textarea)`
@@ -39,7 +40,6 @@ const Wrapper = styled.div`
    ${boxStyles}
 `;
 
-
 const defaultPostState = {
     type: PARTNER_TYPE.value,
     subType: null,
@@ -49,16 +49,17 @@ const CreateNewPost = ({theme}) => {
     const [loading, setLoading] = useState(false);
     const [tags, setTags] = useState([]);
     const [typeFilters, setTypeFilters] = useState(defaultPostState);
+    const [open, setOpen] = useState(false);
 
     const {values, onChange, reset} = useForm({
         content: ''
     }, []);
 
-    const resetAndUnfocus = () => {
-        reset(defaultPostState);
+    const resetEverything = () => {
+        reset();
         setTags([]);
-        setTypeFilters(defaultPostState)
-        document.activeElement.blur();
+        setTypeFilters(defaultPostState);
+        setOpen(false)
     }
 
     const createPostHandler = async () => {
@@ -68,23 +69,26 @@ const CreateNewPost = ({theme}) => {
             ...typeFilters,
             tags: tags.map(t => t.value)
         }));
-        resetAndUnfocus();
+        resetEverything();
         setLoading(false);
     };
 
     const iProps={values,onChange};
 
     return (
-        <Dimmer loading={loading ? 1 : 0}>
+        <LimitedWidthModal
+            open={open}
+            trigger={<CornerIconButton name='plus' onClick={() => setOpen(true)} />}>
             <Wrapper>
                 <StyledArea
                     {...iProps}
                     value={values.content}
                     minRows={1}
                     name="content"
-                    onKeyDown={e => e.key === "Escape" && resetAndUnfocus()}
-                    placeholder={'What are you thinking about? :D'}
+                    onKeyDown={e => e.key === "Escape" && resetEverything()}
+                    placeholder={'Description...'}
                 />
+                {/* TODO Add title & desciption */}
                 {values.content && <TagInput 
                     onChange={e => setTags(e)}
                     placeholder="Add your tags"
@@ -97,7 +101,7 @@ const CreateNewPost = ({theme}) => {
                 />
                 {!!tags.length && <StyledButton onClick={createPostHandler} secondary text="Post" width="100%" />}
             </Wrapper>
-        </Dimmer>
+        </LimitedWidthModal>
     )
 }
 

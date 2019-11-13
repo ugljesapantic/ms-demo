@@ -51,7 +51,6 @@ const SignInModal = () => {
                     </Form>
                 </Modal.Content>
         </LimitedWidthModal>
-        
     )
 }
 

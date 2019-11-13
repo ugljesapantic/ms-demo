@@ -13,10 +13,6 @@ const FeedContainer = styled(LimitedWidthContainer)`
     padding-top: 1rem;
     padding-bottom: 1rem;
     height: min-content;
-
-    > * {
-        width: 100%;
-    }
 `
 
 const Feed = () => {
