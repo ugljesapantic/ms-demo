@@ -13,6 +13,8 @@ import UserNavbar from './navigation/UserNavbar';
 import { PostDetails } from './pages/post-details/PostDetails';
 
 export const AuthContext = React.createContext();
+export const FeedContext = React.createContext();
+
 
 const AppWrapper = styled.div`
   min-height: 100vh;
@@ -50,10 +52,26 @@ class App extends React.Component {
     })
   }
 
+  setFeedContext = (func) => {
+    const update = func(this.state.feedContext);
+    this.setState({
+      feedContext: {
+        ...this.state.feedContext,
+        ...update
+      }
+    })
+  }
+
   state = {
     authContext: {
       auth: false,
       setAuth: this.setAuth,
+    },
+    feedContext: {
+      setFeedContext: this.setFeedContext,
+      posts: [],
+      hasMore: true,
+      filters: {}
     },
     initLoading: true,
     theme: {
@@ -68,7 +86,7 @@ class App extends React.Component {
   
 
   render() {
-    const { authContext, initLoading, theme } = this.state;
+    const { authContext, initLoading, theme, feedContext } = this.state;
 
     return (
     <ThemeProvider theme={theme}>
@@ -76,24 +94,23 @@ class App extends React.Component {
         <Router>
           <Loader size='massive' active={initLoading} />
           {authContext.auth && <UserNavbar />}
-          {console.log('init loading', initLoading, authContext.auth)}
           {!initLoading && <AuthContext.Provider value={authContext}>
-            
-              <Switch>
-                <GuestRoute path="/" exact>
-                  <Home />
-                </GuestRoute>
-                <UserRoute path="/post/:id">
-                  <PostDetails />
-                </UserRoute>
-                <UserRoute path="/feed">
-                  <Feed />
-                </UserRoute>
-                <Route path="*">
-                  <Redirect to='/' />
-                </Route>
-              </Switch>
-            
+              <FeedContext.Provider value={feedContext}>
+                <Switch>
+                  <GuestRoute path="/" exact>
+                    <Home />
+                  </GuestRoute>
+                  <UserRoute path="/feed/:id">
+                    <PostDetails />
+                  </UserRoute>
+                  <UserRoute path="/feed">
+                    <Feed />
+                  </UserRoute>
+                  <Route path="*">
+                    <Redirect to='/' />
+                  </Route>
+                </Switch>
+              </FeedContext.Provider>
           </AuthContext.Provider>}
         </Router>
       </AppWrapper>

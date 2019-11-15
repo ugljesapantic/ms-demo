@@ -32,7 +32,7 @@ export const PostTypeSelect = ({show, filters, setFilters}) => {
             subType
         })
     }
-
+    
     return (
         <React.Fragment>
             {show && <PostTypeRadio>
@@ -41,17 +41,17 @@ export const PostTypeSelect = ({show, filters, setFilters}) => {
                     name="type"  
                     value={type.value} 
                     label={type.name} 
-                    checked={type.value === filters.type}
+                    checked={type.value === (filters && filters.type)}
                     onChange={() => onTypeChange(type.value)} 
                 />)}
             </PostTypeRadio>}
-            {PARTNER_TYPE.value !== filters.type && <PostTypeRadio>
+            {PARTNER_TYPE.value !== (filters && filters.type) && <PostTypeRadio>
                 {POST_SUB_TYPES.map(type => <Radio 
                     key={type.value}
                     name="subType"  
                     value={type.value} 
                     label={type.name} 
-                    checked={type.value === filters.subType}
+                    checked={type.value === (filters && filters.subType)}
                     onChange={() => onSubTypeChange(type.value)} 
                 />)}
             </PostTypeRadio>}

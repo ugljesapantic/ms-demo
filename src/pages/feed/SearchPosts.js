@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import TagInput from '../../components/TagInput';
 import { PostTypeSelect } from '../../components/PostTypeSelect';
 import Button from '../../components/Button';
@@ -9,31 +9,31 @@ const Wrapper = styled.div`
     flex-direction: column;
 `;
 
-const SearchPosts = ({setFilters}) => {
-    const [tags, setTags] = useState([])
-    const [typeFilters, setTypeFilters] = useState({});
+const SearchPosts = ({setFilters, filters}) => {
+    const setTypeFilters = typeFilters => {
+        setFilters({
+            ...filters,
+            typeFilters
+        })
+    }
 
-    // TODO ???
-    useEffect(() => {
-        const filters = {
-            ...typeFilters
-        };
-
-        if (tags) filters.tags = tags.map(tag => tag.value)
-
-        setFilters(filters);
-    }, [tags, typeFilters, setFilters])
+    const setTags = tags => {
+        setFilters({
+            ...filters,
+            tags
+        })
+    }
 
     return (
         <Wrapper>
             <TagInput
                 onChange={e => setTags(e)}
                 placeholder="Search posts"
-                value={tags}
+                value={filters.tags}
             />
             <PostTypeSelect
                 show={true}
-                filters={typeFilters}
+                filters={filters.typeFilters}
                 setFilters={setTypeFilters}
             />
             <Button secondary center text='Clear' onClick={() => setTypeFilters({})} /> 

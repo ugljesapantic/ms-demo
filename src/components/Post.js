@@ -45,7 +45,7 @@ const Title = styled.pre`
 
 export const Post = React.memo(({post, details}) => {
     let history = useHistory();
-    return <PostContainer details={details} onClick={() => !details && history.push(`/post/${post._id}`)} >
+    return <PostContainer details={details} onClick={() => !details && history.push(`/feed/${post._id}`)} >
         <PostHeader>
             <UserAvatar name={post.user} uid={post.userUid} />
             <NameAndTime>

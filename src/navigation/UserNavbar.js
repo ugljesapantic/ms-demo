@@ -8,12 +8,13 @@ import { Icon } from 'semantic-ui-react';
 import useDevice from '../hooks/responsive';
 
 const Wrapper = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   background: ${({theme}) => theme.primary};
   height: 48px;
+  z-index: 100;
 `;
 
 const Navbar = styled(LimitedWidthContainer) `
