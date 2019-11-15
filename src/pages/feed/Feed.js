@@ -27,7 +27,7 @@ const createQuery = filters => {
 
 const Feed = () => {
     const feedContext = useContext(FeedContext);
-    const {posts, from, hasMore, filters, setFeedContext} = feedContext;
+    const {posts, from, hasMore, filters, setFeedContext, alive} = feedContext;
 
     const [loading, setLoading] = useState(false);
     const [firstLoad, setFirstLoad] = useState(true);
@@ -49,7 +49,10 @@ const Feed = () => {
 
     // Loading new
     useEffect(() => {
-
+        if (firstLoad) setFirstLoad(false);
+        if (firstLoad && alive) {
+            return;
+        };
         setLoading(true);
         setFeedContext(() => ({
             posts: [],
@@ -60,7 +63,7 @@ const Feed = () => {
         const fetchData = async () => {
             const newPosts = await http('searchPost', 'GET', {from: queryFrom, ...createQuery(filters)});
             if (newPosts.length < 10) setFeedContext(() => ({hasMore: false}));
-            setFeedContext(() => ({posts: newPosts}));
+            setFeedContext(() => ({posts: newPosts, alive: true}));
             setLoading(false);
         }
         fetchData();
