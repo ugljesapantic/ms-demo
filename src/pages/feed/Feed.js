@@ -49,10 +49,10 @@ const Feed = () => {
 
     // Loading new
     useEffect(() => {
-        if (firstLoad) setFirstLoad(false);
-        if (firstLoad && alive) {
-            return;
-        };
+        if (firstLoad) {
+            setFirstLoad(false);
+            if(alive) return;
+        }
         setLoading(true);
         setFeedContext(() => ({
             posts: [],
