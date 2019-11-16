@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Form, Message } from 'semantic-ui-react';
 import useForm from '../../hooks/forms';
 import Validator from 'validator';
+import http from '../../utils/http';
+import { fbAuth } from '../../App';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -20,7 +22,13 @@ export const EditInfo = ({user}) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const iProps={values,onChange,onBlur}
+    const iProps={onChange,onBlur};
+    const onUpdate = async () => {
+        const token = await fbAuth.currentUser.getIdToken(true);
+        setLoading(true);
+        await http('updateSelf', 'PUT', {token}, values);
+        setLoading(false);
+    }
 
     return (
         <Wrapper>
@@ -31,9 +39,9 @@ export const EditInfo = ({user}) => {
                     content={error}
                     />
                 <Form.Input label="Email" name="email" type="email" disabled value={user.email}/>
-                <Form.Input error={markError.firstname && errors.firstname} label="First Name" name="firstname" type="text" {...iProps}/>
-                <Form.Input error={markError.lastname && errors.lastname} label="Last Name" name="lastname" type="text" {...iProps}/>
-                <Form.Button disabled={!valid} onClick={() => console.log('asdf')}>Update</Form.Button>
+                <Form.Input error={markError.firstname && errors.firstname} label="First Name" name="firstname" type="text" {...iProps} value={values.firstname}/>
+                <Form.Input error={markError.lastname && errors.lastname} label="Last Name" name="lastname" type="text" {...iProps} value={values.lastname}/>
+                <Form.Button disabled={!valid} onClick={onUpdate}>Update</Form.Button>
             </Form>
         </Wrapper>
     )

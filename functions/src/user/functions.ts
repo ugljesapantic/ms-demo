@@ -21,6 +21,15 @@ export const getSelf = onRequest(async (request: functions.Request, response: fu
     return response.status(200).send(user);
 });
 
+export const updateSelf = onRequest(async (request: functions.Request, response: functions.Response) => {
+    const token = request.query.token;
+    const decoded = await auth.verifyIdToken(token);
+    await Connection.connect();
+    const user = await User.updateOne({id: decoded.uid}, {$set: request.body});
+    return response.status(200).send(user);
+});
+
+
 export const updateUser = onRequest((request: functions.Request, response: functions.Response) => {
     const id = request.query.id;
     const body = request.body;
