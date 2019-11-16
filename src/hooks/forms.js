@@ -38,6 +38,7 @@ export const useForm = (init, vs) => {
             ...values,
             [name]: value,
         };
+
         setValues(_values);
     };
 

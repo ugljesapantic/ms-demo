@@ -11,6 +11,7 @@ import UserRoute from './navigation/UserRoute';
 import { Loader } from 'semantic-ui-react';
 import UserNavbar from './navigation/UserNavbar';
 import { PostDetails } from './pages/post-details/PostDetails';
+import Profile  from './pages/profile/Profile';
 
 export const AuthContext = React.createContext();
 export const FeedContext = React.createContext();
@@ -105,6 +106,9 @@ class App extends React.Component {
                   </UserRoute>
                   <UserRoute path="/feed">
                     <Feed />
+                  </UserRoute>
+                  <UserRoute path="/profile">
+                    <Profile />
                   </UserRoute>
                   <Route path="*">
                     <Redirect to='/' />

@@ -28,8 +28,6 @@ export const searchPost = onRequest(async (request: functions.Request, response:
     if (type) query.$and.push({type: {$eq: type}})
     if (subType) query.$and.push({subType: {$eq: subType}})
     
-
-    console.log(query);
     await Connection.connect();
     const result = await Post.find(query).limit( 10 ).sort('-createdAt');
     // Fix this any thingy
