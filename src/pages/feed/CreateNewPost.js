@@ -78,8 +78,7 @@ const CreateNewPost = ({theme}) => {
 
     return (
         <LimitedWidthModal
-            open={open}
-            trigger={<CornerIconButton name='plus' onClick={() => setOpen(true)} />}>
+            trigger={<CornerIconButton name='plus'/>}>
             <Wrapper>
                 <StyledArea
                     {...iProps}

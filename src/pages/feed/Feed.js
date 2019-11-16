@@ -51,7 +51,7 @@ const Feed = () => {
     useEffect(() => {
         if (firstLoad) {
             setFirstLoad(false);
-            if(alive) return;
+            if (alive) return;
         }
         setLoading(true);
         setFeedContext(() => ({

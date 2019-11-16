@@ -42,8 +42,25 @@ const Title = styled.pre`
     font-family: 'Roboto';
 `
 
+const Desciption = styled.pre`
+    white-space: pre-wrap;
+    font-family: 'Roboto';
+`
 
-export const Post = React.memo(({post, details}) => {
+const TagList = styled.div`
+    display: flex;
+    flex-wrap: wrap;    
+`
+
+// TODO cssIf(matched)``
+const Tag = styled.div`
+    border-radius: 4px;
+    padding: 4px 8px;
+    background-color: ${({matched}) => matched ? 'lightgreen' : 'lightgray'};
+`
+
+
+export const Post = React.memo(({post, details, selectedTags}) => {
     let history = useHistory();
     return <PostContainer details={details} onClick={() => !details && history.push(`/feed/${post._id}`)} >
         <PostHeader>
@@ -58,9 +75,12 @@ export const Post = React.memo(({post, details}) => {
             {post.title}
         </Title>
         {details && <React.Fragment>
-            <Title>
+            <Desciption>
                 {post.description}
-            </Title>
+            </Desciption>
+            <TagList>
+                {post.tags.map(tag => <Tag matched={selectedTags.includes(tag._id)} key={tag._id}>{tag.name}</Tag>)}
+            </TagList>
         </React.Fragment>}
     </PostContainer>
 })

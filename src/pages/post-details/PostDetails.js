@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import http from '../../utils/http';
 import { Post } from '../../components/Post';
 import styled from 'styled-components';
 import { LimitedWidthContainer } from '../../styles/utils';
 import Button from '../../components/Button';
+import { FeedContext } from '../../App';
 
 const PostDetailsContainer = styled(LimitedWidthContainer)`
   padding-top: 2rem;
@@ -15,6 +16,7 @@ export const PostDetails = (props) => {
     const [loading, setLoading] = useState(true);
     const [post, setPost] = useState(null);
     const hist = useHistory();
+    const feedContext = useContext(FeedContext);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -25,10 +27,12 @@ export const PostDetails = (props) => {
         fetchData();
     }, [id]);
 
+    const selectedTags = feedContext.alive && feedContext.filters.tags ? feedContext.filters.tags.map(tag => tag.value) : [];
+
     return (
         <PostDetailsContainer>
-            <Button secondary text="Go back" onClick={() => hist.goBack()}/>
-            {loading ? <div>Loading...</div> : <Post post={post} details/>} 
+            <Button style={{marginBottom: '20px'}} secondary text="Go back" onClick={() => hist.goBack()}/>
+            {loading ? <div>Loading...</div> : <Post selectedTags={selectedTags} post={post} details/>} 
         </PostDetailsContainer>
     )
 }

@@ -47,11 +47,10 @@ export const getPost = onRequest(async (request: functions.Request, response: fu
         _id: id
     }
 
-    console.log(query);
     await Connection.connect();
-    const result = await Post.findOne(query) as PostModel;
-
+    const result = await Post.findOne(query).populate('tags') as PostModel;
     const user = await auth.getUser(result.userUid);
+
     const resultWithUserInfo = {...result.toObject(), user: user.displayName, userUid: user.uid}
 
     return response.send(resultWithUserInfo);

@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose';
 export interface PostModel extends mongoose.Document {
     description: string,
     title: string,
-    tags: [mongoose.Schema.Types.ObjectId],
+    tags: any,
     userUid: string,
     type: string,
     subType: string,
@@ -13,7 +13,7 @@ export interface PostModel extends mongoose.Document {
 const post = new mongoose.Schema({
     description: String,
     title: String,
-    tags: [mongoose.Schema.Types.ObjectId],
+    tags: [{type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}],
     userUid: String,
     type: {
         type: String,
