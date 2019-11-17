@@ -12,7 +12,6 @@ export default async (base, method, params, body, withToken)  => {
     params.token = token;
   }
   const url = params && Object.keys(params).length ? `${base}?${parseParams(params)}` : base;
-  console.log(url)
   const response = await fetch(`https://us-central1-ms-demo-f173d.cloudfunctions.net/${url}`, {
     method,
     mode: 'cors',

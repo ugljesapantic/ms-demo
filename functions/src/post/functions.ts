@@ -79,3 +79,14 @@ export const getMyPosts = onRequest(async (request: functions.Request, response:
 
     return response.send(resultWithUserInfo);
 });
+
+export const deletePost = onRequest(async (request: functions.Request, response: functions.Response)  => {
+    const {id} = request.query;
+    const query: any = {
+        _id:  id 
+    }
+    await Connection.connect();
+    await Post.deleteOne(query);
+
+    return response.status(200).send({});
+});

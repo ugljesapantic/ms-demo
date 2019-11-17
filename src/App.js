@@ -12,9 +12,11 @@ import { Loader } from 'semantic-ui-react';
 import UserNavbar from './navigation/UserNavbar';
 import { PostDetails } from './pages/post-details/PostDetails';
 import Profile  from './pages/profile/Profile';
+import http from './utils/http';
 
 export const AuthContext = React.createContext();
 export const FeedContext = React.createContext();
+export const MyPostsContext = React.createContext();
 
 
 const AppWrapper = styled.div`
@@ -42,7 +44,15 @@ class App extends React.Component {
           auth: !!user
         }
       })
+      if (user) {
+        this.loadUserPosts();
+      }
     })
+  }
+
+  async loadUserPosts () {
+    const posts = await http('getMyPosts', 'GET', null, null, true);
+    this.setMyPostsContext(() => ({posts}))
   }
 
   setAuth = (auth) => {
@@ -63,6 +73,17 @@ class App extends React.Component {
     })
   }
 
+  // TODO Make generic
+  setMyPostsContext = (func) => {
+    const update = func(this.state.myPostsContext);
+    this.setState({
+      myPostsContext: {
+        ...this.state.myPostsContext,
+        ...update
+      }
+    })
+  }
+
   state = {
     authContext: {
       auth: false,
@@ -73,6 +94,10 @@ class App extends React.Component {
       posts: [],
       hasMore: true,
       filters: {}
+    },
+    myPostsContext: {
+      posts: [],
+      set: this.setMyPostsContext
     },
     initLoading: true,
     theme: {
@@ -87,7 +112,7 @@ class App extends React.Component {
   
 
   render() {
-    const { authContext, initLoading, theme, feedContext } = this.state;
+    const { authContext, initLoading, theme, feedContext, myPostsContext } = this.state;
 
     return (
     <ThemeProvider theme={theme}>
@@ -97,23 +122,25 @@ class App extends React.Component {
           {authContext.auth && <UserNavbar />}
           {!initLoading && <AuthContext.Provider value={authContext}>
               <FeedContext.Provider value={feedContext}>
-                <Switch>
-                  <GuestRoute path="/" exact>
-                    <Home />
-                  </GuestRoute>
-                  <UserRoute path="/feed/:id">
-                    <PostDetails />
-                  </UserRoute>
-                  <UserRoute path="/feed">
-                    <Feed />
-                  </UserRoute>
-                  <UserRoute path="/profile">
-                    <Profile />
-                  </UserRoute>
-                  <Route path="*">
-                    <Redirect to='/' />
-                  </Route>
-                </Switch>
+                <MyPostsContext.Provider value={myPostsContext}>
+                  <Switch>
+                    <GuestRoute path="/" exact>
+                      <Home />
+                    </GuestRoute>
+                    <UserRoute path="/feed/:id">
+                      <PostDetails />
+                    </UserRoute>
+                    <UserRoute path="/feed">
+                      <Feed />
+                    </UserRoute>
+                    <UserRoute path="/profile">
+                      <Profile />
+                    </UserRoute>
+                    <Route path="*">
+                      <Redirect to='/' />
+                    </Route>
+                  </Switch>
+                </MyPostsContext.Provider>
               </FeedContext.Provider>
           </AuthContext.Provider>}
         </Router>

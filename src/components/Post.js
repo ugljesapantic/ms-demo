@@ -56,6 +56,7 @@ const TagList = styled.div`
 const Tag = styled.div`
     border-radius: 4px;
     padding: 4px 8px;
+    margin-right: 1rem;
     background-color: ${({matched}) => matched ? 'lightgreen' : 'lightgray'};
 `
 
