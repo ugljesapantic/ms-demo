@@ -46,11 +46,11 @@ export default class Profile extends Component {
                     </ProfileWrapper>
                 }
                 {!user && <div>Loading...</div>}
-                <MyPostsContext.Consumer>
+                {user && <MyPostsContext.Consumer>
                     {value => <MyPostsContainer>
                         <Posts posts={value.posts} />
                     </MyPostsContainer>}
-                </MyPostsContext.Consumer>
+                </MyPostsContext.Consumer>}
             </ProfileContainer>
         )
     }
