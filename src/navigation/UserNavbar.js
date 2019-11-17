@@ -6,6 +6,8 @@ import Button from '../components/Button';
 import { Logo } from '../styles/shared';
 import { Icon } from 'semantic-ui-react';
 import useDevice from '../hooks/responsive';
+import { useHistory } from 'react-router-dom'
+
 
 const Wrapper = styled.div`
   position: fixed;
@@ -61,12 +63,16 @@ const Dimmer = styled.div`
     transition: opacity 0.25s ease-in-out;
 `
 
-const MenuItems = () => {
+const MenuItems = ({history, close}) => {
+    const goTo = state => {
+        history.push(`/${state}`);
+        close();
+    };
     return (
         <React.Fragment>
-            <ButtonLink activeClassName="selected" to='/feed'>Feed</ButtonLink>
-            <ButtonLink activeClassName="selected" to='/messages'>Messages</ButtonLink>
-            <ButtonLink activeClassName="selected" to='/profile'>Profile</ButtonLink>
+            <ButtonLink activeClassName="selected" onClick={() => goTo('feed')}>Feed</ButtonLink>
+            <ButtonLink activeClassName="selected" onClick={() => goTo('messages')}>Messages</ButtonLink>
+            <ButtonLink activeClassName="selected" onClick={() => goTo('profile')}>Profile</ButtonLink>
             <StyledButton onClick={() => signOut()} text='Sign out' />
         </React.Fragment>
     )
@@ -75,6 +81,8 @@ const MenuItems = () => {
 const UserNavbar = () => {
     const [visible, setVisible] = useState(false);
     const { isMobile } = useDevice();
+    const history = useHistory();
+
     return (
         <Wrapper>
             <Navbar>
@@ -82,10 +90,10 @@ const UserNavbar = () => {
                 {isMobile ? <React.Fragment>
                     <Icon inverted name='bars' onClick={() => setVisible(true)} />
                     <Sidebar visible={visible}>
-                        <MenuItems />
+                        <MenuItems history={history} close={() => setVisible(false)} />
                     </Sidebar>
                     <Dimmer onClick={() => setVisible(false)} visible={visible} />
-                </React.Fragment> : <MenuItems />}
+                </React.Fragment> : <MenuItems history={history} close={() => setVisible(false)}/>}
             </Navbar>
         </Wrapper>
     )

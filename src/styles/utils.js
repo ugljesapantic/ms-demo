@@ -39,9 +39,10 @@ export const buttonStyles = css`
   }
 `
 
-export const ButtonLink = styled(NavLink)`
+export const ButtonLink = styled.button`
   ${buttonStyles}
   transition: background 0.25s;
+  text-align: left;
 
   &:hover {
     color: white;

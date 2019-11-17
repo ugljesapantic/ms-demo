@@ -15,8 +15,7 @@ export default class Profile extends Component {
         user: null
     }
     async componentDidMount() {
-        const token = await fbAuth.currentUser.getIdToken(true);
-        const user = await http('getSelf', 'GET', {token});
+        const user = await http('getSelf', 'GET', null, null, true);
 
         this.setState({user})
     }

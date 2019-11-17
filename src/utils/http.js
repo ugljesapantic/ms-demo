@@ -1,19 +1,26 @@
+import { fbAuth } from "../App";
+
 const parseParams  = (obj) => Object
   .keys(obj)
   .filter(key => obj[key] !== null && obj[key] !== undefined)
   .map(key => `${key}=${obj[key]}`).join('&')
 
-export default async (base, method, params, body)  => {
-    const url = params ? `${base}?${parseParams(params)}` : base;
-    // const response = await fetch(`http://localhost:5000/ms-demo-f173d/us-central1/${url}`, {
-    const response = await fetch(`https://us-central1-ms-demo-f173d.cloudfunctions.net/${url}`, {
-      method,
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    });
+export default async (base, method, params, body, withToken)  => {
+  if (withToken) {
+    const token = await fbAuth.currentUser.getIdToken(true);
+    if (!params) params = {};
+    params.token = token;
+  }
+  const url = params && Object.keys(params).length ? `${base}?${parseParams(params)}` : base;
+  console.log(url)
+  const response = await fetch(`https://us-central1-ms-demo-f173d.cloudfunctions.net/${url}`, {
+    method,
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: body && JSON.stringify(body)
+  });
 
-    return await response.json(); 
+  return await response.json(); 
 }

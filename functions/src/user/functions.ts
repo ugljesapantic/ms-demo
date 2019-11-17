@@ -1,9 +1,8 @@
+import { getUserId } from './../utils';
 import * as functions from 'firebase-functions';;
 import Connection from '../connection';
 import User from './User';
 import onRequest from '../functions/onRequest';
-import { auth } from '../config';
-
 
 export const createUser = onRequest((request: functions.Request, response: functions.Response) => {
     const entity = new User(request.body);
@@ -14,18 +13,16 @@ export const createUser = onRequest((request: functions.Request, response: funct
 });
 
 export const getSelf = onRequest(async (request: functions.Request, response: functions.Response) => {
-    const token = request.query.token;
-    const decoded = await auth.verifyIdToken(token);
+    const userId = await getUserId(request);
     await Connection.connect();
-    const user = await User.findOne({id: decoded.uid});
+    const user = await User.findOne({id: userId});
     return response.status(200).send(user);
 });
 
 export const updateSelf = onRequest(async (request: functions.Request, response: functions.Response) => {
-    const token = request.query.token;
-    const decoded = await auth.verifyIdToken(token);
+    const userId = await getUserId(request);
     await Connection.connect();
-    const user = await User.updateOne({id: decoded.uid}, {$set: request.body});
+    const user = await User.updateOne({id: userId}, {$set: request.body});
     return response.status(200).send(user);
 });
 

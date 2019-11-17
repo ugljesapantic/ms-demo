@@ -1,9 +1,10 @@
-import * as functions from 'firebase-functions';;
+import * as functions from 'firebase-functions';
 import Connection from '../connection';
 import Post, { PostModel } from './Post';
 import onRequest from '../functions/onRequest';
 import { auth } from '../config';
 import { UserRecord } from 'firebase-functions/lib/providers/auth';
+import { getUserId } from '../utils';
 
 export const createPost = onRequest((request: functions.Request, response: functions.Response) => {
     // TODO find more elegant way
@@ -18,14 +19,22 @@ export const createPost = onRequest((request: functions.Request, response: funct
 
 export const searchPost = onRequest(async (request: functions.Request, response: functions.Response)  => {
     const {from, tags, type, subType} = request.query;
+    const userId = await getUserId(request);
     const query: any = {
         $and: [{
             createdAt: { $lt: new Date(from) }
+        }, {
+            userUid: { $ne : userId }
         }]
     };
     // TODO send percent encoding frontend side array=a&array=b&array=c
-    if (tags) query.$and.push({tags: { $in: tags.split(',') }})
-    if (type) query.$and.push({type: {$eq: type}})
+    if (tags) query.$and.push({tags: { $in: tags.split(',') }});
+    let adjustedType = type;
+
+    if (type === 'DEMAND') adjustedType = 'SUPPLY';
+    if (type === 'SUPPLY') adjustedType = 'DEMAND';
+
+    if (type) query.$and.push({type: {$eq: adjustedType}});
     if (subType) query.$and.push({subType: {$eq: subType}})
     
     await Connection.connect();
@@ -50,6 +59,23 @@ export const getPost = onRequest(async (request: functions.Request, response: fu
     const user = await auth.getUser(result.userUid);
 
     const resultWithUserInfo = {...result.toObject(), user: user.displayName, userUid: user.uid}
+
+    return response.send(resultWithUserInfo);
+});
+
+export const getMyPosts = onRequest(async (request: functions.Request, response: functions.Response)  => {
+    const userId = await getUserId(request);
+    const query: any = {
+        userUid:  userId 
+    }
+
+    await Connection.connect();
+    const result = await Post.find(query).populate('tags') as [PostModel];
+    const user = await auth.getUser(userId);
+
+    const resultWithUserInfo = result.map((post: any) => {
+        return {...post.toObject(), user: user.displayName, userUid: userId}
+    })
 
     return response.send(resultWithUserInfo);
 });

@@ -32,7 +32,7 @@ const Feed = () => {
     const [loading, setLoading] = useState(false);
     const [firstLoad, setFirstLoad] = useState(true);
     const setFilters = useCallback(filters => setFeedContext(() => ({filters})), [setFeedContext])
-    const loadMoreData = useCallback(() => http('searchPost', 'GET', {from, ...createQuery(filters)}), [from, filters]);
+    const loadMoreData = useCallback(() => http('searchPost', 'GET', {from, ...createQuery(filters)}, null, true), [from, filters]);
 
     useEffect(() => {
         if (!from) return;
@@ -61,7 +61,7 @@ const Feed = () => {
         const queryFrom = new Date().toISOString()
 
         const fetchData = async () => {
-            const newPosts = await http('searchPost', 'GET', {from: queryFrom, ...createQuery(filters)});
+            const newPosts = await http('searchPost', 'GET', {from: queryFrom, ...createQuery(filters)}, null,  true);
             if (newPosts.length < 10) setFeedContext(() => ({hasMore: false}));
             setFeedContext(() => ({posts: newPosts, alive: true}));
             setLoading(false);

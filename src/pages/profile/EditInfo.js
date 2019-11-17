@@ -26,7 +26,7 @@ export const EditInfo = ({user}) => {
     const onUpdate = async () => {
         const token = await fbAuth.currentUser.getIdToken(true);
         setLoading(true);
-        await http('updateSelf', 'PUT', {token}, values);
+        await http('updateSelf', 'PUT', null, values, true);
         setLoading(false);
     }
 

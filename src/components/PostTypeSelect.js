@@ -14,7 +14,10 @@ const PostTypeRadio = styled.div`
 export const PostTypeSelect = ({show, filters, setFilters}) => {
 
     const onTypeChange = type => {
-        let subType = type !== PARTNER_TYPE.value ? filters.subType : null;
+        let subType;
+        if (filters) {
+            subType = type !== PARTNER_TYPE.value ? filters.subType : null;
+        }
         if (type === PARTNER_TYPE.value) {
             subType = null;
         } else if (!subType) {
