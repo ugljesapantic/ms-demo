@@ -32,6 +32,17 @@ export const fb = firebase;
 export const fbAuth = firebase.auth();
 export const fbFirestore = firebase.firestore();
 
+const feedContextDefault = {
+  posts: [],
+  hasMore: true,
+  filters: {},
+  alive: false
+}
+
+
+const myPostsContextDefault = {
+  posts: [],
+}
 
 class App extends React.Component {
 
@@ -42,6 +53,14 @@ class App extends React.Component {
         initLoading: false,
         authContext: {
           auth: !!user
+        },
+        myPostsContext: {
+          ...this.state.myPostsContext,
+          ...myPostsContextDefault
+        },
+        feedContext: {
+          ...this.state.feedContext,
+          ...feedContextDefault
         }
       })
       if (user) {
@@ -91,12 +110,10 @@ class App extends React.Component {
     },
     feedContext: {
       setFeedContext: this.setFeedContext,
-      posts: [],
-      hasMore: true,
-      filters: {}
+      ...feedContextDefault
     },
     myPostsContext: {
-      posts: [],
+      ...myPostsContextDefault,
       set: this.setMyPostsContext
     },
     initLoading: true,
