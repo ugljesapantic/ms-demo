@@ -49,7 +49,6 @@ const CreateNewPost = ({theme}) => {
     const [loading, setLoading] = useState(false);
     const [tags, setTags] = useState([]);
     const [typeFilters, setTypeFilters] = useState(defaultPostState);
-    const [open, setOpen] = useState(false);
 
     const {values, onChange, reset} = useForm({
         title: '',
@@ -60,7 +59,6 @@ const CreateNewPost = ({theme}) => {
         reset();
         setTags([]);
         setTypeFilters(defaultPostState);
-        setOpen(false)
     }
 
     const createPostHandler = async () => {

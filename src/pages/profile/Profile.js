@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import http from '../../utils/http';
 import { EditInfo } from './EditInfo';
-import { fbAuth, MyPostsContext } from '../../App';
+import { MyPostsContext } from '../../App';
 import styled from 'styled-components';
 import Posts from '../feed/Posts';
 import { LimitedWidthContainer } from '../../styles/utils';

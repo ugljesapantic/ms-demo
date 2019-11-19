@@ -1,6 +1,5 @@
 import styled, {css} from 'styled-components';
 import { Modal } from 'semantic-ui-react';
-import { NavLink } from 'react-router-dom'
 
 
 export const LimitedWidthContainer = styled.div`

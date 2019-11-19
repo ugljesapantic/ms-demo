@@ -21,6 +21,7 @@ export const MyPostsContext = React.createContext();
 
 const AppWrapper = styled.div`
   min-height: 100vh;
+  height: 100%;
   background: ${({theme}) => theme.background};
   ${({auth}) => auth && `padding-top: 48px`}
   display: flex;
@@ -38,7 +39,6 @@ const feedContextDefault = {
   filters: {},
   alive: false
 }
-
 
 const myPostsContextDefault = {
   posts: [],

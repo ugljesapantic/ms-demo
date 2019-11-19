@@ -4,7 +4,6 @@ import { Form, Message } from 'semantic-ui-react';
 import useForm from '../../hooks/forms';
 import Validator from 'validator';
 import http from '../../utils/http';
-import { fbAuth } from '../../App';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -20,11 +19,10 @@ export const EditInfo = ({user}) => {
     ])
 
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [error] = useState(null);
 
     const iProps={onChange,onBlur};
     const onUpdate = async () => {
-        const token = await fbAuth.currentUser.getIdToken(true);
         setLoading(true);
         await http('updateSelf', 'PUT', null, values, true);
         setLoading(false);
