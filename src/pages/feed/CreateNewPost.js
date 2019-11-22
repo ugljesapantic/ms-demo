@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import useForm from '../../hooks/forms';
-import Textarea from 'react-textarea-autosize';
 
 import styled, {withTheme} from 'styled-components';
 import Button from '../../components/Button';
-import { boxStyles } from '../../styles/shared';
+import { boxStyles, StyledArea } from '../../styles/shared';
 import TagInput from '../../components/TagInput';
 import http from '../../utils/http';
 import { withUserUid } from '../../utils/firebase';
@@ -13,24 +12,6 @@ import { PARTNER_TYPE } from '../../utils/consts';
 import { LimitedWidthModal } from '../../styles/utils';
 import CornerIconButton from '../../components/CornerIconButton';
 
-
-const StyledArea = styled(Textarea)`
-    width: 100%;
-    border: none;
-    resize: none;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    line-height: 1.4rem;
-    padding: 8px;
-    ::-webkit-scrollbar { 
-        display: none; 
-    }
-
-    &:focus {
-        border-color: ${({theme}) => theme.secondary};
-        outline: none;
-    }
-`;
 
 const StyledButton = styled(Button)`
   margin-top: 8px;

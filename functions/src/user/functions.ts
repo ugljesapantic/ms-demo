@@ -19,6 +19,13 @@ export const getSelf = onRequest(async (request: functions.Request, response: fu
     return response.status(200).send(user);
 });
 
+export const getUser = onRequest(async (request: functions.Request, response: functions.Response) => {
+    const userId = request.query.id;
+    await Connection.connect();
+    const user = await User.findOne({id: userId});
+    return response.status(200).send(user);
+});
+
 export const updateSelf = onRequest(async (request: functions.Request, response: functions.Response) => {
     const userId = await getUserId(request);
     await Connection.connect();

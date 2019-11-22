@@ -13,7 +13,7 @@ import UserNavbar from './navigation/UserNavbar';
 import { PostDetails } from './pages/post-details/PostDetails';
 import Profile  from './pages/profile/Profile';
 import http from './utils/http';
-import {Chat} from './pages/chat/Chat';
+import {Chats} from './pages/chats/Chats';
 import { querySnapshotToArray } from './utils/firebase';
 
 export const AuthContext = React.createContext();
@@ -37,7 +37,8 @@ export const fbFirestore = firebase.firestore();
 
 const CONTEXTS = {
   'chats': {
-    chats: []
+    chats: [],
+    participants: {}
   },
   'auth': {
     auth: false
@@ -68,18 +69,32 @@ class App extends React.Component {
       })
       if (user) {
         this.loadUserPosts();
+        this.loadUserChats();
       }
-    })
-
-    fbFirestore.collection('chats').onSnapshot(doc => {
-      const chats = querySnapshotToArray(doc);
-      this.state.chatsContext.set(() => ({chats}))
     })
   }
 
   async loadUserPosts () {
     const posts = await http('getMyPosts', 'GET', null, null, true);
     this.state.myPostsContext.set(() => ({posts}))
+  }
+
+  async loadUserChats() {
+    fbFirestore
+      .collection('chats')
+      .where('participants', 'array-contains', fbAuth.currentUser.uid)
+      .onSnapshot(async doc => {
+        const {chatsContext} = this.state;
+        const chats = querySnapshotToArray(doc);
+        const participantIds = chats.reduce((acc, curr) => new Set([...acc, ...curr.participants]), new Set());
+        const newParticipants = [...participantIds].filter(id => !chatsContext.participants[id]);
+        const userData = await Promise.all(newParticipants.map(id => http('getUser', 'GET', {id})));
+        const participants = userData.reduce((acc, curr) => ({
+          ...acc,
+          [curr.id]: curr
+        }), {})
+        chatsContext.set(() => ({chats, participants}))
+      })
   }
 
   getContextsState() {
@@ -143,7 +158,7 @@ class App extends React.Component {
                         <Feed />
                       </UserRoute>
                       <UserRoute path="/chat">
-                        <Chat />
+                        <Chats />
                       </UserRoute>
                       <UserRoute path="/profile">
                         <Profile />

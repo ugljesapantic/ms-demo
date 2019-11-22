@@ -1,6 +1,8 @@
 import styled, {css} from 'styled-components';
 import responsive from './responsive';
 
+import Textarea from 'react-textarea-autosize';
+
 export const Logo = styled.div`
     height: 48px;
     width: 48px;
@@ -40,3 +42,21 @@ export const tagInputStyles = (theme) => ({
         NoOptionsMessage: () => null
     }
 })
+
+export const StyledArea = styled(Textarea)`
+    width: 100%;
+    border: none;
+    resize: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    line-height: 1.4rem;
+    padding: 8px;
+    ::-webkit-scrollbar { 
+        display: none; 
+    }
+
+    &:focus {
+        border-color: ${({theme}) => theme.secondary};
+        outline: none;
+    }
+`;
