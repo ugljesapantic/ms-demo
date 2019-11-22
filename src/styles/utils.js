@@ -17,6 +17,7 @@ export const buttonStyles = css`
   background-color: inherit;
   background-color: ${({primary, theme}) => primary && theme.primary};
   background-color: ${({secondary, theme}) => secondary && theme.secondary};
+  background-color: ${({negative, theme}) => negative && theme.negative};
   padding: 0.5rem 1.25rem;
   outline: none;
   border: none;

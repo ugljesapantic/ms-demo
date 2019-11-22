@@ -40,34 +40,34 @@ const Feed = () => {
     const feedContext = useContext(FeedContext);
     const container = useRef()
 
-    const {posts, hasMore, filters, setFeedContext, alive, scroll, pagination} = feedContext;
+    const {posts, hasMore, filters, set, alive, scroll, pagination} = feedContext;
 
     const [loading, setLoading] = useState(false);
 
-    const setFilters = useCallback(filters => setFeedContext(() => ({
+    const setFilters = useCallback(filters => set(() => ({
         filters: {...filters, from: new Date().toISOString()},
         pagination: false,
-    })), [setFeedContext]);
+    })), [set]);
 
-    const loadMore = useCallback(() => setFeedContext(c => ({
+    const loadMore = useCallback(() => set(c => ({
         filters: {...c.filters, from: posts[posts.length - 1].createdAt},
         pagination: true
-    })), [setFeedContext, posts])
+    })), [set, posts])
 
     const loadData = useCallback(async (apiCall, pagination) => {
         setLoading(true);
         if (!pagination) {
-            setFeedContext(() => ({
+            set(() => ({
                 posts: [],
                 hasMore: true
             }));
         }
 
         const newPosts = await apiCall();
-        if (newPosts.length < 10) setFeedContext(() => ({hasMore: false}));
-        setFeedContext(c => ({posts: [...c.posts, ...newPosts], alive: true}));
+        if (newPosts.length < 10) set(() => ({hasMore: false}));
+        set(c => ({posts: [...c.posts, ...newPosts], alive: true}));
         setLoading(false);
-    }, [setLoading, setFeedContext])
+    }, [setLoading, set])
 
     // TODO Consider extracting
     const isFirstRunX = useRef(true);
@@ -91,15 +91,15 @@ const Feed = () => {
 
         if (alive) return;
 
-        setFeedContext(() => ({filters: {from: new Date().toISOString()}}))
-    }, [loadData, alive, setFeedContext]);
+        set(() => ({filters: {from: new Date().toISOString()}}))
+    }, [loadData, alive, set]);
 
     useEffect(() => {
-        let listener = e => setFeedContext(() => ({scroll: e.target.scrollTop}));
+        let listener = e => set(() => ({scroll: e.target.scrollTop}));
         const el = container.current;
         el.addEventListener('scroll', listener)
         return () => el.removeEventListener('scroll', listener);
-    }, [setFeedContext])
+    }, [set])
 
     const isFirstRunZ = useRef(true);
 

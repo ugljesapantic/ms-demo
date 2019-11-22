@@ -13,10 +13,13 @@ import UserNavbar from './navigation/UserNavbar';
 import { PostDetails } from './pages/post-details/PostDetails';
 import Profile  from './pages/profile/Profile';
 import http from './utils/http';
+import {Chat} from './pages/chat/Chat';
+import { querySnapshotToArray } from './utils/firebase';
 
 export const AuthContext = React.createContext();
 export const FeedContext = React.createContext();
 export const MyPostsContext = React.createContext();
+export const ChatsContext = React.createContext();
 
 
 const AppWrapper = styled.div`
@@ -29,93 +32,79 @@ const AppWrapper = styled.div`
 `;
 
 export const fb = firebase;
-
 export const fbAuth = firebase.auth();
 export const fbFirestore = firebase.firestore();
 
-const feedContextDefault = {
-  posts: [],
-  hasMore: true,
-  filters: {},
-  alive: false
-}
-
-const myPostsContextDefault = {
-  posts: [],
-}
+const CONTEXTS = {
+  'chats': {
+    chats: []
+  },
+  'auth': {
+    auth: false
+  },
+  'myPosts': {
+    posts: []
+  },
+  'feed': {
+    posts: [],
+    hasMore: true,
+    filters: {},
+    alive: false
+  }
+};
 
 class App extends React.Component {
-
+  
   constructor() {
     super();
     fbAuth.onAuthStateChanged(user => {
+
       this.setState({
         initLoading: false,
+        ...this.getContextsState(),
         authContext: {
-          auth: !!user
-        },
-        myPostsContext: {
-          ...this.state.myPostsContext,
-          ...myPostsContextDefault
-        },
-        feedContext: {
-          ...this.state.feedContext,
-          ...feedContextDefault
+          auth: !!user,
         }
       })
       if (user) {
         this.loadUserPosts();
       }
     })
+
+    fbFirestore.collection('chats').onSnapshot(doc => {
+      const chats = querySnapshotToArray(doc);
+      this.state.chatsContext.set(() => ({chats}))
+    })
   }
 
   async loadUserPosts () {
     const posts = await http('getMyPosts', 'GET', null, null, true);
-    this.setMyPostsContext(() => ({posts}))
+    this.state.myPostsContext.set(() => ({posts}))
   }
 
-  setAuth = (auth) => {
-    this.setState({
-      authContext: {
-        auth,
-      }
-    })
+  getContextsState() {
+    return Object.keys(CONTEXTS).reduce((acc, contextName) => ({
+      ...acc,
+      [`${contextName}Context`]: {
+        ...CONTEXTS[contextName],
+        set: this.getContextSetter(contextName)
+      },
+    }), {})
   }
 
-  setFeedContext = (func) => {
-    const update = func(this.state.feedContext);
+  getContextSetter = (contextName) =>  (func) => {
+    const varName = `${contextName}Context`;
+    const update = func(this.state[varName])
     this.setState({
-      feedContext: {
-        ...this.state.feedContext,
-        ...update
-      }
-    })
-  }
-
-  // TODO Make generic
-  setMyPostsContext = (func) => {
-    const update = func(this.state.myPostsContext);
-    this.setState({
-      myPostsContext: {
-        ...this.state.myPostsContext,
+      [varName]: {
+        ...this.state[varName],
         ...update
       }
     })
   }
 
   state = {
-    authContext: {
-      auth: false,
-      setAuth: this.setAuth,
-    },
-    feedContext: {
-      setFeedContext: this.setFeedContext,
-      ...feedContextDefault
-    },
-    myPostsContext: {
-      ...myPostsContextDefault,
-      set: this.setMyPostsContext
-    },
+    ...this.getContextsState(),
     initLoading: true,
     theme: {
       primary: '#094074',
@@ -123,13 +112,14 @@ class App extends React.Component {
       secondary: '#FFAB00',
       secondaryDark: '#CC8800',
       background: '#f5f5f5',
-      backgroundDark: '#A0A0A0'
+      backgroundDark: '#A0A0A0',
+      negative: '#f44336'
     }
   }
   
 
   render() {
-    const { authContext, initLoading, theme, feedContext, myPostsContext } = this.state;
+    const { authContext, initLoading, theme, feedContext, myPostsContext, chatsContext } = this.state;
 
     return (
     <ThemeProvider theme={theme}>
@@ -137,26 +127,32 @@ class App extends React.Component {
         <Router>
           <Loader size='massive' active={initLoading} />
           {authContext.auth && <UserNavbar />}
+          {/* TODO Get rid of this hell */}
           {!initLoading && <AuthContext.Provider value={authContext}>
               <FeedContext.Provider value={feedContext}>
                 <MyPostsContext.Provider value={myPostsContext}>
-                  <Switch>
-                    <GuestRoute path="/" exact>
-                      <Home />
-                    </GuestRoute>
-                    <UserRoute path="/feed/:id">
-                      <PostDetails />
-                    </UserRoute>
-                    <UserRoute path="/feed">
-                      <Feed />
-                    </UserRoute>
-                    <UserRoute path="/profile">
-                      <Profile />
-                    </UserRoute>
-                    <Route path="*">
-                      <Redirect to='/' />
-                    </Route>
-                  </Switch>
+                  <ChatsContext.Provider value={chatsContext}>
+                    <Switch>
+                      <GuestRoute path="/" exact>
+                        <Home />
+                      </GuestRoute>
+                      <UserRoute path="/feed/:id">
+                        <PostDetails />
+                      </UserRoute>
+                      <UserRoute path="/feed">
+                        <Feed />
+                      </UserRoute>
+                      <UserRoute path="/chat">
+                        <Chat />
+                      </UserRoute>
+                      <UserRoute path="/profile">
+                        <Profile />
+                      </UserRoute>
+                      <Route path="*">
+                        <Redirect to='/' />
+                      </Route>
+                    </Switch>
+                  </ChatsContext.Provider>
                 </MyPostsContext.Provider>
               </FeedContext.Provider>
           </AuthContext.Provider>}
