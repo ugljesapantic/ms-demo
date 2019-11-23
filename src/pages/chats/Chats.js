@@ -24,7 +24,7 @@ const ChatList = styled.div`
 
 export const Chats = () => {
     const chatsContext = useContext(ChatsContext);
-
+    
     return (
         <ChatContainer>
             <ChatList>

@@ -1,6 +1,5 @@
 import firebase from '../config/firebaseConfig';
 
-
 export const withUserUid = obj => ({
     ...obj,
     userUid: firebase.auth().currentUser.uid

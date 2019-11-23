@@ -83,6 +83,7 @@ class App extends React.Component {
     fbFirestore
       .collection('chats')
       .where('participants', 'array-contains', fbAuth.currentUser.uid)
+      .orderBy('lastMessageTime', 'desc')
       .onSnapshot(async doc => {
         const {chatsContext} = this.state;
         const chats = querySnapshotToArray(doc);

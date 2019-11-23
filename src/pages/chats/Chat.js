@@ -1,18 +1,33 @@
 import React, {useContext} from 'react'
+import { NavLink } from 'react-router-dom'
+
 import styled from 'styled-components';
 import { ChatsContext, fbAuth } from '../../App';
 import UserAvatar from '../../components/UserAvatar';
-import { getUnreadKey } from '../../utils/misc';
+import { getUnreadKey, getChatTime } from '../../utils/misc';
 
-const ChatContainer = styled.div`
+const ChatContainer = styled(NavLink)`
     display: grid;
-    height: 4rem;
+    height: 5rem;
     grid-template-columns: 4rem auto 5rem;
     grid-template-rows: 1fr 1fr;
     align-items: center;
     cursor: pointer;
     &:not(:last-child) {
         border-bottom: 1px solid lightgray;
+    }
+    color: black;
+    &:hover {
+        background: #f3f3f3;
+        color: black;
+    }
+
+    &:hover:not(.active) {
+        background: #f3f3f3;
+    }
+
+    &.active {
+        background: lightgray;
     }
 `;
 
@@ -69,7 +84,7 @@ export const Chat = ({chat}) => {
 
     // TODO For now it works only with 1 participant
     return (
-        <ChatContainer>
+        <ChatContainer activeClassName='active' to={`/chat/${chat.id}`} >
             <ChatAvatar>
                 <UserAvatar name={`${otherParticipant.firstname} ${otherParticipant.lastname}`} uid={otherParticipant.id} />
             </ChatAvatar>
@@ -77,7 +92,7 @@ export const Chat = ({chat}) => {
                 {otherParticipantName}
             </ParticipantName>
             <LastMessageTime>
-                11/33/1111
+                {getChatTime(chat.lastMessageTime)}
             </LastMessageTime>
             <LastMessage>
                 {chat.lastMessage}

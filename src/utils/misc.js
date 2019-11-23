@@ -21,3 +21,9 @@ export const getUnreadObject = (participantIds, isNew) => {
         [getUnreadKey(curr)]: isNew || (curr === fbAuth.currentUser.uid) ? 0 : getIncrement()
     }), {})
 }
+
+export const getChatTime = date => {
+    let momentDate = moment(date.toDate());
+    const format = moment().diff(momentDate, 'hours') < 0 ? 'HH:mm' : 'DD/mm/YYYY'
+    return momentDate.format(format);
+}

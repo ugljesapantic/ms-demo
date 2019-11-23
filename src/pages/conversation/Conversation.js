@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import http from '../../utils/http';
 import { fbFirestore, fbAuth } from '../../App';
-import { decomposeChatKey, getUnreadObject } from '../../utils/misc';
+import { decomposeChatKey, getUnreadObject, getUnreadKey } from '../../utils/misc';
 import { StyledArea } from '../../styles/shared';
 import IconButton from '../../components/IconButton';
 import styled, {css} from 'styled-components';
@@ -37,7 +37,7 @@ const MessagesList = styled.div`
     flex: 1 1 0;
     overflow: auto;
     padding: 0.8rem 80px;
-    background: lightgray;
+    background: white;
 `;
 
 const Message = styled.div`
@@ -46,7 +46,7 @@ const Message = styled.div`
     margin-bottom: 0.3rem;
     max-width: 80%;
     width: fit-content;
-    background-color: white;
+    background-color: lightgray;
     ${({isMine}) => isMine && css`
         margin-left: auto;
         background-color: #005FFF;
@@ -100,14 +100,16 @@ export const Conversation = () => {
         const query = fbFirestore.collection('chats').doc(id);
         // Make it live
         let conversation = await query.get();
-        if (!conversation.data()) {
+        if (!conversation.exists) {
             const participantIds = decomposeChatKey(id);
             const newChat = {
                 participants: participantIds,
-                ...getUnreadObject(participantIds, true)
+                ...getUnreadObject(participantIds, true),
+                lastMessageTime: null
                 // seenTime: participantIds.reduce((prev, curr) => ({...prev, [curr]: 0 }), {}),
             }
             await query.set(newChat);
+
             conversation = await query.get();
         }
 
@@ -121,7 +123,10 @@ export const Conversation = () => {
 
     useEffect(() => {
         getMessagesQuery().orderBy('timestamp', 'desc').onSnapshot(doc => {
-            setMessages(querySnapshotToArray(doc))
+            setMessages(querySnapshotToArray(doc));
+            getChatQuery().update({
+                [getUnreadKey(fbAuth.currentUser.uid)]: 0
+            })
         })
     }, [setMessage, getMessagesQuery, getChatQuery])
 

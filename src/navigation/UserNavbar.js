@@ -68,10 +68,11 @@ const MenuItems = ({history, close}) => {
         history.push(`/${state}`);
         close();
     };
+    // TODO Fix selected
     return (
         <React.Fragment>
             <ButtonLink activeClassName="selected" onClick={() => goTo('feed')}>Feed</ButtonLink>
-            <ButtonLink activeClassName="selected" onClick={() => goTo('messages')}>Messages</ButtonLink>
+            <ButtonLink activeClassName="selected" onClick={() => goTo('chat')}>Messages</ButtonLink>
             <ButtonLink activeClassName="selected" onClick={() => goTo('profile')}>Profile</ButtonLink>
             <StyledButton onClick={() => signOut()} text='Sign out' />
         </React.Fragment>
