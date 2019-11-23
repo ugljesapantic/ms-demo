@@ -1,22 +1,43 @@
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useEffect, useCallback, useState, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import http from '../../utils/http';
-import { fbFirestore, fbAuth } from '../../App';
+import { fbFirestore, fbAuth, ChatsContext } from '../../App';
 import { decomposeChatKey, getUnreadObject, getUnreadKey } from '../../utils/misc';
 import { StyledArea } from '../../styles/shared';
 import IconButton from '../../components/IconButton';
 import styled, {css} from 'styled-components';
-import { querySnapshotToArray, withCreatedAt, getTimestamp, getIncrement } from '../../utils/firebase';
+import { querySnapshotToArray, getTimestamp } from '../../utils/firebase';
+import responsive from '../../styles/responsive';
+import UserAvatar from '../../components/UserAvatar';
+
+import { useHistory } from 'react-router-dom'
+import useDevice from '../../hooks/responsive';
+
 
 const StyledIconButton = styled(IconButton)`
     margin: auto;
-    cursor: pointer;
 `
+
+const StyledBackButton = styled(IconButton)`
+    margin: 0 1rem;
+`
+
+const MobileHeader = styled.div`
+  display: flex;
+  height: 5rem;
+  align-items: center;
+  border-bottom: 1px solid lightgray;
+`;
+
+const ConversationName = styled.div`
+  margin-left: 1rem;
+`;
 
 const NewMessageContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 1rem;
+  padding: 1rem 0;
+  background: lightgray;
 
   ${StyledArea} {
       flex: 0 0 calc(100% - 160px);
@@ -29,6 +50,17 @@ const ConversationContainer = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    background: white;
+
+    ${responsive.tablet(css`
+        position: static;
+        background: inherit;
+    `)}
 `
 
 const MessagesList = styled.div`
@@ -36,7 +68,7 @@ const MessagesList = styled.div`
     flex-direction: column-reverse;
     flex: 1 1 0;
     overflow: auto;
-    padding: 0.8rem 80px;
+    padding: 0.8rem;
     background: white;
 `;
 
@@ -63,8 +95,10 @@ const PaddingPlaceholder = styled.div`
 export const Conversation = () => {
     const {id} = useParams();
     const [loading, setLoading] = useState(true);
+    const hist = useHistory();
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
+    const [chat, setChat] = useState(null);
     const getMessagesQuery = useCallback(() => fbFirestore.collection('chats').doc(id).collection('messages'), [id]);
     const getChatQuery = useCallback(() => fbFirestore.collection('chats').doc(id), [id]);
 
@@ -99,23 +133,22 @@ export const Conversation = () => {
         // TODO actually only check if conv exists in the context, if not create...
         const query = fbFirestore.collection('chats').doc(id);
         // Make it live
-        let conversation = await query.get();
-        if (!conversation.exists) {
+        let chat = await query.get();
+        if (!chat.exists) {
             const participantIds = decomposeChatKey(id);
             const newChat = {
                 participants: participantIds,
                 ...getUnreadObject(participantIds, true),
                 lastMessageTime: null
-                // seenTime: participantIds.reduce((prev, curr) => ({...prev, [curr]: 0 }), {}),
+                // seenTime: current timestamp???s
             }
             await query.set(newChat);
-
-            conversation = await query.get();
+            chat = await query.get();
         }
 
-        // TODO add info about 
+        setChat(chat.data())
         setLoading(false);
-    }, [setLoading, id])
+    }, [setLoading, setChat, id])
 
     useEffect(() => {
         loadData(() =>  http('getConversation', 'GET', {id}, null, true))
@@ -128,10 +161,26 @@ export const Conversation = () => {
                 [getUnreadKey(fbAuth.currentUser.uid)]: 0
             })
         })
-    }, [setMessage, getMessagesQuery, getChatQuery])
+    }, [setMessage, getMessagesQuery, getChatQuery]);
+
+    // TODO copy pasted, see if there is solution to reu
+    const chatsContext = useContext(ChatsContext);
+    const {isMobile} = useDevice();
+
+    // TODO Uniform loading screen
+    if (!chat) return <ConversationContainer>Loading...</ConversationContainer>
+
+    // TODO a lot of defensive code, cause by participants loaded async in other component
+    const otherParticipant = chatsContext.participants[chat.participants.filter(id => fbAuth.currentUser.uid !== id)[0]];
+    const otherParticipantName = otherParticipant && `${otherParticipant.firstname} ${otherParticipant.lastname}`;
 
     return (
         <ConversationContainer>
+            {otherParticipant && isMobile && <MobileHeader>
+                <StyledBackButton size='large' onClick={() => hist.push('/chat')} name='arrow left'/>
+                <UserAvatar name={otherParticipantName} uid={otherParticipant.id} />
+                <ConversationName> {otherParticipantName} </ConversationName>
+            </MobileHeader>}
             <MessagesList>
                 {messages.map(message => <Message 
                     isMine={message.participantUid === fbAuth.currentUser.uid}
@@ -149,7 +198,7 @@ export const Conversation = () => {
                     onKeyDown={e => e.key === "Escape" && setMessage('')}
                     placeholder={'Enter message...'}
                 />
-                {message && <StyledIconButton onClick={sendMessage} name='paper plane'/>}
+                {message && <StyledIconButton size='large' onClick={sendMessage} name='paper plane'/>}
             </NewMessageContainer>
 
         </ConversationContainer>

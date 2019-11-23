@@ -4,19 +4,25 @@ import UserRoute from '../../navigation/UserRoute';
 import { Conversation } from '../conversation/Conversation';
 import { ChatsContext, fbAuth } from '../../App';
 
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import { LimitedWidthContainer } from '../../styles/utils';
 import { Chat } from './Chat';
+import responsive from '../../styles/responsive';
 
 const ChatContainer = styled(LimitedWidthContainer)`
     padding: 1rem;
   display: flex;
+  position: relative;
 `;
 
 const ChatList = styled.div`
     height: 100%;
     overflow: auto;
-    flex: 0 0 300px;
+    flex: 1;
+
+    ${responsive.tablet(css`
+        flex: 0 0 300px;
+    `)};
 
     background-color: white;
   border: 1px solid lightgray;

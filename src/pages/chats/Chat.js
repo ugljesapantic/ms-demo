@@ -13,9 +13,7 @@ const ChatContainer = styled(NavLink)`
     grid-template-rows: 1fr 1fr;
     align-items: center;
     cursor: pointer;
-    &:not(:last-child) {
-        border-bottom: 1px solid lightgray;
-    }
+    border-bottom: 1px solid lightgray;
     color: black;
     &:hover {
         background: #f3f3f3;
@@ -86,7 +84,7 @@ export const Chat = ({chat}) => {
     return (
         <ChatContainer activeClassName='active' to={`/chat/${chat.id}`} >
             <ChatAvatar>
-                <UserAvatar name={`${otherParticipant.firstname} ${otherParticipant.lastname}`} uid={otherParticipant.id} />
+                <UserAvatar name={otherParticipantName} uid={otherParticipant.id} />
             </ChatAvatar>
             <ParticipantName>
                 {otherParticipantName}

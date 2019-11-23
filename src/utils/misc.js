@@ -23,7 +23,8 @@ export const getUnreadObject = (participantIds, isNew) => {
 }
 
 export const getChatTime = date => {
+    if (!date) return;
     let momentDate = moment(date.toDate());
-    const format = moment().diff(momentDate, 'hours') < 0 ? 'HH:mm' : 'DD/mm/YYYY'
+    const format = moment().diff(momentDate, 'hours') < 24 ? 'HH:mm' : 'DD/mm/YYYY'
     return momentDate.format(format);
 }
