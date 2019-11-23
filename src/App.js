@@ -93,7 +93,7 @@ class App extends React.Component {
           ...acc,
           [curr.id]: curr
         }), {})
-        chatsContext.set(() => ({chats, participants}))
+        chatsContext.set(c => ({chats, participants: {...c.participants, ...participants}}))
       })
   }
 

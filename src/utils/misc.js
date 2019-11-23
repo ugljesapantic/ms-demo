@@ -1,4 +1,6 @@
 import * as moment from 'moment';
+import { fbAuth } from '../App';
+import { getIncrement } from './firebase';
 
 export const passedTime = date => {
     if (!date) return;
@@ -10,3 +12,12 @@ export const passedTime = date => {
 export const createComposideChatKey = participantIds => participantIds.sort((a, b) => a < b ? -1 : 1).join('_');
 
 export const decomposeChatKey = key => key.split('_');
+
+export const getUnreadKey = id => `unread_${id}`;
+
+export const getUnreadObject = (participantIds, isNew) => {
+    return participantIds.reduce((acc, curr) => ({
+        ...acc,
+        [getUnreadKey(curr)]: isNew || (curr === fbAuth.currentUser.uid) ? 0 : getIncrement()
+    }), {})
+}

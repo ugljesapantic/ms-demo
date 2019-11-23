@@ -11,6 +11,10 @@ export const withCreatedAt = obj => ({
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
 })
 
+export const getTimestamp = () => firebase.firestore.FieldValue.serverTimestamp();
+
+export const getIncrement = () => firebase.firestore.FieldValue.increment(1);
+
 export const USER_UID = 'userUid';
 export const CREATED_AT = 'createdAt';
 export const USER_NAME = 'user';

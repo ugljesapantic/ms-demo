@@ -2,11 +2,11 @@ import React, { useEffect, useCallback, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import http from '../../utils/http';
 import { fbFirestore, fbAuth } from '../../App';
-import { decomposeChatKey } from '../../utils/misc';
+import { decomposeChatKey, getUnreadObject } from '../../utils/misc';
 import { StyledArea } from '../../styles/shared';
 import IconButton from '../../components/IconButton';
-import styled from 'styled-components';
-import { querySnapshotToArray } from '../../utils/firebase';
+import styled, {css} from 'styled-components';
+import { querySnapshotToArray, withCreatedAt, getTimestamp, getIncrement } from '../../utils/firebase';
 
 const StyledIconButton = styled(IconButton)`
     margin: auto;
@@ -47,7 +47,11 @@ const Message = styled.div`
     max-width: 80%;
     width: fit-content;
     background-color: white;
-    ${({isMine}) => isMine && `margin-left: auto`}
+    ${({isMine}) => isMine && css`
+        margin-left: auto;
+        background-color: #005FFF;
+        color: white;
+    `}
 `
 
 const PaddingPlaceholder = styled.div`
@@ -61,15 +65,34 @@ export const Conversation = () => {
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
-    const getMessagesQuery = useCallback(() => fbFirestore.collection('chats').doc(id).collection('messages'), [id])
+    const getMessagesQuery = useCallback(() => fbFirestore.collection('chats').doc(id).collection('messages'), [id]);
+    const getChatQuery = useCallback(() => fbFirestore.collection('chats').doc(id), [id]);
+
 
     const sendMessage = async () => {
         // Add some state for sending message
-        setMessage('')
-        await getMessagesQuery().add({
+        setMessage('');
+        const timestamp = getTimestamp()
+        const dbo = {
             participantUid: fbAuth.currentUser.uid,
-            text: message
-        })
+            text: message,
+            timestamp
+        }
+
+        const batch = fbFirestore.batch();
+        
+        let newMessage = getMessagesQuery().doc();
+        await batch.set(newMessage, dbo);
+
+        const participantIds = decomposeChatKey(id);
+        const unreadCount = getUnreadObject(participantIds)
+
+        await batch.update(getChatQuery(), {
+            lastMessageTime: timestamp,
+            lastMessage: message,
+            ...unreadCount
+        });
+        batch.commit();
     }
 
     const loadData = useCallback(async () => {
@@ -81,14 +104,14 @@ export const Conversation = () => {
             const participantIds = decomposeChatKey(id);
             const newChat = {
                 participants: participantIds,
-                unreadMessages: participantIds.reduce((prev, curr) => ({...prev, [curr]: [] }), {})
+                ...getUnreadObject(participantIds, true)
+                // seenTime: participantIds.reduce((prev, curr) => ({...prev, [curr]: 0 }), {}),
             }
             await query.set(newChat);
             conversation = await query.get();
         }
 
         // TODO add info about 
-        console.log(conversation)
         setLoading(false);
     }, [setLoading, id])
 
@@ -97,10 +120,10 @@ export const Conversation = () => {
     }, [id, loadData])
 
     useEffect(() => {
-        getMessagesQuery().onSnapshot(doc => {
+        getMessagesQuery().orderBy('timestamp', 'desc').onSnapshot(doc => {
             setMessages(querySnapshotToArray(doc))
         })
-    }, [setMessage, getMessagesQuery])
+    }, [setMessage, getMessagesQuery, getChatQuery])
 
     return (
         <ConversationContainer>

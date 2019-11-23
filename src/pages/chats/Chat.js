@@ -1,7 +1,8 @@
 import React, {useContext} from 'react'
 import styled from 'styled-components';
-import { ChatsContext } from '../../App';
+import { ChatsContext, fbAuth } from '../../App';
 import UserAvatar from '../../components/UserAvatar';
+import { getUnreadKey } from '../../utils/misc';
 
 const ChatContainer = styled.div`
     display: grid;
@@ -59,29 +60,31 @@ const UndreadCount = styled.div`
   padding: 0 0.4rem;
 `;
 
-export const Chat = ({participants}) => {
+export const Chat = ({chat}) => {
     const chatsContext = useContext(ChatsContext)
-    const participant = chatsContext.participants[participants[0]];
-    const participantName = `${participant.firstname} ${participant.lastname}`;
+    
+    const otherParticipant = chatsContext.participants[chat.participants.filter(id => fbAuth.currentUser.uid !== id)[0]];
+    const otherParticipantName = `${otherParticipant.firstname} ${otherParticipant.lastname}`;
+    const myUnreadCount = chat[getUnreadKey(fbAuth.currentUser.uid)];
 
     // TODO For now it works only with 1 participant
     return (
         <ChatContainer>
             <ChatAvatar>
-                <UserAvatar name={`${participant.firstname} ${participant.lastname}`} uid={participant.id} />
+                <UserAvatar name={`${otherParticipant.firstname} ${otherParticipant.lastname}`} uid={otherParticipant.id} />
             </ChatAvatar>
             <ParticipantName>
-                {participantName}
+                {otherParticipantName}
             </ParticipantName>
             <LastMessageTime>
                 11/33/1111
             </LastMessageTime>
             <LastMessage>
-                poslendjadpfo asdflkn asdkfjn askdfjn askdfjn
+                {chat.lastMessage}
             </LastMessage>
-            <UndreadCount>
-                7
-            </UndreadCount>
+            {!!myUnreadCount && <UndreadCount>
+                {myUnreadCount}
+            </UndreadCount>}
         </ChatContainer>
     )
 }
