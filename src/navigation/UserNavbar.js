@@ -1,12 +1,14 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import { LimitedWidthContainer, ButtonLink } from '../styles/utils';
 import styled, {css} from 'styled-components';
 import { signOut } from '../services/auth';
 import Button from '../components/Button';
-import { Logo } from '../styles/shared';
+import { Logo, UnreadCount } from '../styles/shared';
 import { Icon } from 'semantic-ui-react';
 import useDevice from '../hooks/responsive';
 import { useHistory } from 'react-router-dom'
+import { ChatsContext, fbAuth } from '../App';
+import { getUnreadKey } from '../utils/misc';
 
 
 const Wrapper = styled.div`
@@ -34,6 +36,13 @@ const mobSidebarStyles = css`
     position: fixed;
     top: 0;
 `
+
+const ChatsButton = styled.div`
+  display: flex;
+  ${UnreadCount} {
+      margin-left: 0.5rem;
+  }
+`;
 
 const StyledButton = styled(Button)``
 
@@ -63,17 +72,17 @@ const Dimmer = styled.div`
     transition: opacity 0.25s ease-in-out;
 `
 
-const MenuItems = ({history, close}) => {
-    const goTo = state => {
-        history.push(`/${state}`);
-        close();
-    };
-    // TODO Fix selected
+const MenuItems = ({close, chats}) => {
     return (
         <React.Fragment>
-            <ButtonLink activeClassName="selected" onClick={() => goTo('feed')}>Feed</ButtonLink>
-            <ButtonLink activeClassName="selected" onClick={() => goTo('chat')}>Messages</ButtonLink>
-            <ButtonLink activeClassName="selected" onClick={() => goTo('profile')}>Profile</ButtonLink>
+            <ButtonLink activeClassName="selected" to='/feed' onClick={close}>Feed</ButtonLink>
+            {chats && <ButtonLink activeClassName="selected" to='/chat' onClick={close}>
+                <ChatsButton>
+                    <div>Messages </div>
+                    {!!chats.count && <UnreadCount>{chats.count}</UnreadCount>}
+                </ChatsButton>
+            </ButtonLink>}
+            <ButtonLink activeClassName="selected" to='/profile' onClick={close}>Profile</ButtonLink>
             <StyledButton onClick={() => signOut()} text='Sign out' />
         </React.Fragment>
     )
@@ -81,8 +90,16 @@ const MenuItems = ({history, close}) => {
 
 const UserNavbar = () => {
     const [visible, setVisible] = useState(false);
+    const chatsContext = useContext(ChatsContext);
     const { isMobile } = useDevice();
     const history = useHistory();
+
+    let chats;
+    if (chatsContext.chats.length) {
+        const key = getUnreadKey(fbAuth.currentUser.uid);
+        const count = chatsContext.chats.reduce((acc, curr) => curr[key] ? acc + 1 : acc , 0)
+        chats = {count};
+    }
 
     return (
         <Wrapper>
@@ -91,10 +108,11 @@ const UserNavbar = () => {
                 {isMobile ? <React.Fragment>
                     <Icon inverted name='bars' onClick={() => setVisible(true)} />
                     <Sidebar visible={visible}>
-                        <MenuItems history={history} close={() => setVisible(false)} />
+                        {/* TODO Reuse */}
+                        <MenuItems history={history} chats={chats} close={() => setVisible(false)} />
                     </Sidebar>
                     <Dimmer onClick={() => setVisible(false)} visible={visible} />
-                </React.Fragment> : <MenuItems history={history} close={() => setVisible(false)}/>}
+                </React.Fragment> : <MenuItems history={history} chats={chats} close={() => setVisible(false)}/>}
             </Navbar>
         </Wrapper>
     )

@@ -60,3 +60,21 @@ export const StyledArea = styled(Textarea)`
         outline: none;
     }
 `;
+
+
+export const UnreadCount = styled.div`
+  grid-column: 3;
+  grid-row: 2;
+  border-radius: 0.75rem;
+  background-color: #06d755;
+  color: white;
+  width: min-content;
+  min-width: 1.5rem;
+  line-height: 1.5rem;
+  height: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  justify-self: center;
+  font-size: 0.8rem;
+  padding: 0 0.4rem;
+`;

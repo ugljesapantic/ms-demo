@@ -26,7 +26,8 @@ const MobileHeader = styled.div`
   display: flex;
   height: 5rem;
   align-items: center;
-  border-bottom: 1px solid lightgray;
+  border: 1px solid lightgray;
+  background: #f3f3f3;
 `;
 
 const ConversationName = styled.div`
@@ -40,8 +41,8 @@ const NewMessageContainer = styled.div`
   background: lightgray;
 
   ${StyledArea} {
-      flex: 0 0 calc(100% - 160px);
-      margin-left: 80px;
+      flex: 0 0 calc(100% - 5rem);
+      margin-left: 1rem;
   }
 `;
 
@@ -155,12 +156,14 @@ export const Conversation = () => {
     }, [id, loadData])
 
     useEffect(() => {
-        getMessagesQuery().orderBy('timestamp', 'desc').onSnapshot(doc => {
+        const unsubscribe = getMessagesQuery().orderBy('timestamp', 'desc').onSnapshot(doc => {
             setMessages(querySnapshotToArray(doc));
             getChatQuery().update({
                 [getUnreadKey(fbAuth.currentUser.uid)]: 0
             })
         })
+
+        return () => unsubscribe();
     }, [setMessage, getMessagesQuery, getChatQuery]);
 
     // TODO copy pasted, see if there is solution to reu

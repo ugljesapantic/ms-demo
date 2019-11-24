@@ -142,12 +142,13 @@ class App extends React.Component {
       <AppWrapper auth={authContext.auth}>
         <Router>
           <Loader size='massive' active={initLoading} />
-          {authContext.auth && <UserNavbar />}
+         
           {/* TODO Get rid of this hell */}
           {!initLoading && <AuthContext.Provider value={authContext}>
               <FeedContext.Provider value={feedContext}>
                 <MyPostsContext.Provider value={myPostsContext}>
                   <ChatsContext.Provider value={chatsContext}>
+                    {authContext.auth && <UserNavbar />}
                     <Switch>
                       <GuestRoute path="/" exact>
                         <Home />

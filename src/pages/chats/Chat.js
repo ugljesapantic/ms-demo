@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { ChatsContext, fbAuth } from '../../App';
 import UserAvatar from '../../components/UserAvatar';
 import { getUnreadKey, getChatTime } from '../../utils/misc';
+import { UnreadCount } from '../../styles/shared';
 
 const ChatContainer = styled(NavLink)`
     display: grid;
@@ -56,22 +57,6 @@ const LastMessage = styled.div`
     font-size: 0.9rem;
 `;
 
-const UndreadCount = styled.div`
-  grid-column: 3;
-  grid-row: 2;
-  border-radius: 0.75rem;
-  background-color: #06d755;
-  color: white;
-  width: min-content;
-  min-width: 1.5rem;
-  line-height: 1.5rem;
-  height: 1.5rem;
-  font-weight: bold;
-  text-align: center;
-  justify-self: center;
-  font-size: 0.8rem;
-  padding: 0 0.4rem;
-`;
 
 export const Chat = ({chat}) => {
     const chatsContext = useContext(ChatsContext)
@@ -95,9 +80,9 @@ export const Chat = ({chat}) => {
             <LastMessage>
                 {chat.lastMessage}
             </LastMessage>
-            {!!myUnreadCount && <UndreadCount>
+            {!!myUnreadCount && <UnreadCount>
                 {myUnreadCount}
-            </UndreadCount>}
+            </UnreadCount>}
         </ChatContainer>
     )
 }
