@@ -1,5 +1,5 @@
 import React from "react";
-import { IntlProvider, addLocaleData } from "react-intl";
+import { IntlProvider } from "react-intl";
 
 import * as messages from './messages.json';
 

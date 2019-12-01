@@ -9,6 +9,7 @@ import useDevice from '../hooks/responsive';
 import { useHistory } from 'react-router-dom'
 import { ChatsContext, fbAuth } from '../App';
 import { getUnreadKey } from '../utils/misc';
+import { useIntl } from 'react-intl';
 
 
 const Wrapper = styled.div`
@@ -73,17 +74,19 @@ const Dimmer = styled.div`
 `
 
 const MenuItems = ({close, chats}) => {
+    const intl = useIntl();
+
     return (
         <React.Fragment>
-            <ButtonLink activeClassName="selected" to='/feed' onClick={close}>Feed</ButtonLink>
+            <ButtonLink activeClassName="selected" to='/feed' onClick={close}>{intl.formatMessage({id: 'nav.feed'})}</ButtonLink>
             {chats && <ButtonLink activeClassName="selected" to='/chat' onClick={close}>
                 <ChatsButton>
-                    <div>Messages </div>
+                    <div>{intl.formatMessage({id: 'nav.messages'})}</div>
                     {!!chats.count && <UnreadCount>{chats.count}</UnreadCount>}
                 </ChatsButton>
             </ButtonLink>}
-            <ButtonLink activeClassName="selected" to='/profile' onClick={close}>Profile</ButtonLink>
-            <StyledButton onClick={() => signOut()} text='Sign out' />
+            <ButtonLink activeClassName="selected" to='/profile' onClick={close}>{intl.formatMessage({id: 'nav.profile'})}</ButtonLink>
+            <StyledButton onClick={() => signOut()} text={intl.formatMessage({id: 'nav.sign-out'})} />
         </React.Fragment>
     )
 }

@@ -28,7 +28,7 @@ const SignInModal = () => {
                     error = intl.formatMessage({id: 'auth.sign-in.error1'});
                     break;
                 default:
-                    error = intl.formatMessage({id: 'auth.sign-in.error2'});
+                    error = intl.formatMessage({id: 'auth.error'});
                     break;         
             }
             setError(error);

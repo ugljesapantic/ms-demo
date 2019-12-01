@@ -19,7 +19,10 @@
         "auth.sign-up.error3": "First name cant be empty",
         "auth.sign-up.error4": "Last name cant be empty",
         "auth.sign-up.error5": "Email already exists",
-        "auth.sign-up.error6": "Password should be at least 6 characters"
-        
+        "auth.sign-up.error6": "Password should be at least 6 characters",
+        "nav.feed": "Feed",
+        "nav.messages": "Messages",
+        "nav.profile": "Profile",
+        "nav.sign-out": "Sign out"
     }
 }
