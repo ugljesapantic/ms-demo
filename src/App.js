@@ -15,6 +15,7 @@ import Profile  from './pages/profile/Profile';
 import http from './utils/http';
 import {Chats} from './pages/chats/Chats';
 import { querySnapshotToArray } from './utils/firebase';
+import Intl from './intl/Intl';
 
 export const AuthContext = React.createContext();
 export const FeedContext = React.createContext();
@@ -138,44 +139,46 @@ class App extends React.Component {
     const { authContext, initLoading, theme, feedContext, myPostsContext, chatsContext } = this.state;
 
     return (
-    <ThemeProvider theme={theme}>
-      <AppWrapper auth={authContext.auth}>
-        <Router>
-          <Loader size='massive' active={initLoading} />
-         
-          {/* TODO Get rid of this hell */}
-          {!initLoading && <AuthContext.Provider value={authContext}>
-              <FeedContext.Provider value={feedContext}>
-                <MyPostsContext.Provider value={myPostsContext}>
-                  <ChatsContext.Provider value={chatsContext}>
-                    {authContext.auth && <UserNavbar />}
-                    <Switch>
-                      <GuestRoute path="/" exact>
-                        <Home />
-                      </GuestRoute>
-                      <UserRoute path="/feed/:id">
-                        <PostDetails />
-                      </UserRoute>
-                      <UserRoute path="/feed">
-                        <Feed />
-                      </UserRoute>
-                      <UserRoute path="/chat">
-                        <Chats />
-                      </UserRoute>
-                      <UserRoute path="/profile">
-                        <Profile />
-                      </UserRoute>
-                      <Route path="*">
-                        <Redirect to='/' />
-                      </Route>
-                    </Switch>
-                  </ChatsContext.Provider>
-                </MyPostsContext.Provider>
-              </FeedContext.Provider>
-          </AuthContext.Provider>}
-        </Router>
-      </AppWrapper>
-    </ThemeProvider>
+      <Intl>
+        <ThemeProvider theme={theme}>
+          <AppWrapper auth={authContext.auth}>
+            <Router>
+              <Loader size='massive' active={initLoading} />
+            
+              {/* TODO Get rid of this hell */}
+              {!initLoading && <AuthContext.Provider value={authContext}>
+                  <FeedContext.Provider value={feedContext}>
+                    <MyPostsContext.Provider value={myPostsContext}>
+                      <ChatsContext.Provider value={chatsContext}>
+                        {authContext.auth && <UserNavbar />}
+                        <Switch>
+                          <GuestRoute path="/" exact>
+                            <Home />
+                          </GuestRoute>
+                          <UserRoute path="/feed/:id">
+                            <PostDetails />
+                          </UserRoute>
+                          <UserRoute path="/feed">
+                            <Feed />
+                          </UserRoute>
+                          <UserRoute path="/chat">
+                            <Chats />
+                          </UserRoute>
+                          <UserRoute path="/profile">
+                            <Profile />
+                          </UserRoute>
+                          <Route path="*">
+                            <Redirect to='/' />
+                          </Route>
+                        </Switch>
+                      </ChatsContext.Provider>
+                    </MyPostsContext.Provider>
+                  </FeedContext.Provider>
+              </AuthContext.Provider>}
+            </Router>
+          </AppWrapper>
+        </ThemeProvider>
+      </Intl>
     );
   }
 }

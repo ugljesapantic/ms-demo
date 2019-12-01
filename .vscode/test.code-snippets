@@ -1,0 +1,10 @@
+{
+	"React intl format message": {
+		"scope": "javascript,typescript",
+		"prefix": "ifm",
+		"body": [
+			"intl.formatMessage({id: '$1'})",
+		],
+		"description": "Log output to console"
+	}
+}

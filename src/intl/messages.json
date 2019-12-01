@@ -1,0 +1,15 @@
+{
+    "rs-cyrilic": {
+        "test": "blars1"
+    },
+    "rs-latin": {
+        "test": "blars2"
+    },
+    "en": {
+        "auth.sign-in": "Sign in",
+        "auth.error": "An error occured, please try later",
+        "auth.sign-in.error1": "Username or password invalid",
+        "auth.email": "Email",
+        "auth.password": "Password"
+    }
+}
