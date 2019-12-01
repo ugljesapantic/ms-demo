@@ -11,6 +11,8 @@ const Wrapper = styled.div`
 `;
 
 export const EditInfo = ({user}) => {
+    const intl = useIntl();
+
     const {values, onChange, onBlur, markError, errors, valid} = useForm({
         firstname: user.firstname,
         lastname: user.lastname,
@@ -22,7 +24,6 @@ export const EditInfo = ({user}) => {
     const [loading, setLoading] = useState(false);
     const [error] = useState(null);
 
-    const intl = useIntl();
 
     const iProps={onChange,onBlur};
     const onUpdate = async () => {
