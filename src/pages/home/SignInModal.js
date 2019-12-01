@@ -4,7 +4,7 @@ import { LimitedWidthModal } from '../../styles/utils';
 import useForm from '../../hooks/forms';
 import { signIn } from '../../services/auth';
 import Button from '../../components/Button';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 
 const SignInModal = () => {

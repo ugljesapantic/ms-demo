@@ -5,18 +5,20 @@ import useForm from '../../hooks/forms';
 import Validator from 'validator';
 import { signUp } from '../../services/auth';
 import Button from '../../components/Button';
+import { useIntl } from 'react-intl';
 
 const SignUpModal = () => {
+    const intl = useIntl();
     const {values, onChange, onBlur, markError, errors, valid} = useForm({
         firstname: '',
         lastname: '',
         password: '',
         email: ''
     }, [
-        {name: 'email', test: x => Validator.isEmail(x.email), error: 'Not valid email'},
-        {name: 'password', test: x => !Validator.isEmpty(x.password), error: 'Password cant be empty'},
-        {name: 'firstname', test: x => !Validator.isEmpty(x.firstname), error: 'First name cant be empty'},
-        {name: 'lastname', test: x => !Validator.isEmpty(x.lastname), error: 'Last name cant be empty'},
+        {name: 'email', test: x => Validator.isEmail(x.email), error: intl.formatMessage({id: 'auth.sign-up.error1'})},
+        {name: 'password', test: x => !Validator.isEmpty(x.password), error: intl.formatMessage({id: 'auth.sign-up.error2'})},
+        {name: 'firstname', test: x => !Validator.isEmpty(x.firstname), error: intl.formatMessage({id: 'auth.sign-up.error3'})},
+        {name: 'lastname', test: x => !Validator.isEmpty(x.lastname), error: intl.formatMessage({id: 'auth.sign-up.error4'})},
     ])
 
     const [loading, setLoading] = useState(false);
@@ -30,13 +32,13 @@ const SignUpModal = () => {
             let error;
             switch(res.code) {
                 case 'auth/email-already-in-use':
-                    error = 'Email already exists';
+                    error = intl.formatMessage({id: 'auth.sign-up.error5'});
                     break;
                 case 'auth/weak-password':
-                    error = 'Password should be at least 6 characters';
+                    error = intl.formatMessage({id: 'auth.sign-up.error6'});
                     break;
                 default:
-                    error = 'An error occured, please try later';
+                    error = intl.formatMessage({id: 'auth.error'})
                     break;         
             }
             setError(error);
@@ -46,20 +48,20 @@ const SignUpModal = () => {
 
     
     return (
-        <LimitedWidthModal trigger={<Button text='Sign up' width='120px' bordered />}>
-            <Modal.Header>Sign up</Modal.Header>
+        <LimitedWidthModal trigger={<Button text={intl.formatMessage({id: 'auth.sign-up'})} width='120px' bordered />}>
+            <Modal.Header>{intl.formatMessage({id: 'auth.sign-up'})}</Modal.Header>
                 <Modal.Content>
                     <Form error={!!error} loading={loading}>
                         <Message
                             error
-                            header='Error occured'
+                            header={intl.formatMessage({id: 'auth.error'})}
                             content={error}
                             />
-                        <Form.Input error={markError.email && errors.email} label="Email" name="email" type="email" placeholder='example@email.com' {...iProps}/>
-                        <Form.Input error={markError.firstname && errors.firstname} label="First Name" name="firstname" type="text" {...iProps}/>
-                        <Form.Input error={markError.lastname && errors.lastname} label="Last Name" name="lastname" type="text" {...iProps}/>
-                        <Form.Input error={markError.password && errors.password} label="Password" name="password" type="password" {...iProps}/>
-                        <Form.Button disabled={!valid} onClick={signUpHandler}>Sign up</Form.Button>
+                        <Form.Input error={markError.email && errors.email} label={intl.formatMessage({id: 'auth.email'})} name="email" type="email" placeholder='example@email.com' {...iProps}/>
+                        <Form.Input error={markError.firstname && errors.firstname} label={intl.formatMessage({id: 'auth.first-name'})} name="firstname" type="text" {...iProps}/>
+                        <Form.Input error={markError.lastname && errors.lastname} label={intl.formatMessage({id: 'auth.last-name'})} name="lastname" type="text" {...iProps}/>
+                        <Form.Input error={markError.password && errors.password} label={intl.formatMessage({id: 'auth.password'})} name="password" type="password" {...iProps}/>
+                        <Form.Button disabled={!valid} onClick={signUpHandler}>{intl.formatMessage({id: 'auth.sign-up'})}</Form.Button>
                     </Form>
                 </Modal.Content>
         </LimitedWidthModal>

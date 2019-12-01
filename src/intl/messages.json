@@ -7,9 +7,19 @@
     },
     "en": {
         "auth.sign-in": "Sign in",
+        "auth.sign-up": "Sign up",
         "auth.error": "An error occured, please try later",
         "auth.sign-in.error1": "Username or password invalid",
         "auth.email": "Email",
-        "auth.password": "Password"
+        "auth.password": "Password",
+        "auth.first-name": "First name",
+        "auth.last-name": "Last name",
+        "auth.sign-up.error1": "Not valid email",
+        "auth.sign-up.error2": "Password cant be empty",
+        "auth.sign-up.error3": "First name cant be empty",
+        "auth.sign-up.error4": "Last name cant be empty",
+        "auth.sign-up.error5": "Email already exists",
+        "auth.sign-up.error6": "Password should be at least 6 characters"
+        
     }
 }
