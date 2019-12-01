@@ -14,6 +14,7 @@
         "auth.password": "Password",
         "auth.first-name": "First name",
         "auth.last-name": "Last name",
+        "auth.update": "Update",
         "auth.sign-up.error1": "Not valid email",
         "auth.sign-up.error2": "Password cant be empty",
         "auth.sign-up.error3": "First name cant be empty",
@@ -23,6 +24,12 @@
         "nav.feed": "Feed",
         "nav.messages": "Messages",
         "nav.profile": "Profile",
-        "nav.sign-out": "Sign out"
+        "nav.sign-out": "Sign out",
+        "feed.search": "Search posts",
+        "feed.clear-filters": "Clear",
+        "feed.post.new": "Create",
+        "feed.post.add-tags": "Add tags",
+        "feed.post.description": "Description",
+        "feed.post.title": "Title"
     }
 }

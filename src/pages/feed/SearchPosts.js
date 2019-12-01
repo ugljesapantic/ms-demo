@@ -3,6 +3,7 @@ import TagInput from '../../components/TagInput';
 import { PostTypeSelect } from '../../components/PostTypeSelect';
 import Button from '../../components/Button';
 import styled from 'styled-components';
+import { useIntl } from 'react-intl';
 
 const Wrapper = styled.div`
     display: flex;
@@ -10,6 +11,8 @@ const Wrapper = styled.div`
 `;
 
 const SearchPosts = ({setFilters, filters}) => {
+    const intl = useIntl();
+
     const setTypeFilters = typeFilters => {
         setFilters({
             ...filters,
@@ -28,7 +31,7 @@ const SearchPosts = ({setFilters, filters}) => {
         <Wrapper>
             <TagInput
                 onChange={e => setTags(e)}
-                placeholder="Search posts"
+                placeholder={intl.formatMessage({id: 'feed.search'})}
                 value={filters.tags}
             />
             <PostTypeSelect
@@ -36,7 +39,7 @@ const SearchPosts = ({setFilters, filters}) => {
                 filters={filters.typeFilters}
                 setFilters={setTypeFilters}
             />
-            <Button secondary center text='Clear' onClick={() => setTypeFilters({})} /> 
+            <Button secondary center text={intl.formatMessage({id: 'feed.clear-filters'})} onClick={() => setTypeFilters({})} /> 
         </Wrapper>
     )
 }

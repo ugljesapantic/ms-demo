@@ -11,6 +11,7 @@ import { PostTypeSelect } from '../../components/PostTypeSelect';
 import { PARTNER_TYPE } from '../../utils/consts';
 import { LimitedWidthModal } from '../../styles/utils';
 import CornerIconButton from '../../components/CornerIconButton';
+import { useIntl } from 'react-intl';
 
 
 const StyledButton = styled(Button)`
@@ -30,6 +31,7 @@ const CreateNewPost = ({theme}) => {
     const [loading, setLoading] = useState(false);
     const [tags, setTags] = useState([]);
     const [typeFilters, setTypeFilters] = useState(defaultPostState);
+    const intl = useIntl()
 
     const {values, onChange, reset} = useForm({
         title: '',
@@ -65,7 +67,7 @@ const CreateNewPost = ({theme}) => {
                     minRows={1}
                     name="title"
                     onKeyDown={e => e.key === "Escape" && resetEverything()}
-                    placeholder={'Title...'}
+                    placeholder={intl.formatMessage({id: 'feed.post.title'})}
                 />
                 <StyledArea
                     {...iProps}
@@ -73,12 +75,12 @@ const CreateNewPost = ({theme}) => {
                     minRows={1}
                     name="description"
                     onKeyDown={e => e.key === "Escape" && resetEverything()}
-                    placeholder={'Description...'}
+                    placeholder={intl.formatMessage({id: 'feed.post.description'})}
                 />
                 {/* TODO Add title & desciption */}
                 {values.title && <TagInput 
                     onChange={e => setTags(e)}
-                    placeholder="Add your tags"
+                    placeholder={intl.formatMessage({id: 'feed.post.add-tags'})}
                     value={tags}
                 />}
                 <PostTypeSelect 
@@ -86,7 +88,7 @@ const CreateNewPost = ({theme}) => {
                     filters={typeFilters}
                     setFilters={setTypeFilters}
                 />
-                {!!tags.length && <StyledButton onClick={createPostHandler} secondary text="Post" width="100%" />}
+                {!!tags.length && <StyledButton onClick={createPostHandler} secondary text={intl.formatMessage({id: 'feed.post.new'})} width="100%" />}
             </Wrapper>
         </LimitedWidthModal>
     )
