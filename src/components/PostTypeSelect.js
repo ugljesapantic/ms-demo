@@ -1,8 +1,8 @@
 import React from 'react'
 import styled, {css} from 'styled-components';
 
-import { Radio } from 'semantic-ui-react';
 import { POST_TYPES, POST_SUB_TYPES } from '../utils/consts';
+import { useIntl } from 'react-intl';
 
 const PostTypeRadio = styled.div`
     display: flex;
@@ -19,7 +19,8 @@ const PostTypeRadio = styled.div`
 `
 
 const PostTypeOption = styled.div`
-    width: 12rem;
+    width: 20rem;
+    max-width: 40vw;
     padding: 1rem;
     font-size: 1rem;
     font-weight: 500;
@@ -35,9 +36,14 @@ const PostTypeOption = styled.div`
         color: white;
         background: ${theme.primary};
     `}
+
+    ${({horizontal}) => horizontal && `
+        max-width: 80vw;
+    `}
 `
 
 export const PostTypeSelect = ({filters, setFilters}) => {
+    const intl = useIntl();
 
     const onTypeChange = type => {
         setFilters({
@@ -60,14 +66,15 @@ export const PostTypeSelect = ({filters, setFilters}) => {
                     key={type.value}
                     checked={type.value === (filters && filters.type)}
                     onClick={() => onTypeChange(type.value)} 
-                >{type.name}</PostTypeOption>)}
+                >{intl.formatMessage({id: type.name})}</PostTypeOption>)}
             </PostTypeRadio>
             {filters && filters.type && <PostTypeRadio horizontal>
                 {POST_SUB_TYPES.map(type => <PostTypeOption 
+                    horizontal
                     key={type.value} 
                     checked={type.value === (filters && filters.subType)}
                     onClick={() => onSubTypeChange(type.value)} 
-                >{type.name}</PostTypeOption>)}
+                >{intl.formatMessage({id: type[filters.type]})}</PostTypeOption>)}
             </PostTypeRadio>}
         </React.Fragment>
     )
