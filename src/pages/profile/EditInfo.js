@@ -5,6 +5,7 @@ import useForm from '../../hooks/forms';
 import Validator from 'validator';
 import http from '../../utils/http';
 import { useIntl } from 'react-intl';
+import { showSuccessToast } from '../../utils/misc';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -30,6 +31,7 @@ export const EditInfo = ({user}) => {
         setLoading(true);
         await http('updateSelf', 'PUT', null, values, true);
         setLoading(false);
+        showSuccessToast(intl.formatMessage({id: 'profile.updated'}));
     }
 
     return (

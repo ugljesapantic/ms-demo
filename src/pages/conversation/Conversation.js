@@ -12,6 +12,7 @@ import UserAvatar from '../../components/UserAvatar';
 
 import { useHistory } from 'react-router-dom'
 import useDevice from '../../hooks/responsive';
+import { Loading } from '../../components/Loading';
 
 
 const StyledIconButton = styled(IconButton)`
@@ -171,8 +172,9 @@ export const Conversation = () => {
     const chatsContext = useContext(ChatsContext);
     const {isMobile} = useDevice();
 
-    // TODO Uniform loading screen
-    if (!chat) return <ConversationContainer>Loading...</ConversationContainer>
+    if (!chat) return <ConversationContainer>
+        <Loading />
+    </ConversationContainer>
 
     // TODO a lot of defensive code, cause by participants loaded async in other component
     const otherParticipant = chatsContext.participants[chat.participants.filter(id => fbAuth.currentUser.uid !== id)[0]];

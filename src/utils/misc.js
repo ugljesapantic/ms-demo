@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 import { fbAuth } from '../App';
 import { getIncrement } from './firebase';
+import { toast } from 'react-toastify';
 
 export const passedTime = date => {
     if (!date) return;
@@ -27,4 +28,12 @@ export const getChatTime = date => {
     let momentDate = moment(date.toDate());
     const format = moment().diff(momentDate, 'hours') < 24 ? 'HH:mm' : 'DD/MM/YYYY'
     return momentDate.format(format);
+}
+
+export const showSuccessToast = message => {
+    toast.success(message, {
+        position: toast.POSITION.TOP_CENTER,
+        hideProgressBar: true,
+        className: 'toast'
+    });
 }

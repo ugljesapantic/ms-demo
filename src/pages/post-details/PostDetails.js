@@ -7,6 +7,7 @@ import { LimitedWidthContainer } from '../../styles/utils';
 import Button from '../../components/Button';
 import { FeedContext, fbAuth, MyPostsContext } from '../../App';
 import { createComposideChatKey } from '../../utils/misc';
+import { Loading } from '../../components/Loading';
 
 const PostDetailsContainer = styled(LimitedWidthContainer)`
   padding-top: 2rem;
@@ -56,7 +57,7 @@ export const PostDetails = (props) => {
     return (
         <PostDetailsContainer>
             <Button style={{marginBottom: '20px'}} secondary text="Go back" onClick={() => hist.goBack()}/>
-            {loading ? <div>Loading...</div> : <Post selectedTags={selectedTags} post={post} details/>} 
+            {loading ? <Loading /> : <Post selectedTags={selectedTags} post={post} details/>} 
             {!loading && <Actions>
                 {isMine && <Button style={{marginTop: '20px'}} negtative text="Delete" onClick={onDelete}/>}
                 {!isMine && <Button style={{marginTop: '20px', marginLeft: 'auto'}} primary text="Send message" onClick={sendMessage}/>}

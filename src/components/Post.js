@@ -18,8 +18,8 @@ const PostContainer = styled.div`
 `;  
 
 const PostHeader = styled.div`
-  display: flex;
-align-items: center;
+    display: flex;
+    align-items: center;
 `;
 
 const NameAndTime = styled.div`

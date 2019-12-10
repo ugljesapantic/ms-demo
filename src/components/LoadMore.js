@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components';
 import Button from './Button';
+import { Loader } from 'semantic-ui-react';
+import { Loading } from './Loading';
 
 const Wrapper = styled.div`
     text-align: center;
@@ -11,7 +13,7 @@ const Wrapper = styled.div`
 const LoadMore = ({loading, ...rest}) => {
     return (
         <Wrapper {...rest}>
-            {loading ? <div>Loading...</div> : <Button secondary text='Load more' /> }
+            {loading ? <Loading /> : <Button secondary text='Load more' /> }
         </Wrapper>
     )
 }

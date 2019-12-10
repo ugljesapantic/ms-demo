@@ -26,7 +26,7 @@ export const buttonStyles = css`
   font-size: 1.2rem;
   color: white;
   cursor: pointer;
-  border-radius: 0.2rem;
+  border-radius: 0.8rem;
   font-family: unset;
   font-weight: 300;
 
@@ -38,7 +38,7 @@ export const buttonStyles = css`
   &:hover {
     background-color: ${({primary, theme}) => primary && theme.primaryDark};
     background-color: ${({secondary, theme}) => secondary && theme.secondaryDark};
-    border-radius: 0.2rem;
+    border-radius: 0.8rem;
   }
 `
 

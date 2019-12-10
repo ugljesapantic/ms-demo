@@ -4,11 +4,12 @@ import { Icon } from 'semantic-ui-react';
 
 const Styled = styled.div`
     cursor: pointer;
+    ${({primary, theme}) => primary && `color: ${theme.primary}`}
 `;
 
-const IconButton = ({name, size, ...rest}) => {
+const IconButton = ({name, size, primary, ...rest}) => {
     return (
-        <Styled {...rest}>
+        <Styled primary={primary} {...rest}>
             <Icon name={name} size={size || 'big'}  />
         </Styled>
     )

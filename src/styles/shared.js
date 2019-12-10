@@ -17,7 +17,7 @@ export const Logo = styled.div`
 export const boxStyles = css`
     background-color: white;
     border-radius: 4px;
-    border: 1px solid ${({theme}) => theme.backgroundDark};
+    border: 1px solid ${({theme}) => theme.border};
     padding: 16px;
 `
 
@@ -25,7 +25,7 @@ export const boxStyles = css`
 export const tagInputStyles = (theme) => ({
     styles : {
         control: (provided, state) => {
-            const border = `1px solid ${state.isFocused ? theme.secondary : 'transparent'}`
+            const border = `1px solid ${state.isFocused ? theme.secondary : theme.border}`
             const boxShadow = 'none';
         
             return { ...provided, border, boxShadow };
@@ -47,7 +47,7 @@ export const StyledArea = styled(Textarea)`
     width: 100%;
     border: none;
     resize: none;
-    border: 1px solid transparent;
+    border: 1px solid ${({theme}) => theme.border};
     border-radius: 4px;
     line-height: 1.4rem;
     padding: 8px;

@@ -8,6 +8,7 @@ import { LimitedWidthContainer } from '../../styles/utils';
 import { LanguageSelect } from '../../intl/LanguageSelect';
 import { Tab } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
+import { Loading } from '../../components/Loading';
 
 const ProfileWrapper = styled.div`
   max-width: 25rem;
@@ -18,7 +19,7 @@ const ProfileWrapper = styled.div`
 `;
 
 const ProfileContainer = styled(LimitedWidthContainer)`
-    
+    padding-top: 2rem;
 `
 
 const MyPostsContainer = styled.div`
@@ -27,12 +28,21 @@ const MyPostsContainer = styled.div`
     padding-top: 1rem;
     padding-bottom: 1rem;
     height: min-content;
+    max-height: 80vh;
+    overflow: auto;
 `
 
 const StyledLanguageSelect = styled(LanguageSelect)`
     margin: 2rem auto;
 `
  
+const StyledTabPane = styled(Tab.Pane)`
+    &&& {
+        display: flex;
+        flex-direction: column;
+        min-height: 5rem;
+    }
+`
 
 class Profile extends Component {
     state = {
@@ -51,26 +61,26 @@ class Profile extends Component {
 
         const panes = [
             {
+                menuItem: intl.formatMessage({id: 'profile.my-posts'}),
+                render: () => <StyledTabPane attached={false}>
+                    <MyPostsContext.Consumer>
+                        {value => <MyPostsContainer>
+                            <Posts posts={value.posts} />
+                        </MyPostsContainer>}
+                    </MyPostsContext.Consumer>
+                </StyledTabPane>,
+            },
+            {
                 menuItem: intl.formatMessage({id: 'profile.basic'}),
-                render: () => <Tab.Pane attached={false}>
-                    {!user && <div>Loading...</div>}
+                render: () => <StyledTabPane attached={false}>
+                    {!user && <Loading />}
                     {user && 
                         <ProfileWrapper>
                             <EditInfo user={user} />
                             <StyledLanguageSelect />
                         </ProfileWrapper>
                     }
-                </Tab.Pane>
-            },
-            {
-                menuItem: intl.formatMessage({id: 'profile.my-posts'}),
-                render: () => <Tab.Pane attached={false}>
-                    <MyPostsContext.Consumer>
-                        {value => <MyPostsContainer>
-                            <Posts posts={value.posts} />
-                        </MyPostsContainer>}
-                    </MyPostsContext.Consumer>
-                </Tab.Pane>,
+                </StyledTabPane>
             },
         ] 
         

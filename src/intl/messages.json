@@ -85,6 +85,7 @@
         "feed.post.title": "Title",
         "feed.post.created": "Post successfully created",
         "profile.my-posts": "My posts",
-        "profile.basic": "Basic information"
+        "profile.basic": "Basic information",
+        "profile.updated": "Profile updated"
     }
 }

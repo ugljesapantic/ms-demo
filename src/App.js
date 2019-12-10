@@ -18,6 +18,7 @@ import { querySnapshotToArray } from './utils/firebase';
 import Intl from './intl/Intl';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import { THEME } from './utils/consts';
 
 export const AuthContext = React.createContext();
 export const FeedContext = React.createContext();
@@ -125,15 +126,7 @@ class App extends React.Component {
   state = {
     ...this.getContextsState(),
     initLoading: true,
-    theme: {
-      primary: '#094074',
-      primaryDark: '#07335C',
-      secondary: '#FFAB00',
-      secondaryDark: '#CC8800',
-      background: '#f5f5f5',
-      backgroundDark: '#A0A0A0',
-      negative: '#f44336'
-    }
+    theme: THEME
   }
   
 

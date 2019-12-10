@@ -11,7 +11,7 @@ import { PostTypeSelect } from '../../components/PostTypeSelect';
 import { LimitedWidthModal } from '../../styles/utils';
 import CornerIconButton from '../../components/CornerIconButton';
 import { useIntl } from 'react-intl';
-import { toast } from 'react-toastify';
+import { showSuccessToast } from '../../utils/misc';
 
 
 const StyledButton = styled(Button)`
@@ -47,11 +47,7 @@ const CreateNewPost = ({theme}) => {
             ...typeFilters,
             tags: tags.map(t => t.value)
         }));
-        toast.success(intl.formatMessage({id: 'feed.post.created'}), {
-            position: toast.POSITION.TOP_CENTER,
-            hideProgressBar: true,
-            className: 'toast'
-        });
+        showSuccessToast(intl.formatMessage({id: 'feed.post.created'}))
     };
 
     const iProps={values,onChange};
@@ -60,7 +56,7 @@ const CreateNewPost = ({theme}) => {
         <LimitedWidthModal
             open={open}
             onClose={() => setOpen(false)}
-            trigger={<CornerIconButton onClick={() => setOpen(true)} name='plus'/>}>
+            trigger={<CornerIconButton primary size="huge" onClick={() => setOpen(true)} name='plus'/>}>
             <Wrapper>
                 <StyledArea
                     {...iProps}
