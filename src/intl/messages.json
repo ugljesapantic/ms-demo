@@ -94,6 +94,7 @@
         "feed.post.created": "Post successfully created",
         "profile.my-posts": "My posts",
         "profile.basic": "Basic information",
-        "profile.updated": "Profile updated"
+        "profile.updated": "Profile updated",
+        "profile.post.delete": "Post deleted"
     }
 }
