@@ -7,9 +7,9 @@ const Styled = styled.button`
   ${({center}) => center && `margin: 0 auto`}
 `;
 
-const Button = ({text, center, ...rest}) => {
+const Button = ({text, center, disabled, ...rest}) => {
     return (
-        <Styled center={center} {...rest}>{text}</Styled>
+        <Styled disabled={disabled} center={center} {...rest}>{text}</Styled>
     )
 }
 

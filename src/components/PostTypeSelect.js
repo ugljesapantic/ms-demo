@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 
 import { Radio } from 'semantic-ui-react';
-import { PARTNER_TYPE, POST_TYPES, POST_SUB_TYPES, JOB_SUB_TYPE } from '../utils/consts';
+import { POST_TYPES, POST_SUB_TYPES } from '../utils/consts';
 
 const PostTypeRadio = styled.div`
     display: flex;
@@ -14,18 +14,10 @@ const PostTypeRadio = styled.div`
 export const PostTypeSelect = ({show, filters, setFilters}) => {
 
     const onTypeChange = type => {
-        let subType;
-        if (filters) {
-            subType = type !== PARTNER_TYPE.value ? filters.subType : null;
-        }
-        if (type === PARTNER_TYPE.value) {
-            subType = null;
-        } else if (!subType) {
-            subType = JOB_SUB_TYPE.value;
-        }
+
         setFilters({
             type,
-            subType
+            subType: null
         })
     }
 
@@ -38,7 +30,7 @@ export const PostTypeSelect = ({show, filters, setFilters}) => {
     
     return (
         <React.Fragment>
-            {show && <PostTypeRadio>
+            <PostTypeRadio>
                 {POST_TYPES.map(type => <Radio 
                     key={type.value}
                     name="type"  
@@ -47,8 +39,8 @@ export const PostTypeSelect = ({show, filters, setFilters}) => {
                     checked={type.value === (filters && filters.type)}
                     onChange={() => onTypeChange(type.value)} 
                 />)}
-            </PostTypeRadio>}
-            {PARTNER_TYPE.value !== (filters && filters.type) && <PostTypeRadio>
+            </PostTypeRadio>
+            {filters && filters.type && <PostTypeRadio>
                 {POST_SUB_TYPES.map(type => <Radio 
                     key={type.value}
                     name="subType"  

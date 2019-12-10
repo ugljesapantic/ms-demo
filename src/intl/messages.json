@@ -83,6 +83,7 @@
         "feed.post.add-tags": "Add tags",
         "feed.post.description": "Description",
         "feed.post.title": "Title",
+        "feed.post.created": "Post successfully created",
         "profile.my-posts": "My posts",
         "profile.basic": "Basic information"
     }

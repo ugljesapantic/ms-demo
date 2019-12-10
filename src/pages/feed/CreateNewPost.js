@@ -8,10 +8,10 @@ import TagInput from '../../components/TagInput';
 import http from '../../utils/http';
 import { withUserUid } from '../../utils/firebase';
 import { PostTypeSelect } from '../../components/PostTypeSelect';
-import { PARTNER_TYPE } from '../../utils/consts';
 import { LimitedWidthModal } from '../../styles/utils';
 import CornerIconButton from '../../components/CornerIconButton';
 import { useIntl } from 'react-intl';
+import { toast } from 'react-toastify';
 
 
 const StyledButton = styled(Button)`
@@ -22,15 +22,10 @@ const Wrapper = styled.div`
    ${boxStyles}
 `;
 
-const defaultPostState = {
-    type: PARTNER_TYPE.value,
-    subType: null,
-};
-
 const CreateNewPost = ({theme}) => {
-    const [loading, setLoading] = useState(false);
     const [tags, setTags] = useState([]);
-    const [typeFilters, setTypeFilters] = useState(defaultPostState);
+    const [typeFilters, setTypeFilters] = useState({});
+    const [open, setOpen] = useState(false);
     const intl = useIntl()
 
     const {values, onChange, reset} = useForm({
@@ -41,25 +36,31 @@ const CreateNewPost = ({theme}) => {
     const resetEverything = () => {
         reset();
         setTags([]);
-        setTypeFilters(defaultPostState);
+        setTypeFilters({});
     }
 
     const createPostHandler = async () => {
-        setLoading(true);
+        setOpen(false);
+        resetEverything();
         await http('createPost', 'POST', null, withUserUid({
             ...values,
             ...typeFilters,
             tags: tags.map(t => t.value)
         }));
-        resetEverything();
-        setLoading(false);
+        toast.success(intl.formatMessage({id: 'feed.post.created'}), {
+            position: toast.POSITION.TOP_CENTER,
+            hideProgressBar: true,
+            className: 'toast'
+        });
     };
 
     const iProps={values,onChange};
 
     return (
         <LimitedWidthModal
-            trigger={<CornerIconButton name='plus'/>}>
+            open={open}
+            onClose={() => setOpen(false)}
+            trigger={<CornerIconButton onClick={() => setOpen(true)} name='plus'/>}>
             <Wrapper>
                 <StyledArea
                     {...iProps}
@@ -69,26 +70,26 @@ const CreateNewPost = ({theme}) => {
                     onKeyDown={e => e.key === "Escape" && resetEverything()}
                     placeholder={intl.formatMessage({id: 'feed.post.title'})}
                 />
-                <StyledArea
+                {values.title && <StyledArea
                     {...iProps}
                     value={values.description}
                     minRows={1}
                     name="description"
                     onKeyDown={e => e.key === "Escape" && resetEverything()}
                     placeholder={intl.formatMessage({id: 'feed.post.description'})}
-                />
+                />}
                 {/* TODO Add title & desciption */}
-                {values.title && <TagInput 
+                {values.description && <TagInput 
                     onChange={e => setTags(e)}
                     placeholder={intl.formatMessage({id: 'feed.post.add-tags'})}
                     value={tags}
                 />}
-                <PostTypeSelect 
+                {!!tags.length && <PostTypeSelect 
                     show={!!tags.length}
                     filters={typeFilters}
                     setFilters={setTypeFilters}
-                />
-                {!!tags.length && <StyledButton onClick={createPostHandler} secondary text={intl.formatMessage({id: 'feed.post.new'})} width="100%" />}
+                />}
+                <StyledButton disabled={!typeFilters.subType} onClick={createPostHandler} secondary text={intl.formatMessage({id: 'feed.post.new'})} width="100%" />
             </Wrapper>
         </LimitedWidthModal>
     )

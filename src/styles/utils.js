@@ -31,6 +31,7 @@ export const buttonStyles = css`
   font-weight: 300;
 
   ${({bordered}) => bordered && `border: 2px solid white`};
+  ${({disabled}) => disabled && `opacity: 0.5`};
   width: ${({width}) => width ? `${width}` : 'auto'};
   
   

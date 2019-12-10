@@ -16,6 +16,8 @@ import http from './utils/http';
 import {Chats} from './pages/chats/Chats';
 import { querySnapshotToArray } from './utils/firebase';
 import Intl from './intl/Intl';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 export const AuthContext = React.createContext();
 export const FeedContext = React.createContext();
@@ -144,6 +146,7 @@ class App extends React.Component {
           <AppWrapper auth={authContext.auth}>
             <Router>
               <Loader size='massive' active={initLoading} />
+              <ToastContainer />
             
               {/* TODO Get rid of this hell */}
               {!initLoading && <AuthContext.Provider value={authContext}>

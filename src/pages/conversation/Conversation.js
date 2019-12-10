@@ -74,6 +74,7 @@ const MessagesList = styled.div`
 `;
 
 const Message = styled.div`
+    white-space: pre-wrap;
     border-radius: 4px;
     padding: 0.4rem 0.6rem;
     margin-bottom: 0.3rem;

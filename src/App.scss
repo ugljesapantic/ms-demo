@@ -7,3 +7,11 @@ body {
 #root {
     height: 100%;
 }
+
+.toast.toast {
+    border-radius: 0.5rem;
+    font-weight: 500;
+    padding: 1rem;
+    font-family: 'Roboto';
+    min-height: auto;
+}
