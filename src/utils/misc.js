@@ -37,3 +37,11 @@ export const showSuccessToast = message => {
         className: 'toast'
     });
 }
+
+export const showErrorToast = message => {
+    toast.error(message, {
+        position: toast.POSITION.TOP_CENTER,
+        hideProgressBar: true,
+        className: 'toast'
+    });
+}

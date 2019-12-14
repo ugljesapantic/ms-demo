@@ -21,7 +21,9 @@ const SignInModal = () => {
 
     const signInHandler = () => {
         setLoading(true);
-        signIn(values).catch(res => {
+        signIn(values)
+        .then(() => setLoading(false))
+        .catch(res => {
             let error;
             switch(res.code) {
                 case 'auth/wrong-password':

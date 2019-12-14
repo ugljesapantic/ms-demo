@@ -4,10 +4,12 @@ import http from "../utils/http";
 export const signUp = user => {
     return fbAuth
         .createUserWithEmailAndPassword(user.email, user.password)
+        .then(response => response.user && response.user.sendEmailVerification())
         .then(resp => 
             resp.user.updateProfile({
                 displayName: `${user.firstname} ${user.lastname}`,
-        }).then(() => resp.user.uid))
+        })
+        .then(() => resp.user.uid))
         .then(id => http('createUser', 'POST', null, {
             id,
             firstname: user.firstname,

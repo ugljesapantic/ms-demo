@@ -19,6 +19,9 @@ import Intl from './intl/Intl';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { THEME } from './utils/consts';
+import { Activate } from './pages/auth/Activate';
+import { showErrorToast } from './utils/misc';
+import { injectIntl } from 'react-intl';
 
 export const AuthContext = React.createContext();
 export const FeedContext = React.createContext();
@@ -63,6 +66,11 @@ class App extends React.Component {
   constructor() {
     super();
     fbAuth.onAuthStateChanged(user => {
+      if (user && !user.emailVerified) {
+        showErrorToast(this.props.intl.formatMessage({id: 'auth.not-activated'}));
+        fbAuth.signOut();
+        return;
+      }
 
       this.setState({
         initLoading: false,
@@ -128,55 +136,55 @@ class App extends React.Component {
     initLoading: true,
     theme: THEME
   }
-  
 
   render() {
     const { authContext, initLoading, theme, feedContext, myPostsContext, chatsContext } = this.state;
 
     return (
-      <Intl>
-        <ThemeProvider theme={theme}>
-          <AppWrapper auth={authContext.auth}>
-            <Router>
-              <Loader size='massive' active={initLoading} />
-              <ToastContainer />
-            
-              {/* TODO Get rid of this hell */}
-              {!initLoading && <AuthContext.Provider value={authContext}>
-                  <FeedContext.Provider value={feedContext}>
-                    <MyPostsContext.Provider value={myPostsContext}>
-                      <ChatsContext.Provider value={chatsContext}>
-                        {authContext.auth && <UserNavbar />}
-                        <Switch>
-                          <GuestRoute path="/" exact>
-                            <Home />
-                          </GuestRoute>
-                          <UserRoute path="/feed/:id">
-                            <PostDetails />
-                          </UserRoute>
-                          <UserRoute path="/feed">
-                            <Feed />
-                          </UserRoute>
-                          <UserRoute path="/chat">
-                            <Chats />
-                          </UserRoute>
-                          <UserRoute path="/profile">
-                            <Profile />
-                          </UserRoute>
-                          <Route path="*">
-                            <Redirect to='/' />
-                          </Route>
-                        </Switch>
-                      </ChatsContext.Provider>
-                    </MyPostsContext.Provider>
-                  </FeedContext.Provider>
-              </AuthContext.Provider>}
-            </Router>
-          </AppWrapper>
-        </ThemeProvider>
-      </Intl>
+      <ThemeProvider theme={theme}>
+        <AppWrapper auth={authContext.auth}>
+          <Router>
+            <Loader size='massive' active={initLoading} />
+            <ToastContainer />
+          
+            {/* TODO Get rid of this hell */}
+            {!initLoading && <AuthContext.Provider value={authContext}>
+                <FeedContext.Provider value={feedContext}>
+                  <MyPostsContext.Provider value={myPostsContext}>
+                    <ChatsContext.Provider value={chatsContext}>
+                      {authContext.auth && <UserNavbar />}
+                      <Switch>
+                        <GuestRoute path="/" exact>
+                          <Home />
+                        </GuestRoute>
+                        <Route path="/activate" exact>
+                          <Activate />
+                        </Route>
+                        <UserRoute path="/feed/:id">
+                          <PostDetails />
+                        </UserRoute>
+                        <UserRoute path="/feed">
+                          <Feed />
+                        </UserRoute>
+                        <UserRoute path="/chat">
+                          <Chats />
+                        </UserRoute>
+                        <UserRoute path="/profile">
+                          <Profile />
+                        </UserRoute>
+                        <Route path="*">
+                          <Redirect to='/' />
+                        </Route>
+                      </Switch>
+                    </ChatsContext.Provider>
+                  </MyPostsContext.Provider>
+                </FeedContext.Provider>
+            </AuthContext.Provider>}
+          </Router>
+        </AppWrapper>
+      </ThemeProvider>
     );
   }
 }
 
-export default withTheme(App);
+export default  injectIntl(withTheme(App));
