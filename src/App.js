@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { THEME } from './utils/consts';
 import { Activate } from './pages/auth/Activate';
-import { showErrorToast, showInfoToast } from './utils/misc';
+import { showInfoToast } from './utils/misc';
 import { injectIntl } from 'react-intl';
 
 export const AuthContext = React.createContext();
@@ -48,7 +48,8 @@ const CONTEXTS = {
     participants: {}
   },
   'auth': {
-    auth: false
+    auth: false,
+    activated: null,
   },
   'myPosts': {
     posts: []

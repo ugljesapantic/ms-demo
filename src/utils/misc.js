@@ -51,6 +51,6 @@ export const showInfoToast = message => {
         position: toast.POSITION.TOP_CENTER,
         hideProgressBar: true,
         className: 'toast',
-        autoClose: 20000
+        autoClose: 20000,
     });
 }
