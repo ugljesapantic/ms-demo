@@ -2,7 +2,7 @@ import React, {useContext} from 'react'
 import { Switch } from 'react-router-dom'
 import UserRoute from '../../navigation/UserRoute';
 import { Conversation } from '../conversation/Conversation';
-import { ChatsContext, fbAuth } from '../../App';
+import { ChatsContext } from '../../App';
 
 import styled, {css} from 'styled-components';
 import { LimitedWidthContainer } from '../../styles/utils';

@@ -26,6 +26,19 @@ export const signIn = ({email, password}) => {
         .signInWithEmailAndPassword(email, password)
 }
 
+export const resetPassword = ({email}) => {
+    return fbAuth.sendPasswordResetEmail(email);
+}
+
+export const confirmResetPasswordCode = (code) =>  fbAuth.verifyPasswordResetCode(code);
+
+export const savePassword = ({code, password, email}) => {
+    return fbAuth
+        .confirmPasswordReset(code, password)
+        .then(() => fbAuth.signInWithEmailAndPassword(email, password))
+}
+    
+
 export const signOut = () => {
     return fbAuth
         .signOut()

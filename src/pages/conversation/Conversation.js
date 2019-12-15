@@ -97,7 +97,7 @@ const PaddingPlaceholder = styled.div`
 
 export const Conversation = () => {
     const {id} = useParams();
-    const [loading, setLoading] = useState(true);
+    const [, setLoading] = useState(true);
     const hist = useHistory();
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);

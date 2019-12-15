@@ -15,7 +15,6 @@ import Profile  from './pages/profile/Profile';
 import http from './utils/http';
 import {Chats} from './pages/chats/Chats';
 import { querySnapshotToArray } from './utils/firebase';
-import Intl from './intl/Intl';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { THEME } from './utils/consts';

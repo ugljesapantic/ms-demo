@@ -43,7 +43,6 @@ const SignUpModal = () => {
                         error = intl.formatMessage({id: 'auth.sign-up.error6'});
                         break;
                     default:
-                        debugger;
                         error = intl.formatMessage({id: 'auth.error'})
                         break;         
                 }
@@ -60,8 +59,7 @@ const SignUpModal = () => {
                     <Form error={!!error} loading={loading}>
                         <Message
                             error
-                            header={intl.formatMessage({id: 'auth.error'})}
-                            content={error}
+                            header={error}
                             />
                         <Form.Input error={markError.email && errors.email} label={intl.formatMessage({id: 'auth.email'})} name="email" type="email" placeholder='example@email.com' {...iProps}/>
                         <Form.Input error={markError.firstname && errors.firstname} label={intl.formatMessage({id: 'auth.first-name'})} name="firstname" type="text" {...iProps}/>
