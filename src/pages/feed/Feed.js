@@ -6,7 +6,7 @@ import LoadMore from '../../components/LoadMore';
 import styled from 'styled-components';
 import SearchPosts from './SearchPosts';
 import http from '../../utils/http';
-import { FeedContext } from '../../App';
+import { FeedContext, AuthContext } from '../../App';
 
 const FeedContainer = styled.div`
     height: min-content;
@@ -38,6 +38,8 @@ const createQuery = filters => {
 
 const Feed = () => {
     const feedContext = useContext(FeedContext);
+    const authContext = useContext(AuthContext);
+
     const container = useRef()
 
     const {posts, hasMore, filters, set, alive, scroll, pagination} = feedContext;
@@ -115,7 +117,7 @@ const Feed = () => {
     return (
         <FeedContainer ref={container}>
             <FeedContainerInner>
-                <CreateNewPost />
+                {authContext.activated && <CreateNewPost />}
                 <SearchPosts filters={filters} setFilters={setFilters} />
                 <Posts posts={posts} />
                 {hasMore && <LoadMore loading={loading} onClick={loadMore} />}

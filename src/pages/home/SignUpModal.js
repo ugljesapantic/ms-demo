@@ -9,6 +9,7 @@ import { useIntl } from 'react-intl';
 
 const SignUpModal = () => {
     const intl = useIntl();
+    const [open, setOpen] = useState(false)
     const {values, onChange, onBlur, markError, errors, valid} = useForm({
         firstname: '',
         lastname: '',
@@ -28,27 +29,32 @@ const SignUpModal = () => {
 
     const signUpHandler = () => {
         setLoading(true);
-        signUp(values).catch(res => {
-            let error;
-            switch(res.code) {
-                case 'auth/email-already-in-use':
-                    error = intl.formatMessage({id: 'auth.sign-up.error5'});
-                    break;
-                case 'auth/weak-password':
-                    error = intl.formatMessage({id: 'auth.sign-up.error6'});
-                    break;
-                default:
-                    error = intl.formatMessage({id: 'auth.error'})
-                    break;         
-            }
-            setError(error);
-            setLoading(false);
-        });
+        signUp(values)
+            .then(() => {
+                setOpen(false);
+            })
+            .catch(res => {
+                let error;
+                switch(res.code) {
+                    case 'auth/email-already-in-use':
+                        error = intl.formatMessage({id: 'auth.sign-up.error5'});
+                        break;
+                    case 'auth/weak-password':
+                        error = intl.formatMessage({id: 'auth.sign-up.error6'});
+                        break;
+                    default:
+                        debugger;
+                        error = intl.formatMessage({id: 'auth.error'})
+                        break;         
+                }
+                setError(error);
+                setLoading(false);
+            });
     }
 
     
     return (
-        <LimitedWidthModal trigger={<Button text={intl.formatMessage({id: 'auth.sign-up'})} width='120px' bordered />}>
+        <LimitedWidthModal onClose={() => setOpen(false)} open={open} trigger={<Button onClick={() => setOpen(true)} text={intl.formatMessage({id: 'auth.sign-up'})} width='120px' bordered />}>
             <Modal.Header>{intl.formatMessage({id: 'auth.sign-up'})}</Modal.Header>
                 <Modal.Content>
                     <Form error={!!error} loading={loading}>

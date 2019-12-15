@@ -22,20 +22,20 @@ const SignInModal = () => {
     const signInHandler = () => {
         setLoading(true);
         signIn(values)
-        .then(() => setLoading(false))
-        .catch(res => {
-            let error;
-            switch(res.code) {
-                case 'auth/wrong-password':
-                    error = intl.formatMessage({id: 'auth.sign-in.error1'});
-                    break;
-                default:
-                    error = intl.formatMessage({id: 'auth.error'});
-                    break;         
-            }
-            setError(error);
-            setLoading(false);
-        });
+            .then(() => setLoading(false))
+            .catch(res => {
+                let error;
+                switch(res.code) {
+                    case 'auth/wrong-password':
+                        error = intl.formatMessage({id: 'auth.sign-in.error1'});
+                        break;
+                    default:
+                        error = intl.formatMessage({id: 'auth.error'});
+                        break;         
+                }
+                setError(error);
+                setLoading(false);
+            });
     }
 
     

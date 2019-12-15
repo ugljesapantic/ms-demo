@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { THEME } from './utils/consts';
 import { Activate } from './pages/auth/Activate';
-import { showErrorToast } from './utils/misc';
+import { showErrorToast, showInfoToast } from './utils/misc';
 import { injectIntl } from 'react-intl';
 
 export const AuthContext = React.createContext();
@@ -66,19 +66,17 @@ class App extends React.Component {
   constructor() {
     super();
     fbAuth.onAuthStateChanged(user => {
-      if (user && !user.emailVerified) {
-        showErrorToast(this.props.intl.formatMessage({id: 'auth.not-activated'}));
-        fbAuth.signOut();
-        return;
-      }
+      const notActivated = user && !user.emailVerified;
+      if (notActivated) showInfoToast(this.props.intl.formatMessage({id: 'auth.not-activated'}));
 
       this.setState({
         initLoading: false,
         ...this.getContextsState(),
-        authContext: {
-          auth: !!user,
-        }
-      })
+      }, () => this.state.authContext.set(() => ({
+        auth: !!user,
+        activated: !notActivated
+      })));
+      
       if (user) {
         this.loadUserPosts();
         this.loadUserChats();
@@ -122,7 +120,7 @@ class App extends React.Component {
 
   getContextSetter = (contextName) =>  (func) => {
     const varName = `${contextName}Context`;
-    const update = func(this.state[varName])
+    const update = func(this.state[varName]);
     this.setState({
       [varName]: {
         ...this.state[varName],

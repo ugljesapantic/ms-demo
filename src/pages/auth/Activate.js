@@ -17,7 +17,14 @@ export const Activate = () => {
             case 'verifyEmail': {
                 fbAuth
                     .applyActionCode(params.oobCode)
-                    .then(() => showSuccessToast(intl.formatMessage({id: 'auth.activated'})))
+                    .then(() => {
+                        if (authContext.auth) {
+                            showSuccessToast(intl.formatMessage({id: 'auth.activated'}));
+                        } else {
+                            showSuccessToast(intl.formatMessage({id: 'auth.activated.sign-in'}));
+                        }
+                        authContext.set(() => ({activated: true}))
+                    })
                     // TODO Catch error can have different error codes
                     .catch(e => showErrorToast(intl.formatMessage({id: 'auth.activated.error'})))
                     .finally(() => history.push('/'));
@@ -26,11 +33,6 @@ export const Activate = () => {
     }
 
     useEffect(() => {
-        if (authContext.auth) {
-            fbAuth.signOut().then(() => handleQuery());
-            return;
-        }
-
         handleQuery()
     }, [])
 

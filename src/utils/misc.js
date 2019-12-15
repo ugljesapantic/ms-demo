@@ -45,3 +45,12 @@ export const showErrorToast = message => {
         className: 'toast'
     });
 }
+
+export const showInfoToast = message => {
+    toast.info(message, {
+        position: toast.POSITION.TOP_CENTER,
+        hideProgressBar: true,
+        className: 'toast',
+        autoClose: 20000
+    });
+}
