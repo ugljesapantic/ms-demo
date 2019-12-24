@@ -11,6 +11,7 @@ export const Activate = () => {
     const location = useLocation();
     const history = useHistory();
     const authContext = useContext(AuthContext);
+    const setAuthContext = authContext.set;
     const intl = useIntl();
     const [reset, setReset] = useState(false);
 
@@ -25,10 +26,12 @@ export const Activate = () => {
                         .applyActionCode(params.oobCode)
                         .then(() => {
                             showSuccessToast(intl.formatMessage({id: signedIn ? 'auth.activated' : 'auth.activated.sign-in'}))
-                            authContext.set(() => ({activated: true}))
+                            setAuthContext(() => ({activated: true}))
                         })
                         // TODO Catch error can have different error codes
-                        .catch(e => showErrorToast(intl.formatMessage({id: 'auth.invalid-code'})))
+                        .catch(e => {
+                            showErrorToast(intl.formatMessage({id: 'auth.invalid-code'}));
+                        })
                         .finally(() => history.push('/'));
                     break;
                 }
@@ -42,7 +45,7 @@ export const Activate = () => {
             }
           })
         return sub();
-    }, [authContext, history, intl, location.search])
+    }, [setAuthContext, history, intl, location.search])
 
     return <div>
         {reset && <ResetPasswordModal code={reset} />}
