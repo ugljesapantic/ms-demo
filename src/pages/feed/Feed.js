@@ -15,6 +15,7 @@ const FeedContainer = styled.div`
     max-height: 100%;
     display: flex;
     flex-direction: column;
+    min-height: 100%;
 `
 
 const FeedContainerInner = styled(LimitedWidthContainer)`
@@ -93,7 +94,7 @@ const Feed = () => {
 
         if (alive) return;
 
-        set(() => ({filters: {from: new Date().toISOString()}}))
+        set(ex => ({filters: {...ex.filters, from: new Date().toISOString()}}))
     }, [loadData, alive, set]);
 
     useEffect(() => {

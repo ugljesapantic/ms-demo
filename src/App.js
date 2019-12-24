@@ -56,7 +56,10 @@ const CONTEXTS = {
   'feed': {
     posts: [],
     hasMore: true,
-    filters: {},
+    filters: {
+      tags: [],
+      typeFilters: {}
+    },
     alive: false
   }
 };

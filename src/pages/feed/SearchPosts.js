@@ -10,6 +10,10 @@ const Wrapper = styled.div`
     flex-direction: column;
 `;
 
+const StyledButton = styled(Button)`
+    margin-top: 0.75rem;
+`;
+
 const SearchPosts = ({setFilters, filters}) => {
     const intl = useIntl();
 
@@ -27,19 +31,28 @@ const SearchPosts = ({setFilters, filters}) => {
         })
     }
 
+    const hasFilters = filters.tags.length || filters.typeFilters.type
+
     return (
         <Wrapper>
-            <TagInput
-                onChange={e => setTags(e)}
-                placeholder={intl.formatMessage({id: 'feed.search'})}
-                value={filters.tags}
-            />
             <PostTypeSelect
                 show={true}
                 filters={filters.typeFilters}
                 setFilters={setTypeFilters}
             />
-            <Button secondary center text={intl.formatMessage({id: 'feed.clear-filters'})} onClick={() => setTypeFilters({})} /> 
+            <TagInput
+                onChange={e => setTags(e)}
+                placeholder={intl.formatMessage({id: 'feed.search'})}
+                value={filters.tags}
+            />
+            {/* TODO Consider clear all tags */}
+            {hasFilters && <StyledButton secondary center text={intl.formatMessage({id: 'feed.clear-filters'})} onClick={() => {
+                setFilters({
+                    typeFilters: {},
+                    from: filters.from,
+                    tags: []
+                });
+            }} />}
         </Wrapper>
     )
 }

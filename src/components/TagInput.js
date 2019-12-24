@@ -4,6 +4,14 @@ import {withTheme} from 'styled-components';
 import { tagInputStyles } from '../styles/shared';
 import http from '../utils/http';
 
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+    width: fit-content;
+    min-width: 20rem;
+    margin: 0 auto;
+`;
+
 const TagInput = ({theme, placeholder, value, onChange}) => {
 
     const loadOptions = async name => {
@@ -15,18 +23,21 @@ const TagInput = ({theme, placeholder, value, onChange}) => {
         onChange([...value, ({label: option.name, value: option._id})])
     };
 
+    // TODO Consider clear all tags
     return (
-        <AsyncCreatableSelect
-            isMulti
-            blurInputOnSelect={false}
-            value={value}
-            loadOptions={loadOptions}
-            formatCreateLabel={val => `Create ${val}?`}
-            onChange={onChange}
-            onCreateOption={onCreateOption}
-            placeholder={placeholder}
-            {...tagInputStyles(theme)}
-        />
+        <Wrapper>
+            <AsyncCreatableSelect
+                isMulti
+                blurInputOnSelect={false}
+                value={value}
+                loadOptions={loadOptions}
+                formatCreateLabel={val => `Create ${val}?`}
+                onChange={onChange}
+                onCreateOption={onCreateOption}
+                placeholder={placeholder}
+                {...tagInputStyles(theme)}
+            />
+        </Wrapper>
     )
 }
 
