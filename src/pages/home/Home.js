@@ -6,6 +6,8 @@ import SignUpModal from './SignUpModal';
 import { Logo } from '../../styles/shared';
 import { LanguageSelect } from '../../intl/LanguageSelect';
 
+import graphics from '../../assets/graphics.gif';
+
 const Header = styled(LimitedWidthContainer)`
   display: flex;
   align-items: center;
@@ -18,8 +20,13 @@ const HeaderContainer = styled.div`
 `;
 
 const Main = styled.main`
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
+    max-width: 1240px;
+    padding: 0 16px;
+    flex: 1;
+    width: 100%;
+    margin: 0 auto;
 `;
 
 const StyledLogo = styled(Logo)`
@@ -43,7 +50,20 @@ const Footer = styled.footer`
 `
 
 const Copyright = styled.div`
-  
+    color: white;
+`;
+
+const Text = styled.div`
+    color: darkslategray;
+    line-height: 1.5;
+    font-size: 3rem;
+    font-weight: bold;
+    flex: 0 1 auto;
+`;
+
+const Graphics = styled.img`
+    width: 680px;
+    flex: 0 1 auto;
 `;
 
 class Home extends Component {
@@ -59,7 +79,8 @@ class Home extends Component {
                     </Header>
                 </HeaderContainer>
                 <Main>
-                    
+                    <Text>Bla bla bla bla blaaala blablabal bal blablalalba balbab</Text>
+                    <Graphics src={graphics}/>
                 </Main>
                 <Footer>
                     <Copyright>&copy; Magna Serbia 2019</Copyright>
