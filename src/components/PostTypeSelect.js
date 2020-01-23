@@ -8,7 +8,7 @@ const PostTypeRadio = styled.div`
     display: flex;
     justify-content: space-evenly;
     min-width: 300px;
-    margin: 0 auto 0.75rem;
+    margin: 0.75rem auto 0.75rem;
 
     ${({horizontal}) => horizontal && `
         flex-direction: column;
