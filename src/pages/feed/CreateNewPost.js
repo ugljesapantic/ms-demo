@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import useForm from '../../hooks/forms';
 
 import styled, {withTheme} from 'styled-components';
@@ -12,6 +12,7 @@ import { LimitedWidthModal } from '../../styles/utils';
 import CornerIconButton from '../../components/CornerIconButton';
 import { useIntl } from 'react-intl';
 import { showSuccessToast } from '../../utils/misc';
+import { MyPostsContext } from '../../App';
 
 
 const StyledButton = styled(Button)`
@@ -26,6 +27,7 @@ const CreateNewPost = ({theme}) => {
     const [tags, setTags] = useState([]);
     const [typeFilters, setTypeFilters] = useState({});
     const [open, setOpen] = useState(false);
+    const myPostsContext = useContext(MyPostsContext);
     const intl = useIntl()
 
     const {values, onChange, reset} = useForm({
@@ -42,11 +44,13 @@ const CreateNewPost = ({theme}) => {
     const createPostHandler = async () => {
         setOpen(false);
         resetEverything();
-        await http('createPost', 'POST', null, withUserUid({
+        const post = await http('createPost', 'POST', null, withUserUid({
             ...values,
             ...typeFilters,
             tags: tags.map(t => t.value)
         }));
+
+        myPostsContext.set((c) => ({...c, posts: [...c.posts, post]}))
         showSuccessToast(intl.formatMessage({id: 'feed.post.created'}))
     };
 

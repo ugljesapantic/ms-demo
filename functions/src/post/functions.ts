@@ -6,15 +6,15 @@ import { auth } from '../config';
 import { UserRecord } from 'firebase-functions/lib/providers/auth';
 import { getUserId } from '../utils';
 
-export const createPost = onRequest((request: functions.Request, response: functions.Response) => {
+export const createPost = onRequest(async (request: functions.Request, response: functions.Response) => {
     // TODO find more elegant way
     const filteredObject = request.body;
     Object.keys(filteredObject).forEach((key) => (filteredObject[key] == null) && delete filteredObject[key]);
     const entity = new Post(filteredObject);
-
-    return Connection.connect()
-        .then(() => entity.save())
-        .then(result => response.status(200).send(result));
+    await Connection.connect();
+    const post = await entity.save();
+    const user = await auth.getUser(post.userUid);
+    return response.status(200).send({...post.toObject(), userUid: user.uid, user: user.displayName})
 });
 
 export const searchPost = onRequest(async (request: functions.Request, response: functions.Response)  => {
