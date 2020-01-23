@@ -64,6 +64,7 @@ const Text = styled.div`
 const Graphics = styled.img`
     width: 680px;
     flex: 0 1 auto;
+    margin-left: auto;
 `;
 
 class Home extends Component {
@@ -79,7 +80,7 @@ class Home extends Component {
                     </Header>
                 </HeaderContainer>
                 <Main>
-                    <Text>Welcome</Text>
+                    <Text>Welcome to Magna Serbia!</Text>
                     <Graphics src={graphics}/>
                 </Main>
                 <Footer>
