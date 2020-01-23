@@ -50,7 +50,7 @@ const Footer = styled.footer`
 `
 
 const Copyright = styled.div`
-    color: white;
+    color: darkslategray;
 `;
 
 const Text = styled.div`
@@ -79,7 +79,7 @@ class Home extends Component {
                     </Header>
                 </HeaderContainer>
                 <Main>
-                    <Text>Bla bla bla bla blaaala blablabal bal blablalalba balbab</Text>
+                    <Text>Welcome</Text>
                     <Graphics src={graphics}/>
                 </Main>
                 <Footer>
