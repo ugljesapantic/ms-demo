@@ -41,7 +41,7 @@ const SearchPosts = ({setFilters, filters}) => {
                 setFilters={setTypeFilters}
             />
             <TagInput
-                onChange={e => setTags(e)}
+                onChange={e => setTags(e || [])}
                 placeholder={intl.formatMessage({id: 'feed.search'})}
                 value={filters.tags}
             />

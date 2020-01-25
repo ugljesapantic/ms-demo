@@ -15,10 +15,10 @@ const ChatContainer = styled(NavLink)`
     align-items: center;
     cursor: pointer;
     border-bottom: 1px solid lightgray;
-    color: black;
+    color: rgba(0,0,0,.8);
     &:hover {
         background: #f3f3f3;
-        color: black;
+        color: rgba(0,0,0,.8);
     }
 
     &:hover:not(.active) {

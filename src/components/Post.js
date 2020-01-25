@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 
 import styled, {css} from 'styled-components';
 import UserAvatar from './UserAvatar';
-import { boxStyles } from '../styles/shared';
+import { boxStyles, StyledTag } from '../styles/shared';
 import { passedTime } from '../utils/misc';
 
 
@@ -52,13 +52,6 @@ const TagList = styled.div`
     flex-wrap: wrap;    
 `
 
-// TODO cssIf(matched)``
-const Tag = styled.div`
-    border-radius: 4px;
-    padding: 4px 8px;
-    margin-right: 1rem;
-    background-color: ${({matched}) => matched ? 'lightgreen' : 'lightgray'};
-`
 
 
 export const Post = React.memo(({post, details, selectedTags}) => {
@@ -85,7 +78,7 @@ export const Post = React.memo(({post, details, selectedTags}) => {
                 {post.description}
             </Desciption>
             <TagList>
-                {post.tags.map(tag => <Tag matched={selectedTags.includes(tag._id)} key={tag._id}>{tag.name}</Tag>)}
+                {post.tags.map(tag => <StyledTag matched={selectedTags.includes(tag._id)} key={tag._id}>{tag.name}</StyledTag>)}
             </TagList>
         </React.Fragment>}
     </PostContainer>

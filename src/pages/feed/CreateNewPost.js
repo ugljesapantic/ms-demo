@@ -80,7 +80,7 @@ const CreateNewPost = ({theme}) => {
                 />}
                 {/* TODO Add title & desciption */}
                 {values.description && <TagInput 
-                    onChange={e => setTags(e)}
+                    onChange={e => setTags(e || [])}
                     placeholder={intl.formatMessage({id: 'feed.post.add-tags'})}
                     value={tags}
                 />}

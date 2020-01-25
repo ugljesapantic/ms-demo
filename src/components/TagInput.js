@@ -8,8 +8,10 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
     width: fit-content;
-    min-width: 20rem;
+    min-width: 30rem;
     margin: 0 auto;
+
+    margin-top: 0.75rem;
 `;
 
 const TagInput = ({theme, placeholder, value, onChange}) => {

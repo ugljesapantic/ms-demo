@@ -1,3 +1,4 @@
+import React from 'react'
 import styled, {css} from 'styled-components';
 import responsive from './responsive';
 
@@ -17,29 +18,48 @@ export const Logo = styled.div`
 export const boxStyles = css`
     background-color: white;
     border-radius: 4px;
-    border: 1px solid ${({theme}) => theme.border};
-    padding: 16px;
+    box-shadow: 0px 3px 7px rgba(0,0,0,.2);
+    padding: 1rem;
 `
 
+export const StyledTag = styled.div`
+    border-radius: 0.75rem ;
+    padding: 0 0.75rem;
+    font-size: 0.9rem;
+    line-height: 2rem;
+    background: ${({matched}) => matched ? '#5cb85c' : '#337ab7'};
+    color: white;
+    box-shadow: 0px 0px 2px rgba(0,0,0,.5);
+    margin-right: 0.5rem;
+    cursor: pointer;
+`
 
 export const tagInputStyles = (theme) => ({
     styles : {
         control: (provided, state) => {
-            const border = `1px solid ${state.isFocused ? theme.secondary : theme.border}`
-            const boxShadow = 'none';
+            const border = `none`
+            const boxShadow = '0px 0px 3px rgba(0,0,0,.6)';
+            const borderRadius= '1rem';
+            const padding= '0.5rem';
         
-            return { ...provided, border, boxShadow };
+            return { ...provided, border, boxShadow, borderRadius, padding };
         },
         menu: (provided, state) => {
             const display = state.options.length ? 'block' : 'none';
             return {...provided, display}
-        }
+        },
+        valueContainer: (provided) => {
+            const padding= '0rem';
+            return {...provided, padding}
+        },
+        
     },
-    components:{
+    components: {
         ClearIndicator: () => null,
         DropdownIndicator: () => null,
         IndicatorSeparator: () => null,
-        NoOptionsMessage: () => null
+        NoOptionsMessage: () => null,
+        MultiValue: (provided) => (<StyledTag onClick={provided.removeProps.onClick}>{provided.children}</StyledTag>),
     }
 })
 
@@ -51,6 +71,7 @@ export const StyledArea = styled(Textarea)`
     border-radius: 4px;
     line-height: 1.4rem;
     padding: 8px;
+
     ::-webkit-scrollbar { 
         display: none; 
     }

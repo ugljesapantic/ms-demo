@@ -30,17 +30,34 @@ const MyPostsContainer = styled.div`
     height: min-content;
     max-height: 80vh;
     overflow: auto;
+    padding: 1rem;
 `
 
 const StyledLanguageSelect = styled(LanguageSelect)`
     margin: 2rem auto;
 `
+
+const StyledTab = styled(Tab)`
+    padding: 0;
+`
  
 const StyledTabPane = styled(Tab.Pane)`
+
     &&& {
         display: flex;
         flex-direction: column;
         min-height: 5rem;
+        padding: 0;
+    }
+`
+
+const StyledPostsTabPane = styled(Tab.Pane)`
+
+    &&& {
+        background: inherit;
+        box-shadow: none;
+        border: none;
+        padding: 0;
     }
 `
 
@@ -61,16 +78,6 @@ class Profile extends Component {
 
         const panes = [
             {
-                menuItem: intl.formatMessage({id: 'profile.my-posts'}),
-                render: () => <StyledTabPane attached={false}>
-                    <MyPostsContext.Consumer>
-                        {value => <MyPostsContainer>
-                            <Posts posts={value.posts} />
-                        </MyPostsContainer>}
-                    </MyPostsContext.Consumer>
-                </StyledTabPane>,
-            },
-            {
                 menuItem: intl.formatMessage({id: 'profile.basic'}),
                 render: () => <StyledTabPane attached={false}>
                     {!user && <Loading />}
@@ -82,11 +89,21 @@ class Profile extends Component {
                     }
                 </StyledTabPane>
             },
+            {
+                menuItem: intl.formatMessage({id: 'profile.my-posts'}),
+                render: () => <StyledPostsTabPane  attached={false}>
+                    <MyPostsContext.Consumer>
+                        {value => <MyPostsContainer>
+                            <Posts posts={value.posts} />
+                        </MyPostsContainer>}
+                    </MyPostsContext.Consumer>
+                </StyledPostsTabPane>,
+            },
         ] 
         
         return (
             <ProfileContainer>
-                <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
+                <StyledTab menu={{ secondary: true, pointing: true }} panes={panes} />
             </ProfileContainer>
         )
     }

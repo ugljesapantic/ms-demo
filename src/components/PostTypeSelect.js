@@ -8,7 +8,7 @@ const PostTypeRadio = styled.div`
     display: flex;
     justify-content: space-evenly;
     min-width: 300px;
-    margin: 0.75rem auto 0.75rem;
+    margin: 0.75rem auto 0.25rem;
 
     ${({horizontal}) => horizontal && `
         flex-direction: column;
@@ -25,8 +25,8 @@ const PostTypeOption = styled.div`
     font-size: 1rem;
     font-weight: 500;
     border-radius: 1rem;
-    border: 1px solid ${({theme}) => theme.border };
-    color: black;
+    box-shadow: 0px 0px 4px rgba(0,0,0,.6);
+    color: rgba(0,0,0,.8);
     cursor: pointer;
     text-align: center;
     margin: 0 0.5rem;
