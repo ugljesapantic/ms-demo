@@ -35,7 +35,7 @@ export const StyledTag = styled.div`
     background: ${({matched}) => matched ? '#5cb85c' : '#337ab7'};
     color: white;
     box-shadow: 0px 0px 2px rgba(0,0,0,.5);
-    margin-right: 0.5rem;
+    margin: 0.25rem;
     cursor: pointer;
 `
 
@@ -45,7 +45,7 @@ export const tagInputStyles = (theme) => ({
             const border = `none`
             const boxShadow = '0px 0px 3px rgba(0,0,0,.6)';
             const borderRadius= '1rem';
-            const padding= '0.5rem';
+            const padding= '0.25rem';
         
             return { ...provided, border, boxShadow, borderRadius, padding };
         },
@@ -57,6 +57,14 @@ export const tagInputStyles = (theme) => ({
             const padding= '0rem';
             return {...provided, padding}
         },
+        input: (provided) => {
+            const marginLeft= '0.5rem';
+            return {...provided, marginLeft}
+        },
+        placeholder: (provided) => {
+            const marginLeft= '0.5rem';
+            return {...provided, marginLeft}
+        }
         
     },
     components: {

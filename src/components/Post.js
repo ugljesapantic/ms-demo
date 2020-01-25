@@ -57,9 +57,16 @@ const TagList = styled.div`
     flex-wrap: wrap;    
 `
 
+const Actions = styled.div`
+    margin-left: auto;
+    display: flex;
+    
+    & > * {
+        margin-left: 1rem;
+    }
+`
 
-
-export const Post = React.memo(({post, details, selectedTags}) => {
+export const Post = React.memo(({post, details, selectedTags, actions}) => {
     let history = useHistory();
     return <PostContainer details={details} onClick={e => {
         e.stopPropagation();
@@ -74,6 +81,7 @@ export const Post = React.memo(({post, details, selectedTags}) => {
                 {/* TODO add tooltip with time */}
                 <Time>{passedTime(post.createdAt)}</Time>
             </NameAndTime>
+            {actions && <Actions>{actions}</Actions>}
         </PostHeader>
         <Title>
             {post.title}

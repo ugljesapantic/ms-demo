@@ -8,7 +8,7 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
     width: fit-content;
-    min-width: 30rem;
+    min-width: 20rem;
     margin: 0 auto;
 
     margin-top: 0.75rem;

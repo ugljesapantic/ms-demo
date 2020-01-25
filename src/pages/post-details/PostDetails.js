@@ -9,6 +9,8 @@ import { FeedContext, fbAuth, MyPostsContext } from '../../App';
 import { createComposideChatKey, showSuccessToast } from '../../utils/misc';
 import { Loading } from '../../components/Loading';
 import { useIntl } from 'react-intl';
+import { Icon } from 'semantic-ui-react';
+import IconButton from '../../components/IconButton';
 
 const PostDetailsContainer = styled(LimitedWidthContainer)`
   padding-top: 2rem;
@@ -70,12 +72,11 @@ export const PostDetails = (props) => {
     // TODO Loading screen high order component
     return (
         <PostDetailsContainer>
-            {!loading && <StyledButton  secondary text="Go back" onClick={() => hist.goBack()}/>}
-            {loading ? <Loading /> : <Post selectedTags={selectedTags} post={post} details/>} 
-            {!loading && <Actions>
-                {isMine && <StyledButton right negative text="Delete" onClick={onDelete}/>}
-                {!isMine && <StyledButton right primary text="Send message" onClick={sendMessage}/>}
-            </Actions>}
+            {loading ? <Loading /> : <Post selectedTags={selectedTags} post={post} details actions={<>
+                <IconButton  onClick={() => hist.goBack()}  name="angle left" />
+                {isMine && <IconButton onClick={onDelete}  name="trash alternate outline" />}
+                {!isMine && <IconButton onClick={sendMessage}  name="facebook messenger" />}
+            </>} />} 
         </PostDetailsContainer>
     )
 }
