@@ -25,7 +25,7 @@ const PostTypeOption = styled.div`
     font-size: 1rem;
     font-weight: 500;
     border-radius: 1rem;
-    box-shadow: 0px 0px 4px rgba(0,0,0,.6);
+    box-shadow: 0px 0px 3px rgba(0,0,0,.6);
     color: rgba(0,0,0,.8);
     cursor: pointer;
     text-align: center;

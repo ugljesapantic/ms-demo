@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 
 import styled, {css} from 'styled-components';
 import UserAvatar from './UserAvatar';
-import { boxStyles, StyledTag } from '../styles/shared';
+import { boxStyles, StyledTag, lightText } from '../styles/shared';
 import { passedTime } from '../utils/misc';
 
 
@@ -31,20 +31,25 @@ const NameAndTime = styled.div`
 
 const Name = styled.div`
     font-weight: 600;
+    font-size: 1.2rem;
 `;
 
 const Time = styled.div`
   font-size: 12px;
+  ${lightText}
 `;
 
-const Title = styled.pre`
-    margin-top: 10px;
-    font-family: 'Roboto';
+const Title = styled.div`
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    white-space: pre-wrap;
 `
 
-const Desciption = styled.pre`
+const Desciption = styled.div`
     white-space: pre-wrap;
-    font-family: 'Roboto';
+    margin: 1rem 0;
 `
 
 const TagList = styled.div`

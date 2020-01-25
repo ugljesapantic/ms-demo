@@ -2,15 +2,15 @@ import React from 'react'
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  height: 24px;
-  width: 24px;
+  height: 2.4rem;
+  width: 2.4rem;
   border-radius: 8px;
   background-color: ${({background}) => background};
   color: white;
   font-weight: 600;
-  line-height: 24px;
+  line-height: 2.4rem;
   text-align: center;
-  font-size: 12px;
+  font-size: 1.2rem;
 `;
 
 const uidToColor = (str) => {

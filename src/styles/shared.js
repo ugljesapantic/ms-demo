@@ -22,6 +22,11 @@ export const boxStyles = css`
     padding: 1rem;
 `
 
+export const lightText = css`
+    color: rgba(0,0,0,0.6);
+    font-weight: 300;
+`
+
 export const StyledTag = styled.div`
     border-radius: 0.75rem ;
     padding: 0 0.75rem;

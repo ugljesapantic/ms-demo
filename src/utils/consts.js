@@ -31,5 +31,6 @@ export const THEME = {
     background: '#f5f5f5',
     backgroundDark: '#A0A0A0',
     negative: '#f44336',
-    border: 'lightgray'
+    border: 'lightgray',
+    colorLight: 'rgba(0,0,0,.6)'
   }
