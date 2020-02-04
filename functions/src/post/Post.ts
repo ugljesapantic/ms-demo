@@ -17,12 +17,12 @@ const post = new mongoose.Schema({
     userUid: String,
     type: {
         type: String,
-        enum: ['SUPPLY', 'DEMAND', 'PARTNER'],
+        enum: ['SUPPLY', 'DEMAND'],
         required: true
     },
     subType: {
         type: String,
-        enum: ['JOB', 'INVESTOR'],
+        enum: ['JOB', 'INVESTOR', 'PARTNER'],
         required: false,
     },
 }, {timestamps: true});
