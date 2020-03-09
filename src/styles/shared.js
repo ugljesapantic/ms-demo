@@ -7,10 +7,11 @@ import Textarea from 'react-textarea-autosize';
 export const Logo = styled.div`
     height: 48px;
     width: 48px;
-    background-image: url('https://via.placeholder.com/48x48.png?text=Magna+Serbia');
+    /* TODO WHen the time comes */
+    /* background-image: url('https://via.placeholder.com/48x48.png?text=Magna+Serbia'); */
 
     ${responsive.tablet(css`
-        background-image: url('https://via.placeholder.com/240x48.png?text=Magna+Serbia');
+        /* background-image: url('https://via.placeholder.com/240x48.png?text=Magna+Serbia'); */
         width: 240px;
     `)}
 `;

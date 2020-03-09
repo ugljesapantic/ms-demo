@@ -31,6 +31,19 @@ const Main = styled.main`
 
 const StyledLogo = styled(Logo)`
     margin-right: auto;
+    font-size: 3rem;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    font-family: 'Oxanium';
+
+    .red {
+        color: #C73339;
+    }
+
+    .blue {
+        color: #093E76;
+    }
 `
 
 const Wrapper = styled.div`
@@ -56,9 +69,11 @@ const Copyright = styled.div`
 const Text = styled.div`
     color: darkslategray;
     line-height: 1.5;
-    font-size: 3rem;
+    font-size: 4rem;
     font-weight: bold;
     flex: 0 1 auto;
+
+    font-family: 'Oxanium';
 `;
 
 const Graphics = styled.img`
@@ -74,17 +89,21 @@ class Home extends Component {
             <Wrapper>
                 <HeaderContainer>
                     <Header>
-                        <StyledLogo />
+                        <StyledLogo>
+                            <div className="red">C</div>
+                            <div className="blue">ontact</div>
+                        </StyledLogo>
                         <SignInModal />
                         <SignUpModal />
                     </Header>
                 </HeaderContainer>
                 <Main>
-                    <Text>Welcome to Magna Serbia!</Text>
+                    {/* TODO Wait for the text */}
+                    <Text>Welcome to Contact!</Text>
                     <Graphics src={graphics}/>
                 </Main>
                 <Footer>
-                    <Copyright>&copy; Magna Serbia 2019</Copyright>
+                    <Copyright>&copy; Ramonda 2019</Copyright>
                     <LanguageSelect />
                 </Footer>
             </Wrapper>
